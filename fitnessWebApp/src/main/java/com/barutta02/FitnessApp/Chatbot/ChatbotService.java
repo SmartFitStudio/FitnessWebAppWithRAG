@@ -1,4 +1,4 @@
-package com.barutta02.FitnessApp.Chatbot;
+package com.barutta02.FitnessApp.chatbot;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
