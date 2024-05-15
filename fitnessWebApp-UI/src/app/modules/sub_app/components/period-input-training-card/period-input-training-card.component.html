@@ -1,0 +1,12 @@
+<div class="allenamento_esercizio_card" > <!--NOTE: Qualcuno non sarebbe contento-->
+    <div class="exercise_info">
+        <dl>
+            <dt class="exerciseName">{{training.name}}</dt>
+            <dd class="secondary category"> {{training.description}}</dd>
+            <dd class="description">Durata: {{training.durata_in_ore}}h</dd>
+        </dl>
+    </div>
+    <div class="buttonHanlder">
+        <button class="def_button" (click)="aggiungi()"><i class="fa-solid fa-add"></i></button>
+    </div>
+</div>

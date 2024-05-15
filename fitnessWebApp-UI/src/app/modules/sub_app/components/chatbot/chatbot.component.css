@@ -1,0 +1,18 @@
+.chatbot-button {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+
+* {
+  word-wrap: break-word;
+}
+
+.submit-form {
+  padding: 10px;
+}
+
+*:focus {
+  outline: none !important;
+  box-shadow: none;
+}

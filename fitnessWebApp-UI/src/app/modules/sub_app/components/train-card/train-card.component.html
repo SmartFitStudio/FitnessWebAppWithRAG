@@ -1,0 +1,14 @@
+<div class="col-sm-6">
+    <div class="card def_glass_card">
+      <div class="card-body">
+        <h5 class="card-title">{{train.name}}</h5>
+        <p class="card-text">{{train.description}}</p>
+        <p class="card-text">Durata: {{train.durata_in_ore}} h</p>
+        <button (click)="openDetails()"  class="def_button">Dettagli</button>
+      </div>
+      <div class="d-flex gap-2 iteractionButtons">
+        <i (click)="onEdit()"  class="fa-solid fa-pen-to-square"></i>
+        <i  (click)="onDelete()" class="fa-solid fa-trash"></i>
+      </div>
+    </div>
+  </div>

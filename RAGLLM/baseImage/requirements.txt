@@ -1,0 +1,8 @@
+langchain_community
+langchain
+langchain_google_vertexai
+pypdf
+chromadb
+flask
+flask_cors
+waitress

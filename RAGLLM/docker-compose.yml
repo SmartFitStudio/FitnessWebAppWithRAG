@@ -1,0 +1,26 @@
+services:
+  chromadb:
+    image: chromadb/chroma
+    hostname: chromadb
+    volumes:
+      - chromadb_data:/chroma/chroma
+    ports:
+      - 8000:8000
+      
+  rag_llm:
+    build: 
+      .
+    ports:
+      - "5000:5000"
+    volumes:
+      - rag_llm_data:/app
+    env_file:
+      - env-file.txt
+    depends_on:
+      - chromadb
+
+volumes:
+  chromadb_data:
+    driver: local
+  rag_llm_data:
+    driver: local

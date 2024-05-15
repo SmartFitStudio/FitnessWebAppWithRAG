@@ -1,0 +1,93 @@
+.background{
+    background-image: linear-gradient(180deg, rgba(107,107,107,0.6) 0%, rgba(59,59,59,1) 50%) ,
+                        url(/assets/images/athlets/1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /*edit*/
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.train_general_info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+#time {
+    color: #949493;
+    font-size: 1em;
+}
+
+.train_general_info h1 {
+    font-size: 4em;
+    font-weight: 700;
+}
+.trainInfoSpan{
+    padding-right: .5em;
+}
+
+.trainInfoSpan i{
+    position: relative;
+    left: 2px;
+}
+
+.train_general_info div,
+.train_general_info p {
+    max-width: 500px;
+}
+
+.train_general_info p,
+.train_general_info span {
+
+    color: var(--secondTxtColor);
+}
+
+.exercise_list {
+    margin-top: 2em !important;
+    background: #f5f5f3;
+    width: 95%;
+    margin: auto;
+    border-radius: 20px;
+    padding: var(--default_padding);
+    color: #383637;
+    display: flex;
+    flex-direction: column;
+}
+
+.exercise_list h3,
+.exercise_list h5 {
+    padding-left: 10px;
+}
+
+.exercise_list h3 {
+    font-size: 1.5em;
+    font-weight: 650;
+}
+
+.def_button {
+    margin-top: 0;
+    margin-bottom: .5em;
+    display: block;
+}
+
+@media only screen and (max-width: 480px) {
+    .train_general_info {
+        text-align: center;
+    }
+
+    .def_button {
+        display: inline;
+    }
+
+    .def_button {
+        margin: .5em;
+    }
+
+}

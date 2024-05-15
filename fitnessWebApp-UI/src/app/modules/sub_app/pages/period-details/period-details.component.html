@@ -1,0 +1,23 @@
+<section>
+    <h2 class="inline">{{period_name}}</h2>
+    <h3 class="inline point_before second_color">{{period_obiettivo | obiettivoPeriodoPipe}}</h3>
+    <dl>
+        <div class="inline">
+            <dt class="inline"><i aria-label="Data inizio" class="fa-solid fa-play"></i> </dt>
+            <dd class="inline">{{period_data_inizio}}</dd>
+        </div>
+        <div class="inline">
+            <dt class="inline"><i aria-label="Data fine" class="fa-solid fa-flag-checkered"></i> </dt>
+            <dd class="inline">{{period_data_fine}}</dd>
+        </div>
+        <div class="inline">
+            <dt class="inline"><i aria-label="Durata ciclo" class="fa-solid fa-repeat"></i> </dt>
+            <dd class="inline">{{period_durata_in_giorni}}gg</dd>
+        </div>
+        
+    </dl>
+</section>
+<section>
+    <h3>Calendario</h3>
+    <app-calendar [eventSettings]="eventSettings"></app-calendar>
+</section>

@@ -1,0 +1,1799 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenApi specification - Andrea Barutta",
+    "description": "OpenApi documentation for Spring Security",
+    "termsOfService": "Terms of service",
+    "contact": {
+      "name": "Andrea Barutta",
+      "url": "https://barutta02.github.io/Barutta_portfolio/",
+      "email": "andreabarutta123@gmail.com"
+    },
+    "license": {
+      "name": "Licence name",
+      "url": "https://some-url.com"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8088/api/v1",
+      "description": "Local ENV"
+    },
+    {
+      "url": "https://some-url.com/api/v1",
+      "description": "PROD ENV"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/periods/disable_active_period": {
+      "put": {
+        "tags": [
+          "Periods"
+        ],
+        "operationId": "disableActivePeriod",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifiche/{id}": {
+      "put": {
+        "tags": [
+          "Notifica"
+        ],
+        "operationId": "signNotificationAsRead",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificaResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trainings": {
+      "post": {
+        "tags": [
+          "Train"
+        ],
+        "operationId": "saveAllenamento",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AllenamentoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllenamentoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trainingexercise": {
+      "post": {
+        "tags": [
+          "TrainExercise"
+        ],
+        "operationId": "saveAllenamentoEsercizio",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AllenamentoEsercizioRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllenamentoEsercizioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/periods": {
+      "post": {
+        "tags": [
+          "Periods"
+        ],
+        "operationId": "savePeriodo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PeriodoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/periodTraining": {
+      "post": {
+        "tags": [
+          "PeriodTraining"
+        ],
+        "operationId": "savePeriodoAllenamento",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PeriodoAllenamentoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodoAllenamentoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercises": {
+      "get": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "findAllExercise",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseExerciseResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "saveExercise",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExerciseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercises/import/{exercise-id}": {
+      "post": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "importExercise",
+        "parameters": [
+          {
+            "name": "exercise-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExerciseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercises/cover/{exercise-id}": {
+      "post": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "uploadBookCoverPicture",
+        "parameters": [
+          {
+            "name": "exercise-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/authenticate": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "authenticate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trainings/{allenamento-id}": {
+      "get": {
+        "tags": [
+          "Train"
+        ],
+        "operationId": "findAllenamentoById",
+        "parameters": [
+          {
+            "name": "allenamento-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllenamentoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trainings/creator": {
+      "get": {
+        "tags": [
+          "Train"
+        ],
+        "operationId": "findAllAllenamentoByCreator",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseAllenamentoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trainings/creator/no_pagination": {
+      "get": {
+        "tags": [
+          "Train"
+        ],
+        "operationId": "findAllAllenamentoByCreator_noPagination",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AllenamentoResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trainingexercise/{allenamento-nome}": {
+      "get": {
+        "tags": [
+          "TrainExercise"
+        ],
+        "operationId": "findByAllenamentoNome",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "allenamento-nome",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseAllenamentoEsercizioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trainingexercise/no_pagination/{allenamento-nome}": {
+      "get": {
+        "tags": [
+          "TrainExercise"
+        ],
+        "operationId": "findByAllenamentoNomeNoPagination",
+        "parameters": [
+          {
+            "name": "allenamento-nome",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AllenamentoEsercizioResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/periods/{periodo-id}": {
+      "get": {
+        "tags": [
+          "Periods"
+        ],
+        "operationId": "findPeriodoById",
+        "parameters": [
+          {
+            "name": "periodo-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/periods/is_there_an_active_period": {
+      "get": {
+        "tags": [
+          "Periods"
+        ],
+        "operationId": "isThereAnActivePeriod",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeriodoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/periods/creator": {
+      "get": {
+        "tags": [
+          "Periods"
+        ],
+        "operationId": "findAllPeriodoByCreator",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponsePeriodoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/periodTraining/{periodo-nome}": {
+      "get": {
+        "tags": [
+          "PeriodTraining"
+        ],
+        "operationId": "findByPeriodoNome",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "periodo-nome",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponsePeriodoAllenamentoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/periodTraining/no_pagination/{periodo-nome}": {
+      "get": {
+        "tags": [
+          "PeriodTraining"
+        ],
+        "operationId": "findByPeriodoNomeNoPagination",
+        "parameters": [
+          {
+            "name": "periodo-nome",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PeriodoAllenamentoResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifiche/today": {
+      "get": {
+        "tags": [
+          "Notifica"
+        ],
+        "operationId": "getTodayNotification",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificaResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercises/{exercise-id}": {
+      "get": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "findExerciseById",
+        "parameters": [
+          {
+            "name": "exercise-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExerciseResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "deleteExercise",
+        "parameters": [
+          {
+            "name": "exercise-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercises/exerciseCategories": {
+      "get": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "getExerciseCategories",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercises/exercise-store": {
+      "get": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "getExercisesFromPublicStore",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseExerciseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercises/creator": {
+      "get": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "findAllExerciseByCreator",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseExerciseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/activate-account": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "confirm",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/trainings/{allenamento-nome}": {
+      "delete": {
+        "tags": [
+          "Train"
+        ],
+        "operationId": "deleteAllenamento",
+        "parameters": [
+          {
+            "name": "allenamento-nome",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trainingexercise/{allenamento-nome}/{index}": {
+      "delete": {
+        "tags": [
+          "TrainExercise"
+        ],
+        "operationId": "deleteAllenamentoEsercizio",
+        "parameters": [
+          {
+            "name": "allenamento-nome",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/periods/{periodo-nome}": {
+      "delete": {
+        "tags": [
+          "Periods"
+        ],
+        "operationId": "deletePeriodo",
+        "parameters": [
+          {
+            "name": "periodo-nome",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/periodTraining/{periodo-allenamento-id}": {
+      "delete": {
+        "tags": [
+          "PeriodTraining"
+        ],
+        "operationId": "deletePeriodoAllenamento",
+        "parameters": [
+          {
+            "name": "periodo-allenamento-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PeriodoResponse": {
+        "required": [
+          "attivo",
+          "data_inizio",
+          "durata_in_giorni",
+          "id",
+          "name",
+          "obiettivo"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "obiettivo": {
+            "type": "string",
+            "enum": [
+              "DIMAGRIMENTO",
+              "DEFINIZIONE",
+              "MASSA",
+              "FORZA",
+              "RESISTENZA",
+              "NON_DEFINITO"
+            ]
+          },
+          "durata_in_giorni": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "data_inizio": {
+            "type": "string",
+            "format": "date"
+          },
+          "data_fine": {
+            "type": "string",
+            "format": "date"
+          },
+          "attivo": {
+            "type": "boolean"
+          },
+          "creator_username": {
+            "type": "string"
+          }
+        }
+      },
+      "NotificaResponse": {
+        "required": [
+          "id",
+          "message",
+          "read",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "read": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AllenamentoRequest": {
+        "required": [
+          "description",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "durata_in_ore": {
+            "minimum": 1,
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "AllenamentoResponse": {
+        "required": [
+          "creator_username",
+          "description",
+          "durata_in_ore",
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "durata_in_ore": {
+            "type": "number",
+            "format": "float"
+          },
+          "creator_username": {
+            "type": "string"
+          }
+        }
+      },
+      "AllenamentoEsercizioRequest": {
+        "required": [
+          "id_allenamento",
+          "id_esercizio",
+          "index",
+          "recupero",
+          "ripetizioni",
+          "serie"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id_allenamento": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id_esercizio": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ripetizioni": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serie": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "recupero": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AllenamentoEsercizioResponse": {
+        "required": [
+          "allenamento_id",
+          "esercizio_id",
+          "id",
+          "index",
+          "recupero",
+          "ripetizioni",
+          "serie"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "allenamento_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "esercizio_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "creator": {
+            "type": "string"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ripetizioni": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serie": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "recupero": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PeriodoRequest": {
+        "required": [
+          "attivo",
+          "data_inizio",
+          "durata_in_giorni",
+          "name",
+          "obiettivo"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "obiettivo": {
+            "type": "string",
+            "enum": [
+              "DIMAGRIMENTO",
+              "DEFINIZIONE",
+              "MASSA",
+              "FORZA",
+              "RESISTENZA",
+              "NON_DEFINITO"
+            ]
+          },
+          "durata_in_giorni": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "data_inizio": {
+            "type": "string",
+            "format": "date"
+          },
+          "data_fine": {
+            "type": "string",
+            "format": "date"
+          },
+          "attivo": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PeriodoAllenamentoRequest": {
+        "required": [
+          "giorno_del_periodo",
+          "id_allenamento",
+          "id_periodo",
+          "periodo_giornata"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id_allenamento": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id_periodo": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "giorno_del_periodo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "periodo_giornata": {
+            "type": "string",
+            "enum": [
+              "MATTINA",
+              "POMERIGGIO",
+              "SERA"
+            ]
+          }
+        }
+      },
+      "PeriodoAllenamentoResponse": {
+        "required": [
+          "giorno_del_periodo",
+          "id",
+          "id_allenamento",
+          "id_periodo",
+          "periodo_giornata"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id_allenamento": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id_periodo": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "giorno_del_periodo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "periodo_giornata": {
+            "type": "string",
+            "enum": [
+              "MATTINA",
+              "POMERIGGIO",
+              "SERA"
+            ]
+          }
+        }
+      },
+      "ExerciseRequest": {
+        "required": [
+          "description",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ABS",
+                "ARMS",
+                "BACK",
+                "CALVES",
+                "CHEST",
+                "LEGS",
+                "CORE",
+                "SHOULDERS",
+                "CARDIO",
+                "FULL_BODY",
+                "STRETCHING",
+                "YOGA",
+                "PILATES",
+                "CROSSFIT",
+                "FUNCTIONAL",
+                "POWERLIFTING",
+                "OLYMPIC_LIFTING",
+                "STRONGMAN",
+                "BODYBUILDING",
+                "AEROBICS",
+                "ZUMBA",
+                "DANCE",
+                "MARTIAL_ARTS",
+                "NON_DEFINITO",
+                "OTHER"
+              ]
+            }
+          },
+          "shareable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ExerciseResponse": {
+        "required": [
+          "description",
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "creator_username": {
+            "type": "string"
+          },
+          "category": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ABS",
+                "ARMS",
+                "BACK",
+                "CALVES",
+                "CHEST",
+                "LEGS",
+                "CORE",
+                "SHOULDERS",
+                "CARDIO",
+                "FULL_BODY",
+                "STRETCHING",
+                "YOGA",
+                "PILATES",
+                "CROSSFIT",
+                "FUNCTIONAL",
+                "POWERLIFTING",
+                "OLYMPIC_LIFTING",
+                "STRONGMAN",
+                "BODYBUILDING",
+                "AEROBICS",
+                "ZUMBA",
+                "DANCE",
+                "MARTIAL_ARTS",
+                "NON_DEFINITO",
+                "OTHER"
+              ]
+            }
+          },
+          "cover": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
+            }
+          },
+          "shareable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RegistrationRequest": {
+        "required": [
+          "email",
+          "firstname",
+          "lastname",
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "maxLength": 2147483647,
+            "minLength": 8,
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 2147483647,
+            "minLength": 8,
+            "type": "string"
+          }
+        }
+      },
+      "AuthenticationRequest": {
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 2147483647,
+            "minLength": 8,
+            "type": "string"
+          }
+        }
+      },
+      "AuthenticationResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PageResponseAllenamentoResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllenamentoResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageResponseAllenamentoEsercizioResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllenamentoEsercizioResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageResponsePeriodoResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PeriodoResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageResponsePeriodoAllenamentoResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PeriodoAllenamentoResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageResponseExerciseResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExerciseResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT auth description",
+        "in": "header",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

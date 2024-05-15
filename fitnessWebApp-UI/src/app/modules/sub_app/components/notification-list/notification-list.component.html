@@ -1,0 +1,13 @@
+<div class="notification_list">
+    <ng-container   *ngIf="seeAll">
+        <app-notification-card *ngFor="let notifica of notifiche" 
+        [notifica]="notifica"
+        (markAsRead)="markAsRead($event)"
+        ></app-notification-card>
+        </ng-container>
+
+
+    <span *ngIf="!seeAll && isThereAnyNotificationToRead"><i class="fa-regular fa-bell fa-shake"></i> Hai delle notifiche!  <i (click)="changeState()" class="fa-solid fa-chevron-down right" ></i></span>
+    <i (click)="changeState()" class="fa-solid fa-chevron-up right" *ngIf="seeAll && isThereAnyNotificationToRead"></i>
+
+</div>

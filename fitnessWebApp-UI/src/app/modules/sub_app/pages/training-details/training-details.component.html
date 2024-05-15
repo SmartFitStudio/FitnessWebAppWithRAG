@@ -1,0 +1,29 @@
+<section class="sectionContainer">
+    <div class ="train_general_info">
+        <div class="first_column_info">
+            <h2 class="trainName">{{nomeAllenamento}}</h2>
+            <span class="trainInfoSpan"><i aria-label="Durata allenamento" class="fa-solid fa-clock"></i> {{durataAllenamento}} h </span>
+            <span class="trainInfoSpan"><i aria-label="Numero di esercizi" class="fa-solid fa-hashtag"></i> {{exerciseNumber}} esercizi</span>
+        </div>
+        <p class="trainDescription">{{descrizioneAllenamento}}</p>
+        <div class="buttonContainer">
+            <button class="def_button start" (click)="startCount()"><i class="fa-regular fa-circle-play"></i> Avvia</button>
+            <button class="def_button pause" (click)="stopCount()"><i class="fa-solid fa-circle-pause"></i> Pausa</button>
+            <button class="def_button pause" (click)="resetTimer()"><i class="fa-solid fa-arrow-rotate-left"></i> Reset</button>
+
+        </div>
+    </div>
+    <div class ="exercise_list">
+        <h3>Breakdown</h3>
+        <h5 id="time">Tempo trascorso: {{stopwatch.hours}} h {{stopwatch.minutes}} m {{stopwatch.seconds}} s</h5>
+        <ng-container *ngFor="let trainingExercise of trainingExercisesList" [style.order]="trainingExercise.index">
+            <app-train-exercise-card 
+                *ngIf="getExerciseById(trainingExercise.esercizio_id) as exerciseResponse"
+                [trainingExercise]="trainingExercise" 
+                [exercise]="exerciseResponse">
+            </app-train-exercise-card>
+        </ng-container>
+              
+    </div>
+</section>
+<div class="background" aria-hidden="true"></div> <!-- NOTE: Qualcuno potrebbe essere poco contento-->

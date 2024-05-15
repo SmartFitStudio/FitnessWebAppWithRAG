@@ -1,0 +1,88 @@
+<div
+  *ngIf="message"
+  class="alert "
+  [class.alert-danger]="level==='error'"
+  [class.alert-success]="level==='success'"
+  role="alert"
+>
+  <p>{{message}}</p>
+</div>
+
+<div class="lista_esercizi" *ngIf="(exerciseResponse$ | async) as exerciseResponse">
+  <div class="buttons">
+    <a [routerLink]="newExerciseLink" class="def_button" *ngIf="isAddingPermitted"><i class="fa-solid fa-plus"></i> Aggiungi</a>
+    <a [routerLink]="goToStore" class="def_button" *ngIf="isAddingPermitted"><i class="fa-solid fa-store"></i> Vai allo store</a>
+  </div>
+
+  <app-exercise-card
+    *ngFor="let exercise of exerciseResponse.content; trackBy: trackByExerciseResponse"
+    [exercise]="exercise"
+    [OrderedInput]="isListForInput"
+    (delete)="deleteExercise($event)"
+    (edit)="editExercise($event)"
+    (addExerciseToTraining)="addExerciseToTrainingHandler($event)"
+  ></app-exercise-card>
+</div>
+
+<div class="d-flex justify-content-center mt-3">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        <a
+          (click)="goToFirstPage()"
+          class="page-link"
+          href="javascript:void(0)"
+          aria-label="Previous"
+          [class.disabled]="page === 0"
+        >
+          <i class="fa-solid fa-angles-left"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a
+          (click)="goToPreviousPage()"
+          class="page-link"
+          href="javascript:void(0)"
+          aria-label="Previous"
+          [class.disabled]="page === 0"
+        >
+          <i class="fa-solid fa-angle-left"></i>
+        </a>
+      </li>
+      <li
+        class="page-item"
+        *ngFor="let pageIndex of pages"
+      >
+        <a
+          (click)="gotToPage(pageIndex)"
+          class="page-link"
+          [class.active]="page === pageIndex"
+          href="javascript:void(0)"
+        >{{ pageIndex + 1 }}</a>
+      </li>
+      <li class="page-item">
+        <a
+          (click)="goToNextPage()"
+          class="page-link"
+          href="javascript:void(0)"
+          aria-label="Next"
+          [class.disabled]="isLastPage"
+        >
+          <i class="fa-solid fa-chevron-right"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a
+          (click)="goToLastPage()"
+          class="page-link"
+          href="javascript:void(0)"
+          aria-label="Next"
+          [class.disabled]="isLastPage"
+        >
+          <i class="fa-solid fa-angles-right"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<div class="background" aria-hidden="true"></div> <!-- NOTE: Qualcuno potrebbe essere poco contento-->

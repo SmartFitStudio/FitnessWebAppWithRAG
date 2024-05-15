@@ -1,0 +1,45 @@
+.tab{
+    margin: auto;
+    background-color: var(--card_background);
+    padding: var(--default_padding);
+    margin-top: 3em;
+    border-radius: var(--default_border_radius);
+}
+
+.tab .nextButton{
+    float: right;
+}
+.tab .backButton{
+    float: left;
+}
+.tab .exercise_info{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.tab .initial_info{
+    max-width: 600px;
+}
+
+.form-text{
+    color: #b5b5b5;
+}
+
+label{
+    font-weight: 500;
+}
+
+
+#exerciseOfTrainTab{
+    width: 100%;
+    flex-grow: 1;
+    background: #f5f5f3;
+    border-radius: 20px;
+    padding: var(--default_padding);
+    color: #383637;
+}
+
+.exercise_training_list{
+    transition: .5s;
+}

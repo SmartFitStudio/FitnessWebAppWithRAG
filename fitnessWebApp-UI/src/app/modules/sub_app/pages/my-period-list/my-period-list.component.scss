@@ -1,0 +1,17 @@
+.row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    padding-top: var(--default_padding);
+}
+
+app-period-card{
+width: min-content;}
+
+.background{
+    background-image: linear-gradient(180deg, rgba(92, 90, 90, 0.4) 0%,rgba(58, 57, 57, 0.6) 10%, rgb(19, 18, 18,0.8) 40%, rgb(19, 18, 18,1) 70%) ,
+                        url(/assets/images/athlets/4.jpg);
+
+}

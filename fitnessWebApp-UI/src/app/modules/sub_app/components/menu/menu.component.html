@@ -1,0 +1,16 @@
+<nav id="menu" class="menu" aria-label="Navigazione Principale">
+  <input type="checkbox" id="mobile-menu-toggle">
+  <div class="mobile-menu-x">
+    <label for="mobile-menu-toggle" class="menu-toggle-label" data-toCloseContent="✕ Chiudi">
+      <span class="mobile-menu-toggle-label-content">☰ Menù</span>
+    </label>
+    <ul class="nav-list">
+      <li class="nav_list_element"><a [routerLink]="homeLink" routerLinkActive="active"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li class="nav_list_element"><a [routerLink]="myExercisesLink" routerLinkActive="active"> <i class="fa-solid fa-dumbbell"></i>
+          Esercizi</a></li>
+      <li class="nav_list_element"><a [routerLink]="myTrainsLink" routerLinkActive="active"> <i class="fa-solid fa-table-columns"></i>
+          Allenamenti</a></li>
+      <li class="nav_list_element"><a  [routerLink]="myPeriodsLink" routerLinkActive="active"> <i class="fa-solid fa-calendar"></i> Periodi</a></li>
+    </ul>
+  </div>
+</nav>

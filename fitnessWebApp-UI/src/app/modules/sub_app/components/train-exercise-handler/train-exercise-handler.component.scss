@@ -1,0 +1,47 @@
+.allenamento_esercizio_card img{
+    width: 100px;
+    border-radius: 15px;
+}
+
+.allenamento_esercizio_card{
+        display: grid;
+        grid-template-columns: 100px 1fr 30px; /* Le colonne avranno larghezza uguale */
+        gap: 1em; /* Spazio tra le colonne */
+        padding: .5em;
+}
+.allenamento_esercizio_card dt.exerciseName{
+    display: inline;
+}
+
+.allenamento_esercizio_card dd.description{
+    display: block;
+    font-weight: 500;
+    font-size: .8em;
+
+}
+.allenamento_esercizio_card dd{
+    display: inline;
+    padding-right: .5em;
+    margin-bottom: 0;
+}
+
+.exercise_info{
+    width: 100%;
+}
+
+.secondary{
+    font-size: .7em;
+}
+
+
+.allenamento_esercizio_card .category{
+    font-size: 0.8em;
+    font-weight: 600;
+    color: #818181;
+}
+
+.category::before{
+    content: " · ";
+    font-weight: 700;
+
+}

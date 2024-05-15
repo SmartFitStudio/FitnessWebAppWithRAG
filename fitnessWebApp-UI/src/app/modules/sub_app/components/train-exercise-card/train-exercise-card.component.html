@@ -1,0 +1,13 @@
+<div class="allenamento_esercizio_card" [style.order]="trainingExercise.index"> <!--NOTE: Qualcuno non sarebbe contento-->
+    <img [src]="exerciseCover" alt="">
+    <div class="exercise_info">
+        <dl>
+            <dt class="exerciseName">{{exercise.name}}</dt>
+            <dd class="secondary category"> {{exercise.category}}</dd>
+            <dd class="description">{{exercise.description}}</dd>
+            <dd class="secondary serie"><i aria-label="Serie" class="fa-solid fa-repeat"></i> {{trainingExercise.serie}}</dd>
+            <dd class="secondary ripetizioni"><i aria-label="Ripetizioni" class="fa-solid fa-hashtag"></i> {{trainingExercise.ripetizioni}}</dd>
+            <dd class="secondary recupero"><i aria-label="Recupero" class="fa-solid fa-stopwatch"></i> {{trainingExercise.recupero}}</dd>
+        </dl>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+$border_radius_menu: 20px;
+
+.exercise_card {
+    min-height: 200px;
+}
+
+
+.iteractionButtons {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+}
+
+.card img {
+    border-radius: $border_radius_menu;
+    width: 120px;
+    object-fit: cover;
+    padding: .2em;
+}
+
+.category {
+    font-size: .7em;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    max-width: 400px!important;
+    width: 100%!important;
+    border-radius: $border_radius_menu;
+    flex-grow: 1;
+}
+
+.card-body {
+    margin-top: .2em;
+    min-height: 175px;
+    min-width: 200px;
+}
+
+.card-text.description,
+.card-text.category,
+.card i{
+    color: #dfcdcd;
+}
+
+
+.def_button i{
+    color: var(--default_button_txt_color);
+}
+
+.def_button{
+    margin-right: .3em;
+}
+
+.formContainer{
+    margin-top: .2em;
+}

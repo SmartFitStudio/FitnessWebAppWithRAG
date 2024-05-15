@@ -1,0 +1,7 @@
+<div class="notifica" *ngIf="!notifica.read">
+    <i class="fa-solid fa-xmark close" (click)="close_notification()"></i>
+    <div class="content">
+        <h6><i class="fa-regular fa-message"></i> {{notifica.title}}</h6>
+        <p>{{notifica.message}}</p>
+    </div>
+</div>

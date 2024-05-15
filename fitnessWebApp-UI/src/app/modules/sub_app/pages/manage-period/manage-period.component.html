@@ -1,0 +1,119 @@
+<div class="alert alert-danger mt-2" role="alert" *ngIf="errorMsg.length">
+    <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{msg}}</p>
+</div>
+<!--POP UP per inserire l'allenamento-->
+<div class="popUp" *ngIf="isPopUpOpen">
+    <app-my-training-list-no-pagination
+        (add_training)="add_training_top_period($event)"></app-my-training-list-no-pagination>
+    <button class="backButton def_button" (click)="closeDialog()">Close</button>
+</div>
+
+<mat-horizontal-stepper #stepper [ngClass]="{'blur': isPopUpOpen}">
+    <mat-step [stepControl]="periodForm">
+        <ng-template matStepLabel>Dati periodo</ng-template>
+        <section class="formSection">
+            <h2>Crea il tuo periodo</h2>
+            <p>Un periodo di allenamento è un arco temporale con uno scopo, suddiviso in cicli di durata costante.</p>
+            <form [formGroup]="periodForm">
+                <label for="nome_periodo" class="form-label">Nome</label>
+                <input formControlName="nome_periodo" type="text" id="nome_periodo" class="form-control"
+                    aria-describedby="nome_periodo_helper" name="nome_periodo" required >
+                <div id="nome_periodo_helper" class="form-text">
+                    Inserisci qui il nome del periodo cosi da poterlo identificare facilmente.
+                    Attenzione il nome non potrà essere modificato in seguito e dovrà essere univoco tra i tuoi periodi.
+                </div>
+
+                <select class="form-select" aria-label="Seleziona l'obiettivo del periodo di allenamento"
+                    formControlName="obiettivo" required>
+                    <option selected>Seleziona l'obiettivo</option>
+                    <option *ngFor="let c of obbiettivi">{{ c }}</option>
+                </select>
+
+                <label for="durata_in_giorni" class="form-label">Durata in giorni del ciclo</label>
+                <input formControlName="durata_in_giorni" type="number" id="durata_in_giorni" class="form-control"
+                    aria-describedby="durata_in_giorni_helper" name="durata_in_giorni" min="0" max="30" required>
+                <div id="durata_in_giorni_helper" class="form-text">
+                    Inserisci qui la durata del ciclo del periodo in giorni.
+                </div>
+
+                <label for="data_inizio" class="form-label">Data inzio</label>
+                <input formControlName="data_inizio" type="date" id="data_inizio" class="form-control"
+                    aria-describedby="data_inizio_helper" name="durata_in_giorni">
+                <div id="data_inizio_helper" class="form-text">
+                    Inserisci qui la data di inizio del periodo.
+                </div>
+
+                <label for="data_fine" class="form-label">Data inzio</label>
+                <input formControlName="data_fine" type="date" id="data_fine" class="form-control"
+                    aria-describedby="data_fine_helper" name="data_fine">
+                <div id="data_fine_helper" class="form-text">
+                    Inserisci qui la data di fine del periodo.
+                </div>
+
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                        formControlName="is_attivo">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Attiva periodo</label>
+                    <div *ngIf="nome_periodo_attivo!=''" class="warning">
+                        <p class="warning" >Hai gia un periodo attivo nominato <span class="bold">{{nome_periodo_attivo}}</span>, non puoi averne più di uno attivo contemporaneamente.</p>
+                        <p>Se vuoi attivare questo, devi prima disattivare quello attuale.</p>
+                        <button class="def_button disable" (click)="disable_active_period()"><i class="fa-solid fa-skull"></i> Disattivalo</button>
+                    </div>
+                    
+                </div>
+            </form>
+        </section>
+        <div>
+            <button mat-button matStepperNext class="nextButton def_button">Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Allenamenti</ng-template>
+        <section id="sezioneCalenderio">
+            <h2>Calendario</h2>
+            <p>Qui puoi inserire gli allenamenti all'interno del periodo selezionato</p>
+            <div class="flex">
+                <app-period-day-card *ngFor="let _ of [].constructor(period_length); let i = index" [index]="i"
+                    [allenamenti]="getAllenamentoPeriodoByDay(i)" (requestToAdd)="addNewTraining($event)"
+                    (requestToRemove)="removeTraining($event)"></app-period-day-card>
+            </div>
+        </section>
+        <div>
+            <button mat-button matStepperPrevious class="backButton def_button">Back</button>
+            <button mat-button matStepperNext class="nextButton def_button">Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Fine</ng-template>
+
+        <ng-template matStepLabel>Done</ng-template>
+
+
+        <section>
+            <h3>Riepiologo</h3>
+            <dl>
+                <dt>Nome periodo:</dt>
+                <dd>{{nome_periodo}}</dd>
+                <dt>Obbiettivo:</dt>
+                <dd>{{obiettivo}}</dd>
+                <dt>Durata in giorni:</dt>
+                <dd>{{period_length}}</dd>
+            </dl>
+            <h4>Lista allenamenti</h4>
+            <ul>
+                <li *ngFor="let allenamentoPeriodo of allenamenti_periodo">
+                    <app-training-period-card
+                        *ngIf="getAllenamentoById(allenamentoPeriodo.id_allenamento) as allenamento"
+                        [allenamentoPeriodo]="allenamentoPeriodo"
+                        [allenamento]="allenamento"></app-training-period-card>
+                </li>
+            </ul>
+        </section>
+        <div>
+            <button mat-button matStepperPrevious class="backButton def_button">Back</button>
+            <button mat-button (click)="submitPeriod()" class="nextButton def_button"><i
+                    class="fa-solid fa-floppy-disk"></i> Save</button>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>
+

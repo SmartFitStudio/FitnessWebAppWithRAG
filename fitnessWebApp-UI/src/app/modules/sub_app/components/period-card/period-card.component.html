@@ -1,0 +1,29 @@
+    <div class="card def_glass_card">
+      <div class="card-body">
+        <i *ngIf="periodo.attivo" class="fa-solid fa-bolt right"></i>
+
+        <h5 class="card-title">{{periodo.name}}</h5>
+        <p class="card-text">{{periodo.obiettivo | obiettivoPeriodoPipe}}</p>
+        <dl>
+          <div>
+            <dt><i class="fa-solid fa-repeat"></i> Ciclo: </dt>
+            <dd>{{periodo.durata_in_giorni}}gg</dd>
+          </div>
+          <div>
+            <dt><i class="fa-solid fa-play"></i> Data Inizio: </dt>
+            <dd>{{periodo.data_inizio}}</dd>
+          </div>
+          <div>
+            <dt><i class="fa-solid fa-flag-checkered"></i> Data fine: </dt>
+            <dd>{{periodo.data_fine}}</dd>
+          </div>
+
+        </dl>
+       
+        <button (click)="openDetails()"  class="def_button">Dettagli</button>
+      </div>
+      <div class="d-flex gap-2 iteractionButtons">
+        <i (click)="onEdit()"  class="fa-solid fa-pen-to-square"></i>
+        <i  (click)="onDelete()" class="fa-solid fa-trash"></i>
+      </div>
+    </div>

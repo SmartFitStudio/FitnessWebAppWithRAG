@@ -1,0 +1,26 @@
+.notification_list{
+    position: relative;
+    height: auto;
+    z-index: 10;
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    gap:1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    align-items: flex-end;
+}
+
+app-notification-card{
+    max-width: 300px;
+}
+
+.right{
+    float: right;
+}
+
+i{
+    font-size: 1.1em;
+    padding-right: .2em;
+    padding-left: .2em;
+}

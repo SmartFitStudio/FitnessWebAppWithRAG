@@ -1,0 +1,157 @@
+$border_radius_menu: 20px;
+
+nav.menu {
+    align-items: center;
+    padding: 10px;
+    display: inline;
+}
+
+nav.menu ul {
+    text-align: center;
+    list-style-type: none;
+    border-radius: $border_radius_menu;
+    //background: linear-gradient(to left, #6d6767, #655f5f, #5c5757, #544f4f, #4c4747);
+
+    /* From https://css.glass */
+    background: rgba(74, 74, 72, 0.47);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7.8px);
+    -webkit-backdrop-filter: blur(7.8px);
+    
+    width: fit-content;
+    margin: auto;
+    text-align: center;
+    padding-left: 0;
+}
+
+
+nav.menu ul li {
+    display: inline-block;
+    margin: 0 15px;
+    padding-left: 1.3em;
+    padding-right: 1.3em;
+    padding-top: .3em;
+    padding-bottom: .3em;
+    border-radius: $border_radius_menu;
+}
+
+nav.menu ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    text-underline-offset: .3em;
+}
+
+li:has(> a.active) {
+    background: #d7d7d5;
+}
+
+nav.menu ul li a.active {
+    color: #4c504f;
+}
+
+
+.menu-toggle-label,
+#mobile-menu-toggle {
+    cursor: pointer;
+    text-align: right;
+    color: var(--menuToggleColor);
+    font-weight: bold;
+}
+
+.menu-toggle-label {
+    display: none;
+    font-size: 1.4em;
+}
+
+#mobile-menu-toggle {
+    display: none;
+}
+
+#mobile-menu-toggle:focus+.menu-toggle-label {
+    outline: 1px solid #fff;
+}
+
+@media only screen and (max-width: 850px) {
+    .menu-toggle-label {
+        display: inline;
+        float: right;
+        z-index: 3;
+    }
+
+    nav.menu ul li.bigScreenOnly {
+        display: none;
+    }
+
+    nav.menu ul {
+        margin-top: 1em;
+        width: 100%;
+    }
+
+    .nav-list {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        height: 0px;
+        overflow: hidden;
+        background-color: var(--headerBgColor);
+    }
+
+    #mobile-menu-toggle {
+        display: block;
+        position: absolute;
+        left: -9999em;
+    }
+
+    #mobile-menu-toggle:not(:checked)+.mobile-menu-x:focus-within>.nav-list,
+    #mobile-menu-toggle:checked+.mobile-menu-x>.nav-list {
+        position: static;
+        height: auto;
+        overflow: auto;
+    }
+
+    .mobile-menu-x:focus-within>.menu-toggle-label>.mobile-menu-toggle-label-content,
+    #mobile-menu-toggle:checked+.mobile-menu-x>.menu-toggle-label>.mobile-menu-toggle-label-content {
+        display: none;
+    }
+
+    /* Cambia il contenuto prima dell'icona quando il checkbox è selezionato */
+    .mobile-menu-x:focus-within>.menu-toggle-label::before,
+    #mobile-menu-toggle:checked+.mobile-menu-x>.menu-toggle-label::before {
+        content: attr(data-toCloseContent);
+    }
+
+    .mobile-menu-x {
+        display: inline;
+    }
+
+    /* Animazione di transizione */
+    .nav-list {
+        transition: display 0.3s ease-in-out;
+    }
+
+    .nav-list li {
+        font-size: 1.3em;
+        margin: 0;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .onlyMobile {
+        display: block;
+    }
+}
+
+
+/* Stili per schermi mobile */
+
+@media only screen and (max-width: 480px) {
+    .menuItem {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+}

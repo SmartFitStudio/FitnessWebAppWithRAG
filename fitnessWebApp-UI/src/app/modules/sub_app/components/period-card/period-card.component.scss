@@ -1,0 +1,42 @@
+$border_radius_menu: 20px;
+
+.col-sm-6{
+    width: 100%;
+}
+
+.card{
+    max-width: 400px;
+    width: 300px;
+}
+.iteractionButtons {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+}
+
+ h5{
+    font-size: 1.5em;
+}
+
+dt{
+    font-weight: 500;
+}
+dl{
+    padding: .3em;
+}
+.card-text{
+    display: inline;
+    color: #d1d1d1;
+}
+
+.card-text::before{
+    font-weight: 700;
+}
+
+.card-title,dt,dd{
+    display: inline;
+}
+
+.right{
+    float: right;
+}

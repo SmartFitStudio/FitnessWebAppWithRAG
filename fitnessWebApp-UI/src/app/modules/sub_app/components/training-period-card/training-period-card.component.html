@@ -1,0 +1,11 @@
+<div class="allenamento_esercizio_card" [style.order]="allenamentoPeriodo.giorno_del_periodo"> <!--NOTE: Qualcuno non sarebbe contento-->
+    <div class="exercise_info">
+        <dl>
+            <dt class="exerciseName">{{allenamento.name}}</dt>
+            <dd class="secondary category"> {{allenamento.durata_in_ore}}h</dd>
+            <dd class="description">{{allenamento.description}}</dd>
+            <dd class="secondary serie"><i class="fa-solid fa-calendar-days"></i> Giorno: {{allenamentoPeriodo.giorno_del_periodo}}</dd>
+            <dd class="secondary ripetizioni"><i class="fa-solid fa-clock"></i> Orario: {{allenamentoPeriodo.periodo_giornata}}</dd>
+        </dl>
+    </div>
+</div>

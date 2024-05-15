@@ -1,0 +1,35 @@
+<ng-template #content let-offcanvas>
+	<div class="offcanvas-header">
+		<h4 class="offcanvas-title">Come posso aiutarti?</h4>
+		<button type="button" class="btn-close" aria-label="Chiudi" (click)="offcanvas.dismiss('Cross click')"></button>
+	</div>
+	<div class="offcanvas-body">
+    <div *ngFor="let message of messages">
+      <p class="text-end">{{message.userPrompt}}</p>
+      <ng-container *ngIf="message.chatbotResponse; else loadingResponse">
+        <div innerHTML="{{message.chatbotResponse}}"></div>
+      </ng-container>
+      <ng-template #loadingResponse>
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Sto pensando...</span>
+        </div>
+      </ng-template >
+    </div>
+	</div>
+  <div class="container">
+        <div class="row">
+            <div class="col">
+              <form [formGroup]="promptForm" (ngSubmit)="onSubmit()">
+                <div class="input-group submit-form">
+                  <input ngbAutoFocus type="text" class="form-control" placeholder="Inserisci qui la tua domanda" formControlName="userPrompt">
+                  <button type="submit" class="btn btn-outline-dark">Invia</button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-light mb-2 me-2 chatbot-button" (click)="openEnd(content)">
+  <i class="bi bi-robot"> Chatbot</i>
+</button>

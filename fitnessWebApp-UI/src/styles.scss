@@ -1,0 +1,108 @@
+/* You can add global styles to this file, and also import other style files */
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+//GLOBAL VARIABLE
+:root {
+  --card_background: #4a4a48; // or any global you wish to share with components
+  --default_padding: 1em;
+  --default_margin: 1em;
+  --default_border_radius: 10px;
+  --background_color: linear-gradient(to left bottom, #5a5757, #444142, #2e2d2d, #1b1a1a, #000000);
+  --txtColor: #fff;
+  --secondTxtColor: #dfcdcd;
+  --txtColorDark: #4c504f;
+  --default_button_txt_color: #4c504f;
+  --card_secondary_background:#f5f5f3;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+html {
+  color: var(--txtColor);
+  height: 100vh;
+}
+
+body {
+  background: var(--background_color);
+  color: var(--txtColor);
+  padding: var(--default_padding);
+  margin: auto;
+  max-width: 1024px;
+  height: 100vh;
+  background-attachment: fixed;
+  /*edit*/
+
+}
+
+.login-container {
+  width: 800px !important;
+  margin-top: 15%;
+  line-height: 1.5em;
+  margin: auto;
+  font-size: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.def_button {
+  background: #d7d7d5;
+  color: var(--default_button_txt_color);
+  font-weight: 500;
+  padding: .3em 1em .3em 1em;
+  border-radius: 20px;
+  margin: auto;
+  text-decoration: none;
+  border: none;
+  margin-top: var(--default_padding);
+}
+
+.pagination {
+  border: 2px solid #e7eaed;
+  border-radius: 8px;
+}
+
+//PAGINAZIONE
+.active>.page-link,
+.page-link.active {
+  background-color: #4a4a4a;
+  border-color: #4a4a4a;
+}
+
+.def_glass_card {
+  background: none;
+  color: var(--txtColor);
+  border: none;
+  background: rgba(74, 74, 72, 0.47);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.8px);
+  -webkit-backdrop-filter: blur(7.8px);
+  border-radius: 20px;
+  flex-grow: 1;
+}
+
+
+.background {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /*edit*/
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+.right{
+  float: right;
+}

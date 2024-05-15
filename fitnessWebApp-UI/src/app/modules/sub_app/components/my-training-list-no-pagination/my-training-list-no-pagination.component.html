@@ -1,0 +1,7 @@
+<div class="row">
+    <app-period-input-training-card
+    *ngFor="let training of trainings"
+    [training] = "training"
+    (add)="aggiungiAllenamento($event)"
+    ></app-period-input-training-card>
+</div>

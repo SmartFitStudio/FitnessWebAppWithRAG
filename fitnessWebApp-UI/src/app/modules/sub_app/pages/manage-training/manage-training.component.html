@@ -1,0 +1,61 @@
+<!--Inserisci prima tutte le info di contesto-->
+<div class="alert alert-danger mt-2" role="alert" *ngIf="errorMsg.length">
+    <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{msg}}</p>
+  </div>
+<form class="row row-cols-lg-auto g-3 align-items-center" [formGroup]="trainingForm">
+    <div class="tab initial_info" [ngClass]="{'hidden': openedTab != 0}">
+        <label for="nome_allenamento" class="form-label">Nome</label>
+        <input formControlName="nome_allenamento" type="text" id="nome_allenamento"
+            class="form-control" aria-describedby="nome_allenamento_helper" name="nome_allenamento">
+        <div id="nome_allenamento_helper" class="form-text">
+            Inserisci qui il nome dell'allenamento cosi da poterlo identificare facilmente.
+            Scegli con attenzione, il nome non potrà essere modificato in seguito e dovrà essere univoco tra i tuoi allenamenti.
+        </div>
+
+        <label for="descrizione_allenamento" class="form-label">Descrizione</label>
+        <input formControlName="descrizione_allenamento" type="text"
+            id="descrizione_allenamento" class="form-control" aria-describedby="descrizione_allenamento_helper"
+            name="descrizione_allenamento">
+        <div id="descrizione_allenamento_helper" class="form-text">
+            Inserisci qui una descrizione dell'allenamento per ricordare meglio il suo scopo.
+        </div>
+
+        <label for="durata_allenamento" class="form-label">Durata in ore</label>
+        <input formControlName="durata_in_ore_allenamento" type="number"
+            id="durata_allenamento" class="form-control" aria-describedby="durata_allenamento_helper"
+            name="durata_allenamento">
+        <div id="durata_allenamento_helper" class="form-text">
+            Inserisci qui la durata approssimativa dell'allenamento in ore. Se non la inserisci verrà calcolata dal
+            sistema.
+        </div>
+        <div class="col-12">
+            <button class="def_button nextButton" (click)="next()"> <i class="fa-solid fa-forward"></i> Next</button>
+        </div>
+    </div>
+    <div class="tab exercise_info" [ngClass]="{'hidden': openedTab != 1}">
+        <div id="inputExerciseTab">
+            <app-my-exercise-list [isListForInput]=true [isAddingPermitted]=false
+                (addExerciseToTraining)="addExerciseToTrainingHandler($event)"></app-my-exercise-list>
+        </div>
+
+        <div id="exerciseOfTrainTab" *ngIf="training_exercises.length > 0">
+            <div class="exercise_training_list" *ngFor="let trainingExercise of training_exercises" [style.order]="trainingExercise.index">
+                <app-train-exercise-handler
+                    *ngIf="getExercisesOfTrainingById(trainingExercise.id_esercizio) as exerciseResponse"
+                    [trainingExercise]="trainingExercise" [exercise]="exerciseResponse"
+                    [index]="trainingExercise.index"
+                    (deleteExercise)="deleteExerciseFromTraining($event)" (goUp)="goUp($event)"
+                    (goDown)="goDown($event)"></app-train-exercise-handler>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="def_button backButton" (click)="goBack()"> <i class="fa-solid fa-backward"></i>
+                Back</button>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="def_button nextButton" (click)="submitTrain()"> <i
+                    class="fa-solid fa-floppy-disk"></i> Save</button>
+        </div>
+    </div>
+</form>

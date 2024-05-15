@@ -1,0 +1,26 @@
+h2{
+    font-size: 2em;
+}
+
+.inline {
+    display: inline;
+}
+.point_before::before {
+    margin-right: 5px;
+}
+
+.second_color{
+    color: var(--secondTxtColor);
+}
+
+dl{
+    padding-top: var(--default_padding);
+}
+
+dl div.inline{
+    padding-right: 3em;
+}
+
+dl dd.inline{
+    padding-left: .5em;
+}
