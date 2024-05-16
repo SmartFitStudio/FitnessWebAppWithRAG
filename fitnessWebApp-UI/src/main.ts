@@ -30,4 +30,4 @@ bootstrapApplication(AppComponent, {
 })
   .catch(err => console.error(err));
 
-  registerLicense(environment.licenseKey);
+registerLicense(environment.licenseKey);
