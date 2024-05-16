@@ -15,7 +15,7 @@ import { NgIf, NgFor } from '@angular/common';
 })
 export class RegisterComponent {
 
-  registerRequest: RegistrationRequest = {email: '',  firstname: '', lastname: '', password: '', username: ''};
+  registerRequest: RegistrationRequest = {email: '',  firstname: '', lastname: '', password: '', username: '', dateOfBirth: ''};
   errorMsg: Array<string> = [];
 
   constructor(

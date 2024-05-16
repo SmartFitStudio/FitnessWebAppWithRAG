@@ -4,8 +4,8 @@
     <p *ngFor="let msg of errorMsg">{{msg}}</p>
   </div>
   <div class="mb-3">
-    <label for="login" class="form-label">Usernamme</label>
-    <input [(ngModel)]="authRequest.username"  type="text" class="form-control" id="login" placeholder="username">
+    <label for="login" class="form-label">Nome utente</label>
+    <input [(ngModel)]="authRequest.username"  type="text" class="form-control" id="login" placeholder="Nome utente">
   </div>
   <div class="mb-3">
     <label for="password" class="form-label">Password</label>
@@ -13,12 +13,12 @@
   </div>
   <div class="d-flex justify-content-between mb-3">
     <button (click)="login()" type="button" class="btn btn-primary">
-      <em class="fas fa-sign-in-alt">&nbsp;Sign in</em>
+      <em class="fas fa-sign-in-alt">&nbsp;Accedi</em>
     </button>
     <div>
-      Don't have an account?&nbsp;
+      Non possiedi un account?&nbsp;
       <button (click)="register()" type="button" class="btn btn-link">
-        Register
+        Registrati
       </button>
     </div>
   </div>

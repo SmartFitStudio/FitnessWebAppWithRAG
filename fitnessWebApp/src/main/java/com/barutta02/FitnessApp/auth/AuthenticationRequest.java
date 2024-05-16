@@ -13,12 +13,12 @@ import lombok.Setter;
 @Builder
 public class AuthenticationRequest {
 
-    @NotEmpty(message = "username is mandatory")
-    @NotNull(message = "username is mandatory")
+    @NotEmpty(message = "Il nome utente è obbligatorio")
+    @NotNull(message = "Il nome utente è obbligatorio")
     private String username;
 
-    @NotEmpty(message = "Password is mandatory")
-    @NotNull(message = "Password is mandatory")
-    @Size(min = 8, message = "Password should be 8 characters long minimum")
+    @NotEmpty(message = "La password è obbligatoria")
+    @NotNull(message = "La password è obbligatoria")
+    @Size(min = 8, message = "La password deve essere lunga almeno 8 caratteri")
     private String password;
 }

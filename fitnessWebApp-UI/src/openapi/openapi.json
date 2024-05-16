@@ -353,6 +353,36 @@
         }
       }
     },
+    "/chatbot/answer": {
+      "post": {
+        "tags": [
+          "chatbot-controller"
+        ],
+        "operationId": "answerQuestion",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/register": {
       "post": {
         "tags": [
@@ -1566,6 +1596,7 @@
       },
       "RegistrationRequest": {
         "required": [
+          "dateOfBirth",
           "email",
           "firstname",
           "lastname",
@@ -1592,6 +1623,10 @@
             "maxLength": 2147483647,
             "minLength": 8,
             "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
           }
         }
       },

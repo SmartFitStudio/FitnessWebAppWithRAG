@@ -10,6 +10,7 @@ import { TrainService } from './services/train.service';
 import { TrainExerciseService } from './services/train-exercise.service';
 import { PeriodTrainingService } from './services/period-training.service';
 import { ExerciseService } from './services/exercise.service';
+import { ChatbotControllerService } from './services/chatbot-controller.service';
 import { AuthenticationService } from './services/authentication.service';
 
 /**
@@ -26,6 +27,7 @@ import { AuthenticationService } from './services/authentication.service';
     TrainExerciseService,
     PeriodTrainingService,
     ExerciseService,
+    ChatbotControllerService,
     AuthenticationService,
     ApiConfiguration
   ],
