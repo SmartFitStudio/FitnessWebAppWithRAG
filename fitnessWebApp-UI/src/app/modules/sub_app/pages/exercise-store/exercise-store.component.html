@@ -1,12 +1,6 @@
-<div
-  *ngIf="message"
-  class="alert "
-  [class.alert-danger]="level==='error'"
-  [class.alert-success]="level==='success'"
-  role="alert"
->
-  <p>{{message}}</p>
-</div>
+<app-feedback-info-point [level]="level">
+  <p *ngFor="let message of messages">{{message}}</p>
+</app-feedback-info-point>
 <div class="d-flex justify-content-start gap-2 flex-wrap lista_esercizi" *ngIf="(exerciseResponse$ | async) as exerciseResponse">
   <app-exercise-card
     *ngFor="let exercise of exerciseResponse.content; trackBy: trackByExerciseResponse"

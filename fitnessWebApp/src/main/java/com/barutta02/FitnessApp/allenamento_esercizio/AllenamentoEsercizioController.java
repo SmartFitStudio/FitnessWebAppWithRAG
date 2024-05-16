@@ -54,13 +54,12 @@ public class AllenamentoEsercizioController {
         return ResponseEntity.ok(service.findAllByAllenamentoNoPagination(allenamento_nome, connectedUser));
     }
 
-    @DeleteMapping("/{allenamento-nome}/{index}")
+    @DeleteMapping("/{allenamentoEsercizio-id}")
     public ResponseEntity<?> deleteAllenamentoEsercizio(
-        @PathVariable("allenamento-nome") String allenamento_nome,
-        @PathVariable("index") int index,
+        @PathVariable("allenamentoEsercizio-id") Long id,
         Authentication connectedUser
     ) {
-        service.deleteAllenamentoEsercizio(allenamento_nome, connectedUser);
-        return ResponseEntity.noContent().build();
+        service.deleteAllenamentoEsercizio(id, connectedUser);
+        return ResponseEntity.ok("Esercizio rimosso dall'allenamento con successo");
     }
 }

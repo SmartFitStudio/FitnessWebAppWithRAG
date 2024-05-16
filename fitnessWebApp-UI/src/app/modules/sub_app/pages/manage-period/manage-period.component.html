@@ -1,6 +1,6 @@
-<div class="alert alert-danger mt-2" role="alert" *ngIf="errorMsg.length">
+<app-feedback-info-point [level]="'error'" *ngIf="errorMsg.length > 0">
     <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{msg}}</p>
-</div>
+</app-feedback-info-point>
 <!--POP UP per inserire l'allenamento-->
 <div class="popUp" *ngIf="isPopUpOpen">
     <app-my-training-list-no-pagination
@@ -8,7 +8,7 @@
     <button class="backButton def_button" (click)="closeDialog()">Close</button>
 </div>
 
-<mat-horizontal-stepper #stepper [ngClass]="{'blur': isPopUpOpen}">
+<mat-horizontal-stepper linear #stepper [ngClass]="{'blur': isPopUpOpen}">
     <mat-step [stepControl]="periodForm">
         <ng-template matStepLabel>Dati periodo</ng-template>
         <section class="formSection">
@@ -17,21 +17,28 @@
             <form [formGroup]="periodForm">
                 <label for="nome_periodo" class="form-label">Nome</label>
                 <input formControlName="nome_periodo" type="text" id="nome_periodo" class="form-control"
-                    aria-describedby="nome_periodo_helper" name="nome_periodo" required >
+                    aria-describedby="nome_periodo_helper" name="nome_periodo" >
+                    <small class="text-danger" *ngIf="periodForm.get('nome_periodo')?.invalid">
+                        Il nome del periodo è obbligatorio
+                      </small>
                 <div id="nome_periodo_helper" class="form-text">
                     Inserisci qui il nome del periodo cosi da poterlo identificare facilmente.
-                    Attenzione il nome non potrà essere modificato in seguito e dovrà essere univoco tra i tuoi periodi.
                 </div>
 
                 <select class="form-select" aria-label="Seleziona l'obiettivo del periodo di allenamento"
-                    formControlName="obiettivo" required>
-                    <option selected>Seleziona l'obiettivo</option>
+                    formControlName="obiettivo" >
                     <option *ngFor="let c of obbiettivi">{{ c }}</option>
                 </select>
+                <small class="text-danger" *ngIf="periodForm.get('obiettivo')?.invalid && (periodForm.get('obiettivo')?.dirty || periodForm.get('obiettivo')?.touched)">
+                    L'obiettivo del periodo è obbligatorio
+                </small>
 
                 <label for="durata_in_giorni" class="form-label">Durata in giorni del ciclo</label>
                 <input formControlName="durata_in_giorni" type="number" id="durata_in_giorni" class="form-control"
-                    aria-describedby="durata_in_giorni_helper" name="durata_in_giorni" min="0" max="30" required>
+                    aria-describedby="durata_in_giorni_helper" name="durata_in_giorni" min="0" max="30" >
+                    <small class="text-danger" *ngIf="periodForm.get('durata_in_giorni')?.invalid">
+                        La durata del ciclo è obbligatoria e deve essere maggiore di 0
+                    </small>
                 <div id="durata_in_giorni_helper" class="form-text">
                     Inserisci qui la durata del ciclo del periodo in giorni.
                 </div>
@@ -39,6 +46,9 @@
                 <label for="data_inizio" class="form-label">Data inzio</label>
                 <input formControlName="data_inizio" type="date" id="data_inizio" class="form-control"
                     aria-describedby="data_inizio_helper" name="durata_in_giorni">
+                    <small class="text-danger" *ngIf="periodForm.get('data_inizio')?.invalid">
+                        La data di inizio è obbligatoria.
+                    </small>
                 <div id="data_inizio_helper" class="form-text">
                     Inserisci qui la data di inizio del periodo.
                 </div>
@@ -111,7 +121,7 @@
         </section>
         <div>
             <button mat-button matStepperPrevious class="backButton def_button">Back</button>
-            <button mat-button (click)="submitPeriod()" class="nextButton def_button"><i
+            <button mat-button (click)="submitPeriod()" class="nextButton def_button" type="submit"><i
                     class="fa-solid fa-floppy-disk"></i> Save</button>
         </div>
     </mat-step>

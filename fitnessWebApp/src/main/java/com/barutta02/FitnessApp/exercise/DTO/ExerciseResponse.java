@@ -25,5 +25,6 @@ public class ExerciseResponse {
     private String creator_username;
     private CategoryExercise[] category;
     private byte[] cover;
+    @NotNull(message = "E' necessario specificare se l'esercizio è condivisibile")
     private boolean shareable;
 }

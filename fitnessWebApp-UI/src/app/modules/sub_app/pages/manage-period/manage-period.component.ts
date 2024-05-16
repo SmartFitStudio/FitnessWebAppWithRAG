@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ObbiettivoPeriodo, getObbiettivoPeriodoValues } from '../../../../services/myModels/obbiettivoPeriodo';
-import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators, FormsModule, ReactiveFormsModule, FormControl, ValidationErrors } from '@angular/forms';
 import { PeriodManagerService } from '../../services/period-manager-service/period-manager.service';
 import { AllenamentoResponse, PeriodoAllenamentoRequest, PeriodoRequest } from '../../../../services/models';
 import { PeriodoGiornata } from '../../../../services/myModels/periodoGiornata';
 import { ActivatedRoute, Router } from '@angular/router';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { Subscription } from 'rxjs';
-import { MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TrainingPeriodCardComponent } from '../../components/training-period-card/training-period-card.component';
 import { PeriodDayCardComponent } from '../../components/period-day-card/period-day-card.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,15 +18,17 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
 import {
   MatDialogModule,
 } from '@angular/material/dialog';
+import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
+import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 
 @Component({
-    selector: 'app-manage-period',
-    templateUrl: './manage-period.component.html',
-    styleUrls: ['./manage-period.component.scss'],
-    providers: [PeriodManagerService] // Fornisce il servizio a livello di componente
-    ,
-    standalone: true,
-    imports: [MatDialogModule,NgIf, NgFor, MyTrainingListNoPaginationComponent, MatStepperModule, NgClass, FormsModule, ReactiveFormsModule, MatButtonModule, PeriodDayCardComponent, TrainingPeriodCardComponent]
+  selector: 'app-manage-period',
+  templateUrl: './manage-period.component.html',
+  styleUrls: ['./manage-period.component.scss'],
+  providers: [PeriodManagerService] // Fornisce il servizio a livello di componente
+  ,
+  standalone: true,
+  imports: [MatDialogModule, NgIf, NgFor, MyTrainingListNoPaginationComponent, MatStepperModule, NgClass, FormsModule, ReactiveFormsModule, MatButtonModule, PeriodDayCardComponent, TrainingPeriodCardComponent, FeedbackInfoPointComponent]
 })
 
 export class ManagePeriodComponent implements OnInit, OnDestroy {
@@ -41,19 +43,25 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
   periodForm = this.formBuilder.group({
     nome_periodo: ['', Validators.required],
     obiettivo: [ObbiettivoPeriodo.NON_DEFINITO, Validators.required],
-    durata_in_giorni: [7, Validators.required],
-    data_inizio: [''], //TO DO: validatori e formattatori
+    durata_in_giorni: [7, [Validators.required, Validators.min(1)]],
+    data_inizio: ['', Validators.required], 
     data_fine: [''],
     is_attivo: [false, Validators.required]
   });
+
 
   constructor(private formBuilder: FormBuilder,
     private _periodManager: PeriodManagerService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    public dialog: MatDialog
+    private errorHandler: ErrorHandlerService,
+    public dialog: MatDialog,
   ) { }
 
+
+
+  
+  
   ngOnDestroy(): void {
     this.subs.forEach(sub => {
       sub.unsubscribe();
@@ -61,13 +69,10 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    //this._periodManager.clearInfo(); //importante, senno si tiene le info del periodo aperto precedente. On destroy non distrugge
     const periodo_id = this.activatedRoute.snapshot.params['period_id'];
     if (periodo_id) {
-      let observer$ = this._periodManager.setInfoByPeriodName$(periodo_id).subscribe({
+      this.subs.push(this._periodManager.setInfoByPeriodName$(periodo_id).subscribe({
         complete: () => {
-          console.log("fatto" + this._periodManager.periodoName);
-
           this.periodForm.patchValue({
             nome_periodo: this._periodManager.periodoName,
             obiettivo: this._periodManager.periodoObiettivo,
@@ -79,45 +84,56 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
           if (this._periodManager.periodoName !== "") {
             this.is_updating = true;
           }
-          observer$.unsubscribe();
         },
         error: (error) => {
-          this.errorMsg.push("Qualcosa è andato storto, riprova più tardi");
+          this.errorMsg = this.errorHandler.handleError(error);
         }
-      });
+      }));
     }
-    this.subs.push(this._periodManager.getActivePeriod$().subscribe(
-      {
-        complete: () => {
-          console.log(this._periodManager.activePeriod);
-        }
-      }
-    ));
+   
+    this.retrieveActivePeriod();
+    
+    this.controlActivationPeriodo();
+  }
 
+  private retrieveActivePeriod() {
+      //Senza aspettare l'operazione sopra, recupero anche il periodo attivo
+      this.subs.push(this._periodManager.getActivePeriod$().subscribe(
+        {
+          error: (error) => {
+            this.errorMsg = this.errorHandler.handleError(error);
+          }
+        }
+      ));
+  }
+
+  private controlActivationPeriodo(){
     if (this.periodForm.get('is_attivo')) {
+      //mi iscrivo ai cambiamenti del checkbox sul periodo
       let obs$ = this.periodForm.get('is_attivo')?.valueChanges.subscribe(isActive => {
         if (isActive) {
-
           this._periodManager.periodoAttivo = true;
-          if(this._periodManager.activePeriod){
-          this.nome_periodo_attivo = (this._periodManager.activePeriod as PeriodoRequest).name;
-          this.periodForm.patchValue({
-            is_attivo: false
-          });
+          if (this._periodManager.activePeriod) { // se c'è un periodo attivo, e non è quello che sto modificando.
+            this.nome_periodo_attivo = (this._periodManager.activePeriod as PeriodoRequest).name;
+            this.periodForm.patchValue({
+              is_attivo: false
+            });
+          }
         }
-      }
       });
       if (obs$)
         this.subs.push(obs$);
     }
   }
 
-
-
+  //DO la possibilità di disattivare il periodo attivo
   disable_active_period() {
     this._periodManager.disableActivePeriodo$().subscribe({
       complete: () => {
         this.nome_periodo_attivo = "";
+      },
+      error: (error) => {
+        this.errorMsg = this.errorHandler.handleError(error);
       }
     });
   }
@@ -159,7 +175,7 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
       this._periodManager.periodoDataInizio = this.periodForm.value.data_inizio;
     if (this.periodForm.value.data_fine)
       this._periodManager.periodoDataFine = this.periodForm.value.data_fine;
-      this._periodManager.periodoAttivo = this.periodForm.value.is_attivo as boolean;
+    this._periodManager.periodoAttivo = this.periodForm.value.is_attivo as boolean;
   }
   closeDialog() {
     this._isPopUpOpen = false;
@@ -184,9 +200,7 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
   }
 
   removeTraining($event: { day: number, periodo: PeriodoGiornata }) {
-    console.log($event);
     this._periodManager.removeAllenamentoFromPeriodoByDayAndPeriod($event.day, $event.periodo);
-    console.log(this._periodManager);
   }
 
   add_training_top_period($event: AllenamentoResponse) {
@@ -201,7 +215,6 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
           periodo_giornata: this.lastPutRequestInfo.periodo,
         })
       }
-      console.log(this._periodManager);
       this.closeDialog();
     } else {
       this.errorMsg.push("Inserire prima un nome per il periodo");
@@ -210,19 +223,15 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
 
   submitPeriod() {
     this.updatePeriodInfo();
-    let observer = this._periodManager.savePeriodo$().subscribe({
+    this.subs.push(this._periodManager.savePeriodo$().subscribe({
       complete: () => {
-        console.log("Periodo salvato");
-        observer.unsubscribe();
-        //this._periodManager.clearInfo();
         this.router.navigate([sub_appRoutingModule.full_myPeriodsPath]);
       },
       error: (err) => {
-        this.errorMsg.push(err.error);
+        this.errorMsg = this.errorHandler.handleError(err);
         this.errorMsg.push("Errore nel salvataggio del periodo");
-        console.log("Errore nel salvataggio del periodo");
       }
-    }); //TO DO: gestire la risposta
+    })); 
   }
 
 

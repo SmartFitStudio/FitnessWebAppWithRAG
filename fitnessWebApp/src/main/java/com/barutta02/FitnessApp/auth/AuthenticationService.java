@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.barutta02.FitnessApp.email.EmailService;
 import com.barutta02.FitnessApp.email.EmailTemplateName;
+import com.barutta02.FitnessApp.exception.InvalidTokenException;
+import com.barutta02.FitnessApp.exception.TokenNotFoundException;
 import com.barutta02.FitnessApp.role.RoleRepository;
 import com.barutta02.FitnessApp.security.JwtService;
 import com.barutta02.FitnessApp.user.Token;
@@ -41,8 +43,7 @@ public class AuthenticationService {
 
     public void register(RegistrationRequest request) throws MessagingException {
         var userRole = roleRepository.findByName("USER")
-                // todo - better exception handling
-                .orElseThrow(() -> new IllegalStateException("ROLE USER was not initiated")); //default role is USER but if it's not initiated we throw an exception 
+                .orElseThrow(() -> new IllegalStateException("Il ruolo USER non è stato trovato")); //default role is USER but if it's not initiated we throw an exception 
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
@@ -78,15 +79,14 @@ public class AuthenticationService {
     @Transactional
     public void activateAccount(String token) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token)
-                // todo exception has to be defined
-                .orElseThrow(() -> new RuntimeException("Invalid token"));
+                .orElseThrow(() -> new TokenNotFoundException("Token Invalido, non trovato o scaduto"));
         if (LocalDateTime.now().isAfter(savedToken.getExpiresAt())) {
             sendValidationEmail(savedToken.getUser());
-            throw new RuntimeException("Activation token has expired. A new token has been send to the same email address");
+            throw new InvalidTokenException("Il token è scaduto, ne è stato generato uno nuovo e inviato via email.");
         }
 
         var user = userRepository.findById(savedToken.getUser().getId())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Utenza non trovata"));
         user.setEnabled(true);
         userRepository.save(user);
 

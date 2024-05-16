@@ -74,11 +74,13 @@ public class ExerciseService {
                 exercises.isLast());
     }
 
-    
     public ExerciseResponse importExercise(Long exerciseId, Authentication connectedUser) {
         User user = userExtractor.getUserFromAuthentication(connectedUser);
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new EntityNotFoundException("No exercise found with ID:: " + exerciseId));
+        if (!exercise.isShareable()) {
+            throw new OperationNotPermittedException("You cannot import an exercise that is not shareable");
+        }
         Exercise newExercise = Exercise.builder()
                 .name(exercise.getName())
                 .description(exercise.getDescription())
@@ -126,20 +128,20 @@ public class ExerciseService {
         return exercise;
     }
 
-    public PageResponse<ExerciseResponse> findExerciseFromStore(int page, int size,Authentication connectedUser) {
-        Page<Exercise> exercises = exerciseRepository.findByCreatorNotAndShareableIsTrue(PageRequest.of(page, size,Sort.by("createdDate").descending()), (User) connectedUser.getPrincipal());
+    public PageResponse<ExerciseResponse> findExerciseFromStore(int page, int size, Authentication connectedUser) {
+        Page<Exercise> exercises = exerciseRepository.findByCreatorNotAndShareableIsTrue(
+                PageRequest.of(page, size, Sort.by("createdDate").descending()), (User) connectedUser.getPrincipal());
         List<ExerciseResponse> exercisesResponses = exercises.stream()
-              .map(exerciseMapper::toExerciseResponse)
-              .toList();
-      return new PageResponse<>(
-              exercisesResponses,
-              exercises.getNumber(),
-              exercises.getSize(),
-              exercises.getTotalElements(),
-              exercises.getTotalPages(),
-              exercises.isFirst(),
-              exercises.isLast()
-      );
+                .map(exerciseMapper::toExerciseResponse)
+                .toList();
+        return new PageResponse<>(
+                exercisesResponses,
+                exercises.getNumber(),
+                exercises.getSize(),
+                exercises.getTotalElements(),
+                exercises.getTotalPages(),
+                exercises.isFirst(),
+                exercises.isLast());
     }
 
     /*

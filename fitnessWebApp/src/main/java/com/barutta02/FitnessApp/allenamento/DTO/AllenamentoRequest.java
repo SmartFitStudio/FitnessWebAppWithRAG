@@ -14,7 +14,7 @@ public record AllenamentoRequest(
     @NotNull(message = "La descrizione dell'esercizio è necessario") // Exercise name is mandatory, if not provided, return error code 100
     String description,
     
-    @Min(value = 1, message = "Value must be greater than 0")
+    @Min(value = 0, message = "Value must be greater than 0")
     float durata_in_ore
 ) {
 } 

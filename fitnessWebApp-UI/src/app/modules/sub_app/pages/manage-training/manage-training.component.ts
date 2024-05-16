@@ -3,10 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { TrainingManagerService } from '../../services/training-manager-service/training-manager.service';
 import { AllenamentoEsercizioRequest, ExerciseResponse } from '../../../../services/models';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TrainExerciseHandlerComponent } from '../../components/train-exercise-handler/train-exercise-handler.component';
 import { MyExerciseListComponent } from '../my-exercise-list/my-exercise-list.component';
 import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
+import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 
 @Component({
     selector: 'app-manage-training',
@@ -14,23 +16,24 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
     styleUrls: ['./manage-training.component.scss'],
     providers: [TrainingManagerService],
     standalone: true,
-    imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, NgClass, MyExerciseListComponent, TrainExerciseHandlerComponent]
+    imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, NgClass, MyExerciseListComponent, TrainExerciseHandlerComponent,FeedbackInfoPointComponent]
 })
 export class ManageTrainingComponent implements OnInit{
 
   errorMsg: Array<string> = [];
   private _openedTab = 0;
   trainingForm = this.formBuilder.group({
-    nome_allenamento: [''],
+    nome_allenamento: ['', Validators.required],
     descrizione_allenamento: [''],
-    durata_in_ore_allenamento: [0]
+    durata_in_ore_allenamento: [0,[ Validators.min(0)]]
   });
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private _trainManager: TrainingManagerService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private errorHandler: ErrorHandlerService
   ) { }
 
   ngOnInit(): void {
@@ -46,7 +49,7 @@ export class ManageTrainingComponent implements OnInit{
           observer$.unsubscribe();
         },
         error: (error) => {
-          this.errorMsg.push("Qualcosa è andato storto, riprova più tardi");
+          this.errorMsg = this.errorHandler.handleError(error);
           }
       });
     }
@@ -57,8 +60,11 @@ export class ManageTrainingComponent implements OnInit{
   }
 
   next() {
-    console.log(this._trainManager);
-    this._openedTab++;
+    if (!this.trainingForm.valid) {
+      this.errorMsg.push("Compila correttamente i campi obbligatori");
+      return;
+    }   
+   this._openedTab++;
   }
   goBack() {
     this._openedTab--;
@@ -101,6 +107,10 @@ export class ManageTrainingComponent implements OnInit{
   }
 
   submitTrain() {
+    if (this.trainingForm.valid) {
+      this.errorMsg.push("Compila correttamente i campi obbligatori");
+      return;
+    }
     this.update_training_data();
     let observer$ = this._trainManager.saveTraining$().subscribe({
       complete: () => {

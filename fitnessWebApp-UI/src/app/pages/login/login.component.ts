@@ -7,12 +7,15 @@ import { AppRoutingModule } from '../../app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
 
+import { ErrorHandlerService } from '../../services/myServices/error-handler/error-handler.service';
+import { ErrorListComponent } from '../../component/error-list/error-list.component';
+
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, FormsModule]
+    imports: [NgIf, NgFor, FormsModule,ErrorListComponent]
 })
 export class LoginComponent {
 
@@ -22,7 +25,8 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private authService: AuthenticationService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private handleError: ErrorHandlerService
   ) {
   }
 
@@ -38,8 +42,7 @@ export class LoginComponent {
         console.log(res.token);
       },
       error: (err) => {
-        console.log(err.error.businessErrorDescription);
-          this.errorMsg.push(err.error.businessErrorDescription);
+        this.errorMsg = this.handleError.handleError(err);
       }
     });
   }

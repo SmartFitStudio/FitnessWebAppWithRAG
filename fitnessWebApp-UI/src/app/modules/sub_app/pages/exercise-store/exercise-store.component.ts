@@ -1,18 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ErrorHandler} from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { EMPTY, Observable, catchError, map } from 'rxjs';
 import { PageResponseExerciseResponse, ExerciseResponse, AllenamentoEsercizioRequest } from '../../../../services/models';
 import { ExerciseService } from '../../../../services/services';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { ExerciseCardComponent } from '../../components/exercise-card/exercise-card.component';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
+import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 
 @Component({
     selector: 'app-exercise-store',
     templateUrl: './exercise-store.component.html',
     styleUrls: ['./exercise-store.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe]
+    imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
 export class ExerciseStoreComponent {
   exerciseResponse$?: Observable<PageResponseExerciseResponse>;
@@ -20,13 +22,14 @@ export class ExerciseStoreComponent {
   page = 0;
   size = 5;
   pages: any = [];
-  message = '';
+  messages: string[] = [];
   level: 'success' |'error' = 'success';
 
 
   constructor(
     private exerciseService: ExerciseService,
-    private router: Router
+    private router: Router,
+    private handleError: ErrorHandlerService
   ) {
   }
 
@@ -57,6 +60,10 @@ export class ExerciseStoreComponent {
             .fill(0)
             .map((x, i) => i);
         return response;
+      }),
+      catchError((error) =>{ 
+        this.messages = this.handleError.handleError(error)
+        return EMPTY;
       })
     );
   }
@@ -66,12 +73,12 @@ export class ExerciseStoreComponent {
     console.log($event);
     this.exerciseService.importExercise({ 'exercise-id': $event}).subscribe({
       next: () => {
-        this.message = 'Exercise imported';
+        this.messages = ['Exercise imported'];
         this.level = 'success';
         this.findAllStoreExercise();
       },
       error: () => {
-        this.message = 'Error importing exercise';
+        this.messages = ['Error importing exercise'];
         this.level = 'error';
       }
     });

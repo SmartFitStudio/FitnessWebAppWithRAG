@@ -55,7 +55,6 @@ public class Periodo extends BaseEntity{
         @Enumerated(EnumType.STRING)
         private Obiettivo obiettivo;
 
-        //@Column() //TODO: impostare che non possa essere <0
         private int durata_in_giorni;
 
         @Temporal(TemporalType.DATE)

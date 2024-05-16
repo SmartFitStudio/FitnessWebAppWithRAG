@@ -6,12 +6,14 @@ import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ExerciseCategory, getExerciseCategoryValues} from '../../../../services/myModels/exerciseCategory';
 import { NgIf, NgFor } from '@angular/common';
+import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
+import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 @Component({
     selector: 'app-manage-exercise',
     templateUrl: './manage-exercise.component.html',
     styleUrls: ['./manage-exercise.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, RouterLink]
+    imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, RouterLink,FeedbackInfoPointComponent]
 })
 
 export class ManageExerciseComponent implements OnInit {
@@ -27,9 +29,10 @@ export class ManageExerciseComponent implements OnInit {
   private _selectedCover: any;
   private _selectedPicture: string | undefined;
 
+
   exerciseForm = new FormGroup({
     exerciseName: new FormControl<string | null>(null, Validators.required),
-    exerciseDescription: new FormControl<string | undefined>(undefined),
+    exerciseDescription: new FormControl<string | null>(null, Validators.required),
     is_shareable: new FormControl<boolean>(false),
     exerciseCategory: new FormControl<Array<ExerciseCategory> | undefined>(undefined),
   });
@@ -40,8 +43,8 @@ export class ManageExerciseComponent implements OnInit {
   constructor(
     private exerciseService: ExerciseService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {
+    private activatedRoute: ActivatedRoute,
+    private handleError: ErrorHandlerService) {
   }
 
   get errorMsg(): Array<string> {
@@ -78,8 +81,10 @@ export class ManageExerciseComponent implements OnInit {
             this._selectedPicture = 'data:image/jpg;base64,' + exercise.cover;
           }
           this.bind_ExerciseRequestWithForm(this._exerciseRequest);
+        },
+        error: (err) => { 
+          this._errorMsg = this.handleError.handleError(err);
         }
-        //NOTE: we should handle the error, la roba di guardia di alex
       });
     }
   }
@@ -103,32 +108,34 @@ export class ManageExerciseComponent implements OnInit {
   }
 
   saveExercise() {
-    this._errorMsg = [];
-    this.bindFormWith_ExerciseRequest();
-      this.exerciseService.saveExercise({
-        body: this._exerciseRequest
-      }).subscribe({
-        next: (exerciseId) => {
-          //salvataggio immagine
+    this._errorMsg = []; 
+      this.bindFormWith_ExerciseRequest();
+      this.exerciseService.saveExercise({ body: this._exerciseRequest })
+      .subscribe({
+        next: (exerciseId) => {  
           if (this._selectedCover) {
-            console.log("uploading" + this._selectedCover);
-            this.exerciseService.uploadBookCoverPicture({
-              'exercise-id': exerciseId,
-              body: {
-                file: this._selectedCover
-              }
-            }).subscribe({
-              error: (err) => {
-                this._errorMsg.push(err.error.validationErrors);
-              }
-            });
+            this.uploadCoverImage(exerciseId);
           }
           this.router.navigate([sub_appRoutingModule.full_myExercisesPath]);
         },
         error: (err) => {
-          this._errorMsg.push(err.error.validationErrors);
+          this._errorMsg = this.handleError.handleError(err);
         }
       });
+  }
+  
+ private uploadCoverImage(exerciseId: number) {
+    this.exerciseService.uploadBookCoverPicture({
+      'exercise-id': exerciseId,
+      body: {
+        file: this._selectedCover
+      }
+    })
+    .subscribe({
+      error: (err) => {
+        this._errorMsg = this.handleError.handleError(err);
+      }
+    });
   }
 
   onFileSelected(event: any) {

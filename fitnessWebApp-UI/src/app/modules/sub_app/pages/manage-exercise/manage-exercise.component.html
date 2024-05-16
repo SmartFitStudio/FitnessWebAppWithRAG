@@ -1,8 +1,8 @@
 <div class="p-2">
   <h2>Manage my exercise</h2>
-  <div class="alert alert-danger mt-2" role="alert" *ngIf="errorMsg.length">
+  <app-feedback-info-point [level]="'error'" *ngIf="errorMsg.length > 0">
     <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{msg}}</p>
-  </div>
+  </app-feedback-info-point>
   <form [formGroup]="exerciseForm" class="row g-3" >
   <div class="d-flex gap-2 input_container_all">
     <div class="col-3">
@@ -16,11 +16,17 @@
           <label for="nome" class="form-label">Nome esercizio</label>
           <input  type="text" class="form-control" id="nome" name="nome"
             placeholder="Nome Esercizio" formControlName="exerciseName">
+            <small class="text-danger" *ngIf="exerciseForm.get('exerciseName')?.invalid && (exerciseForm.get('exerciseName')?.dirty || exerciseForm.get('exerciseName')?.touched)">
+              Il nome dell'esercizio è obbligatorio
+            </small>
         </div>
         <div class="col-md-6">
           <label for="description" class="form-label">Descrizione</label>
           <input formControlName="exerciseDescription" type="text" class="form-control" id="description"
             name="description" placeholder="Descrizione">
+            <small class="text-danger" *ngIf="exerciseForm.get('exerciseDescription')?.invalid && (exerciseForm.get('exerciseDescription')?.dirty || exerciseForm.get('exerciseDescription')?.touched)">
+              La descrizione dell'esercizio è obbligatoria
+            </small>
         </div>
         <div class="col-12">
           <label for="categorySelect" class="form-label">Categorie</label>

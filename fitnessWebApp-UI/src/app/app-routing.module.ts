@@ -4,7 +4,7 @@ import {LoginComponent} from './pages/login/login.component';
 import {RegisterComponent} from './pages/register/register.component';
 import {authGuard} from './services/guard/auth.guard';
 import {ActivateAccountComponent} from './pages/activate-account/activate-account.component';
-
+import { PagenotfoundComponent } from './pages/pagenotfound/pagenotfound.component';
 
 const PERSONAL_AREA_PATH = 'area-personale';
 const LOGIN_PATH = 'login';
@@ -29,7 +29,10 @@ const routes: Routes = [
     path: PERSONAL_AREA_PATH,
     loadChildren: () => import('./modules/sub_app/sub_app.module').then(m => m.sub_appModule),
     canActivate: [authGuard]
-  }
+  },
+  //Wild Card Route for 404 request 
+  { path: '**', pathMatch: 'full',  
+  component: PagenotfoundComponent }, 
 ];
 
 

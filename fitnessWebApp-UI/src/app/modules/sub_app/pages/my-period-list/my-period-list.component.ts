@@ -54,7 +54,7 @@ export class MyPeriodListComponent implements OnInit {
 
 
   get newPeriodsLink(): string {
-    return sub_appRoutingModule.full_managePeriodPath; //TODO Aggiorna
+    return sub_appRoutingModule.full_managePeriodPath; 
   }
 
   private findAllMyPeriods() {

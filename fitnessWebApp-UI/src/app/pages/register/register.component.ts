@@ -5,13 +5,14 @@ import {RegistrationRequest} from '../../services/models/registration-request';
 import { AppRoutingModule } from '../../app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
-
+import { ErrorHandlerService } from '../../services/myServices/error-handler/error-handler.service';
+import { ErrorListComponent } from '../../component/error-list/error-list.component';
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, FormsModule]
+    imports: [NgIf, NgFor, FormsModule,ErrorListComponent]
 })
 export class RegisterComponent {
 
@@ -20,7 +21,9 @@ export class RegisterComponent {
 
   constructor(
     private router: Router,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private handleError: ErrorHandlerService
+
   ) {
   }
 
@@ -39,7 +42,7 @@ export class RegisterComponent {
           this.router.navigate([AppRoutingModule.activateAccountPath]);
         },
         error: (err) => {
-          this.errorMsg = err.error.validationErrors;
+          this.errorMsg = this.handleError.handleError(err);
         }
       });
   }

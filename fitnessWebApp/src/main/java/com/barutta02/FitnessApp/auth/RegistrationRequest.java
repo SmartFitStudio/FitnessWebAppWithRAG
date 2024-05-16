@@ -13,24 +13,24 @@ import lombok.Setter;
 @Builder
 public class RegistrationRequest {
 
-    @NotEmpty(message = "Firstname is mandatory") //from validation dependency i specified the validation control
-    @NotNull(message = "Firstname is mandatory")
+    @NotEmpty(message = "Il nome è obbligatorio")
+    @NotNull(message = "Il nome è obbligatorio")
     private String firstname;
-    @NotEmpty(message = "Lastname is mandatory")
-    @NotNull(message = "Lastname is mandatory")
+    @NotEmpty(message = "Il cognome è obbligatorio")
+    @NotNull(message = "Il cognome è obbligatorio")
     private String lastname;
-    @Email(message = "Email is not well formatted")
-    @NotEmpty(message = "Email is mandatory")
-    @NotNull(message = "Email is mandatory")
+    @Email(message = "La email deve essere valida")
+    @NotEmpty(message = "La email è obbligatoria")
+    @NotNull(message = "La email è obbligatoria")
     private String email;
 
-    @NotEmpty(message = "Username is mandatory")
-    @NotNull(message = "Username is mandatory")
-    @Size(min = 8, message = "Username should be 8 characters long minimum")
+    @NotEmpty(message = "Lo username è obbligatorio")
+    @NotNull(message = "Lo username è obbligatorio")
+    @Size(min = 8, message = "Lo username deve essere lungo almeno 8 caratteri")
     private String username;
 
-    @NotEmpty(message = "Password is mandatory")
-    @NotNull(message = "Password is mandatory")
-    @Size(min = 8, message = "Password should be 8 characters long minimum")
+    @NotEmpty(message = "La password è obbligatoria")
+    @NotNull(message = "La password è obbligatoria")
+    @Size(min = 8, message = "La password deve essere lunga almeno 8 caratteri")
     private String password;
 }

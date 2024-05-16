@@ -18,9 +18,13 @@ export class TrainingManagerService implements OnDestroy{
         durata_in_ore: 0,
         name: ''
     };
-    /* per far funzionare l'ordinamento (go up e do down) l'indice degli esercizi (ovvero oggetti) deve rispecchiare l'ordine dell'array*/
+    /* per far funzionare l'ordinamento (go up e do down) l'indice degli esercizi (ovvero oggetti) deve rispecchiare l'ordine dell'array
+    Non piace neanche a me ma serve per mantenere coerenza e facilitare lo scambio e la gestione degli esercizi
+    */
     private _trainingExerciseRequests: Array<AllenamentoEsercizioRequest> = [];
     
+    //NOn rispetta il separation of concern. Ma qui tengo le risposte dei TrainingExercise da visualizzare e ottenute dal server
+    //tipo in training details
     private _trainingExercisesResponse: Array<AllenamentoEsercizioResponse> = [];
     private _exercisesResponse: Array<ExerciseResponse> = [];
 
@@ -58,7 +62,9 @@ export class TrainingManagerService implements OnDestroy{
             mergeMap((esercizi) => {
               this._trainingExercisesResponse = esercizi;
               this.mapTrainingExerciseResponseToRequest();
-            this.orderArrayByExercisesIndex();
+
+              this.orderArrayByExercisesIndex();//ordino gli esercizi in base all'indice, in modo da avere un array ordinato
+
               const exerciseRequests = [];
               for (const exercise of this._trainingExerciseRequests) {
                 exerciseRequests.push(this.exerciseService.findExerciseById({ 'exercise-id': exercise.id_esercizio }));
@@ -107,10 +113,6 @@ export class TrainingManagerService implements OnDestroy{
         return this._exercisesResponse;
     }
 
-    public calcoloDurata(): number {
-        //TO DO
-        return 0;
-    }
 
     public setTrainName(name: string) {
         this._train.name = name;

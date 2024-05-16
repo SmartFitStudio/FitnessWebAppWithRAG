@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .businessErrorCode(BAD_CREDENTIALS.getCode())
                                 .businessErrorDescription(BAD_CREDENTIALS.getDescription())
-                                .error("Login and / or Password is incorrect")
+                                .error("Login fallito: credenziali non valide")
                                 .build()
                 );
     }
@@ -98,6 +98,12 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    /**
+     * Qui gestiamo le eccezioni lanciate dalle annotazioni di validazione
+     * 
+     * @param exp
+     * @return
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exp) {
         Set<String> errors = new HashSet<>();
@@ -124,7 +130,7 @@ public class GlobalExceptionHandler {
                 .status(INTERNAL_SERVER_ERROR)
                 .body(
                         ExceptionResponse.builder()
-                                .businessErrorDescription("Internal error, please contact the admin")
+                                .businessErrorDescription("Errore interno del server, riprova più tardi.")
                                 .error(exp.getMessage())
                                 .build()
                 );
