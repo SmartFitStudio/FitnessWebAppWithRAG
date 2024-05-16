@@ -4,13 +4,13 @@ import { PeriodManagerService } from '../../services/period-manager-service/peri
 import { ScheduleEvent } from '../../services/models/scheduleEvent';
 import { PeriodsService } from '../../../../services/services';
 import { CalendarComponent } from '../../components/calendar/calendar.component';
-
+import {UserProgressCardComponent} from '../../components/user-progress-card/user-progress-card.component';
 @Component({
     selector: 'app-home-page',
     templateUrl: './home-page.component.html',
     styleUrls: ['./home-page.component.scss'],
     standalone: true,
-    imports: [CalendarComponent],
+    imports: [CalendarComponent,UserProgressCardComponent],
 })
 export class HomePageComponent implements OnInit{
   private _eventSetting: EventSettingsModel = {};

@@ -11,7 +11,7 @@ import { CalendarComponent } from '../../components/calendar/calendar.component'
     selector: 'app-period-details',
     templateUrl: './period-details.component.html',
     styleUrls: ['./period-details.component.scss'],
-    providers: [PeriodManagerService] // Fornisce il servizio a livello di componente
+    providers: [PeriodManagerService] // Fornisce il servizio a livello di componente, quindi ogni componente avrà la sua istanza di PeriodManagerService
     ,
     standalone: true,
     imports: [CalendarComponent, ObiettivoPeriodoPipePipe]
