@@ -4,7 +4,7 @@ import {AuthenticationService} from '../../services/services/authentication.serv
 import {AuthenticationRequest} from '../../services/models/authentication-request';
 import {TokenService} from '../../services/token/token.service';
 import { AppRoutingModule } from '../../app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
 
 @Component({
@@ -12,12 +12,17 @@ import { NgIf, NgFor } from '@angular/common';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, FormsModule]
+    imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule]
 })
 export class LoginComponent {
 
   authRequest: AuthenticationRequest = {username: '', password: ''};
   errorMsg: Array<string> = [];
+
+  loginForm = new FormGroup({
+    username: new FormControl<string | null>(null, Validators.required),
+    password: new FormControl<string | null>(null, Validators.required),
+  });
 
   constructor(
     private router: Router,
@@ -26,9 +31,15 @@ export class LoginComponent {
   ) {
   }
 
+  private bindFormWith_AuthRequest() {
+    this.authRequest.username = this.loginForm.controls.username.value as string;
+    this.authRequest.password = this.loginForm.controls.password.value as string;
+  }
+
   login() {
     localStorage.clear();
     this.errorMsg = [];
+    this.bindFormWith_AuthRequest();
     this.authService.authenticate({
       body: this.authRequest
     }).subscribe({
