@@ -18,12 +18,12 @@ import { findAllExerciseByCreator } from '../fn/exercise/find-all-exercise-by-cr
 import { FindAllExerciseByCreator$Params } from '../fn/exercise/find-all-exercise-by-creator';
 import { findExerciseById } from '../fn/exercise/find-exercise-by-id';
 import { FindExerciseById$Params } from '../fn/exercise/find-exercise-by-id';
-import { importExercise } from '../fn/exercise/import-exercise';
-import { ImportExercise$Params } from '../fn/exercise/import-exercise';
 import { getExerciseCategories } from '../fn/exercise/get-exercise-categories';
 import { GetExerciseCategories$Params } from '../fn/exercise/get-exercise-categories';
 import { getExercisesFromPublicStore } from '../fn/exercise/get-exercises-from-public-store';
 import { GetExercisesFromPublicStore$Params } from '../fn/exercise/get-exercises-from-public-store';
+import { importExercise } from '../fn/exercise/import-exercise';
+import { ImportExercise$Params } from '../fn/exercise/import-exercise';
 import { PageResponseExerciseResponse } from '../models/page-response-exercise-response';
 import { saveExercise } from '../fn/exercise/save-exercise';
 import { SaveExercise$Params } from '../fn/exercise/save-exercise';
@@ -86,7 +86,6 @@ export class ExerciseService extends BaseService {
     );
   }
 
-
   /** Path part for operation `importExercise()` */
   static readonly ImportExercisePath = '/exercises/import/{exercise-id}';
 
@@ -122,7 +121,7 @@ export class ExerciseService extends BaseService {
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
   uploadBookCoverPicture$Response(params: UploadBookCoverPicture$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-  }>> {
+}>> {
     return uploadBookCoverPicture(this.http, this.rootUrl, params, context);
   }
 
@@ -133,11 +132,11 @@ export class ExerciseService extends BaseService {
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
   uploadBookCoverPicture(params: UploadBookCoverPicture$Params, context?: HttpContext): Observable<{
-  }> {
+}> {
     return this.uploadBookCoverPicture$Response(params, context).pipe(
       map((r: StrictHttpResponse<{
-      }>): {
-        } => r.body)
+}>): {
+} => r.body)
     );
   }
 
@@ -176,7 +175,7 @@ export class ExerciseService extends BaseService {
    * This method doesn't expect any request body.
    */
   deleteExercise$Response(params: DeleteExercise$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-  }>> {
+}>> {
     return deleteExercise(this.http, this.rootUrl, params, context);
   }
 
@@ -187,11 +186,11 @@ export class ExerciseService extends BaseService {
    * This method doesn't expect any request body.
    */
   deleteExercise(params: DeleteExercise$Params, context?: HttpContext): Observable<{
-  }> {
+}> {
     return this.deleteExercise$Response(params, context).pipe(
       map((r: StrictHttpResponse<{
-      }>): {
-        } => r.body)
+}>): {
+} => r.body)
     );
   }
 

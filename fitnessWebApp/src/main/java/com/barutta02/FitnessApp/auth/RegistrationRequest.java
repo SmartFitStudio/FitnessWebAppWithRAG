@@ -1,8 +1,11 @@
 package com.barutta02.FitnessApp.auth;
 
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,24 +16,28 @@ import lombok.Setter;
 @Builder
 public class RegistrationRequest {
 
-    @NotEmpty(message = "Firstname is mandatory") //from validation dependency i specified the validation control
-    @NotNull(message = "Firstname is mandatory")
+    @NotEmpty(message = "Il nome è obbligatorio") //from validation dependency i specified the validation control
+    @NotNull(message = "Il nome è obbligatorio")
     private String firstname;
-    @NotEmpty(message = "Lastname is mandatory")
-    @NotNull(message = "Lastname is mandatory")
+    @NotEmpty(message = "Il cognome è obbligatorio")
+    @NotNull(message = "Il cognome è obbligatorio")
     private String lastname;
-    @Email(message = "Email is not well formatted")
-    @NotEmpty(message = "Email is mandatory")
-    @NotNull(message = "Email is mandatory")
+    @Email(message = "L'email non è ben formattata")
+    @NotEmpty(message = "L'email è obbligatoria")
+    @NotNull(message = "L'email è obbligatoria")
     private String email;
 
-    @NotEmpty(message = "Username is mandatory")
-    @NotNull(message = "Username is mandatory")
-    @Size(min = 8, message = "Username should be 8 characters long minimum")
+    @NotEmpty(message = "Il nome utente è obbligatorio")
+    @NotNull(message = "Il nome utente è obbligatorio")
+    @Size(min = 8, message = "Il nome utente deve essere lungo almeno 8 caratteri")
     private String username;
 
-    @NotEmpty(message = "Password is mandatory")
-    @NotNull(message = "Password is mandatory")
-    @Size(min = 8, message = "Password should be 8 characters long minimum")
+    @NotEmpty(message = "La password è obbligatoria")
+    @NotNull(message = "La password è obbligatoria")
+    @Size(min = 8, message = "La password deve essere lunga almeno 8 caratteri")
     private String password;
+
+    @NotNull(message = "La data di nascita è obbligatoria")
+    @Past(message = "La data di nascita deve essere passata")
+    private LocalDate dateOfBirth;
 }

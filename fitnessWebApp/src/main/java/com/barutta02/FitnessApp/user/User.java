@@ -27,6 +27,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,6 +65,7 @@ public class User implements UserDetails, Principal {
     @Column(unique = true)
     private String username;
     
+    @Temporal(TemporalType.DATE)
     private LocalDate dateOfBirth;
 
     private String password;
