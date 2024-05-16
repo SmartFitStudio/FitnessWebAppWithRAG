@@ -18,7 +18,9 @@ export class TrainingManagerService implements OnDestroy{
         durata_in_ore: 0,
         name: ''
     };
+    /* per far funzionare l'ordinamento (go up e do down) l'indice degli esercizi (ovvero oggetti) deve rispecchiare l'ordine dell'array*/
     private _trainingExerciseRequests: Array<AllenamentoEsercizioRequest> = [];
+    
     private _trainingExercisesResponse: Array<AllenamentoEsercizioResponse> = [];
     private _exercisesResponse: Array<ExerciseResponse> = [];
 
@@ -41,7 +43,7 @@ export class TrainingManagerService implements OnDestroy{
               this._train.name = allenamento.name;
               this._train.description = allenamento.description;
               this._train.durata_in_ore = allenamento.durata_in_ore;
-
+                
               return this.getTrainingExercises$(allenamento.name);
             }),
             catchError((error) => {throw(error)})
@@ -56,12 +58,11 @@ export class TrainingManagerService implements OnDestroy{
             mergeMap((esercizi) => {
               this._trainingExercisesResponse = esercizi;
               this.mapTrainingExerciseResponseToRequest();
-
+            this.orderArrayByExercisesIndex();
               const exerciseRequests = [];
               for (const exercise of this._trainingExerciseRequests) {
                 exerciseRequests.push(this.exerciseService.findExerciseById({ 'exercise-id': exercise.id_esercizio }));
               }
-
               return forkJoin(exerciseRequests);//iene utilizzato forkJoin per eseguire tutte queste richieste in parallelo. forkJoin restituisce un osservabile che emetterà un array con i risultati di tutte le richieste quando saranno complete.
             }),
             mergeMap((exercises) => {
@@ -178,8 +179,13 @@ export class TrainingManagerService implements OnDestroy{
         }
     }
 
+    private orderArrayByExercisesIndex() {
+        this._trainingExerciseRequests.sort((a, b) => a.index - b.index);
+    }
+
     //sposta in alto di uno l'esercizio, scambiandolo con quello precedente e aggiornando gli indici
     public goUp(index: number) {
+        console.log(index + "go up");
         if (index > 0 && index < this._trainingExerciseRequests.length) {
             let temp = this._trainingExerciseRequests[index];
             this._trainingExerciseRequests[index] = this._trainingExerciseRequests[index - 1];
@@ -187,16 +193,20 @@ export class TrainingManagerService implements OnDestroy{
             this.setAllIndexesByPosition();
 
         }
+        console.log(this._trainingExerciseRequests);
     }
     //sposta in basso di uno l'esercizio, scambiandolo con quello successivo e aggiornando gli indici
 
     public goDown(index: number) {
         if (index >= 0 && index <= this._trainingExerciseRequests.length - 2) {
+            console.log(index + "go down");
             let temp = this._trainingExerciseRequests[index];
+            console.log(temp);
             this._trainingExerciseRequests[index] = this._trainingExerciseRequests[index + 1];
             this._trainingExerciseRequests[index + 1] = temp;
             this.setAllIndexesByPosition();
         }
+        console.log(this._trainingExerciseRequests);
     }
 
 

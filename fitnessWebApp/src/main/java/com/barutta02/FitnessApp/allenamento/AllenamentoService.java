@@ -39,6 +39,7 @@ public class AllenamentoService {
         public AllenamentoResponse save(AllenamentoRequest request, Authentication connectedUser) {
             User user = this.getUserFromAuthentication(connectedUser);
             Allenamento allenamento = allenamentoMapper.toAllenamento(request,user); //Convert the BookRequest object to a Book object
+            //TODO: assolutamente da sistemare
             if (request.id() != null) {
                 allenamentoEsercizioRepository.deleteByAllenamento_IdAndAllenamento_Creator_Username(allenamento.getId(),user.getUsername()); //se sto eseugendo un update cancello tutti gli esercizi associati all'allenamento per poi aggiungerli nuovamente nel caso nell'update ce ne siano di rimossi
             }

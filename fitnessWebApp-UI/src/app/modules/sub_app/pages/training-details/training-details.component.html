@@ -16,13 +16,13 @@
     <div class ="exercise_list">
         <h3>Breakdown</h3>
         <h5 id="time">Tempo trascorso: {{stopwatch.hours}} h {{stopwatch.minutes}} m {{stopwatch.seconds}} s</h5>
-        <ng-container *ngFor="let trainingExercise of trainingExercisesList" [style.order]="trainingExercise.index">
+        <div *ngFor="let trainingExercise of trainingExercisesList" [style.order]="trainingExercise.index">
             <app-train-exercise-card 
                 *ngIf="getExerciseById(trainingExercise.esercizio_id) as exerciseResponse"
                 [trainingExercise]="trainingExercise" 
                 [exercise]="exerciseResponse">
             </app-train-exercise-card>
-        </ng-container>
+        </div>
               
     </div>
 </section>

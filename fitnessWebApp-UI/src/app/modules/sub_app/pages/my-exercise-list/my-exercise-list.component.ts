@@ -66,6 +66,7 @@ export class MyExerciseListComponent implements OnInit {
   }
 
   private findAllMyExercise() {
+    
     this.exerciseResponse$ = this.exerciseService.findAllExercise({
       page: this.page,
       size: this.size
