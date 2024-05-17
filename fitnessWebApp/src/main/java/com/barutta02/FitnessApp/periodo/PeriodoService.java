@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,15 +39,19 @@ public class PeriodoService {
 
     
         public PeriodoResponse save(PeriodoRequest request, Authentication connectedUser) {
-            User user = userExtractor.getUserFromAuthentication(connectedUser);
-            this.validatePeriodoRequest(request);
-
-            Periodo periodo = periodoMapper.toPeriodo(request,user); //Convert the BookRequest object to a Book object
-            Optional<Periodo> periodoAttivo = periodoRepository.findByCreatorAndAttivoIsTrue(user);
-            if (request.attivo() && periodoAttivo.isPresent() && periodoAttivo.get().getId() != periodo.getId()){
-                throw new OperationNotPermittedException("Hai già un periodo attivo, devi prima completarlo o eliminarlo per crearne uno nuovo!");
+            try{
+                User user = userExtractor.getUserFromAuthentication(connectedUser);
+                this.validatePeriodoRequest(request);
+                
+                Periodo periodo = periodoMapper.toPeriodo(request,user); //Convert the BookRequest object to a Book object
+                Optional<Periodo> periodoAttivo = periodoRepository.findByCreatorAndAttivoIsTrue(user);
+                if (request.attivo() && periodoAttivo.isPresent() && periodoAttivo.get().getId() != periodo.getId()){
+                    throw new OperationNotPermittedException("Hai già un periodo attivo, devi prima completarlo o eliminarlo per crearne uno nuovo!");
+                }
+                return periodoMapper.toPeriodoResponse(periodoRepository.save(periodo));
+            }catch (DataIntegrityViolationException dataIntegrityViolationException){
+                throw new IllegalArgumentException("Il nome del periodo è già stato utilizzato");
             }
-            return periodoMapper.toPeriodoResponse(periodoRepository.save(periodo));
         }
         
         private void validatePeriodoRequest(PeriodoRequest request){
