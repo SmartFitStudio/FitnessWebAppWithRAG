@@ -5,7 +5,6 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { ChatbotService } from '../../services/chatbot-service/chatbot.service';
 import { ConversationMessage } from '../../services/models/conversationMessage';
 import * as Showdown from 'showdown';
-
 @Component({
   selector: 'app-chatbot',
   standalone: true,
@@ -14,12 +13,12 @@ import * as Showdown from 'showdown';
   styleUrls: ['./chatbot.component.css']
 })
 export class ChatbotComponent {
-
-  constructor(private chatbotService: ChatbotService, private offcanvasService: NgbOffcanvas) { }
-
   messages!: ConversationMessage[];
   converter!: Showdown.Converter;
   promptForm!: FormGroup;
+
+  constructor(private chatbotService: ChatbotService,
+     private offcanvasService: NgbOffcanvas) { }
 
   ngOnInit() {
     this.messages=[];
@@ -29,9 +28,6 @@ export class ChatbotComponent {
     });
   }
 
-  get userPrompt() {
-    return this.promptForm.get('userPrompt');
-  }
 
   openEnd(content: TemplateRef<any>) {
 		this.offcanvasService.open(content, { position: 'end' });
@@ -52,5 +48,12 @@ export class ChatbotComponent {
       );
     }
     this.promptForm.reset();
+  }
+
+
+  //BOILERPLATE CODE
+  
+  get userPrompt() {
+    return this.promptForm.get('userPrompt');
   }
 }

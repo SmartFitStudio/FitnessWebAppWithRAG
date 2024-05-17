@@ -1,36 +1,40 @@
 <div class="container-fluid card login-container">
   <h3 class="text-center">Create an account</h3>
-  
   <app-feedback-info-point [level]="'error'" *ngIf="messages.length > 0">
     <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
   </app-feedback-info-point>
-
-  <div class="mb-3">
-    <label for="firstname" class="form-label">Firstname</label>
-    <input [(ngModel)]="registerRequest.firstname" type="text" class="form-control" id="firstname" placeholder="Firstname">
-  </div>
-  <div class="mb-3">
-    <label for="lastname" class="form-label">Lastname</label>
-    <input [(ngModel)]="registerRequest.lastname" type="text" class="form-control" id="lastname" placeholder="Lastname">
-  </div>
-  <div class="mb-3">
-    <label for="login" class="form-label">Email address</label>
-    <input [(ngModel)]="registerRequest.email" type="email" class="form-control" id="login" placeholder="name@example.com">
-  </div>
-  <div class="mb-3">
-    <label for="username" class="form-label">username</label>
-    <input [(ngModel)]="registerRequest.username" type="text" class="form-control" id="username" placeholder="Username">
-  </div>
-  <div class="mb-3">
-    <label for="password" class="form-label">Password</label>
-    <input [(ngModel)]="registerRequest.password" type="password" class="form-control" id="password" placeholder="Password">
-  </div>
+  <form [formGroup]="registerForm">
+    <div class="mb-3">
+      <label for="firstname" class="form-label">Nome</label>
+      <input formControlName="firstname" type="text" class="form-control" id="firstname" placeholder="Nome">
+    </div>
+    <div class="mb-3">
+      <label for="lastname" class="form-label">Cognome</label>
+      <input formControlName="lastname" type="text" class="form-control" id="lastname" placeholder="Cognome">
+    </div>
+    <div class="mb-3">
+      <label for="dateOfBirth" class="form-label">Data di nascita</label>
+      <input formControlName="dateOfBirth" type="date" class="form-control" id="dateOfBirth" placeholder="Data di nascita">
+    </div>
+    <div class="mb-3">
+      <label for="login" class="form-label">Email</label>
+      <input formControlName="email" type="email" class="form-control" id="login" placeholder="name@example.com">
+    </div>
+    <div class="mb-3">
+      <label for="username" class="form-label">Nome utente</label>
+      <input formControlName="username" type="text" class="form-control" id="username" placeholder="Nome utente">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input formControlName="password" type="password" class="form-control" id="password" placeholder="Password">
+    </div>
+  </form>
   <div class="d-flex justify-content-between mb-3">
     <button (click)="register()" type="button" class="btn btn-primary">
-      <em class="fas fa-sign-in-alt">&nbsp;Create an account</em>
+      <em class="fas fa-sign-in-alt">&nbsp;Crea un account</em>
     </button>
     <div>
-      Already have an account?&nbsp;
+      Possiedi già un account?&nbsp;
       <button (click)="login()" type="button" class="btn btn-link">
         Login
       </button>

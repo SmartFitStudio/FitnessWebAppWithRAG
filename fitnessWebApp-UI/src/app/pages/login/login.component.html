@@ -1,24 +1,27 @@
 <div class="container-fluid card login-container">
+
   <h3 class="text-center">Login</h3>
   <app-feedback-info-point [level]="'error'" *ngIf="messages.length > 0">
     <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
   </app-feedback-info-point>
-  <div class="mb-3">
-    <label for="login" class="form-label">Usernamme</label>
-    <input [(ngModel)]="authRequest.username"  type="text" class="form-control" id="login" placeholder="username">
-  </div>
-  <div class="mb-3">
-    <label for="password" class="form-label">Password</label>
-    <input [(ngModel)]="authRequest.password" type="password" class="form-control" id="password" placeholder="Password">
-  </div>
+  <form [formGroup]="loginForm">
+    <div class="mb-3">
+      <label for="login" class="form-label">Nome utente</label>
+      <input  formControlName="username"  type="text" class="form-control" id="login" placeholder="Nome utente">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input formControlName="password" type="password" class="form-control" id="password" placeholder="Password">
+    </div>
+  </form>
   <div class="d-flex justify-content-between mb-3">
     <button (click)="login()" type="button" class="btn btn-primary">
-      <em class="fas fa-sign-in-alt">&nbsp;Sign in</em>
+      <em class="fas fa-sign-in-alt">&nbsp;Accedi</em>
     </button>
     <div>
-      Don't have an account?&nbsp;
+      Non possiedi un account?&nbsp;
       <button (click)="register()" type="button" class="btn btn-link">
-        Register
+        Registrati
       </button>
     </div>
   </div>

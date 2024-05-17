@@ -1,6 +1,6 @@
 package com.barutta02.FitnessApp.progresso;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.barutta02.FitnessApp.allenamento_esercizio.AllenamentoEsercizio;
@@ -8,12 +8,15 @@ import com.barutta02.FitnessApp.common.BaseEntity;
 import com.barutta02.FitnessApp.user.User;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -33,22 +36,29 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Entity
 @Table(name = "_progresso",
-       uniqueConstraints = {@UniqueConstraint(columnNames = {"data_misurazione", "created_by_user"})})
+       uniqueConstraints = {@UniqueConstraint(columnNames = {"dataMisurazione", "created_by_user"})})
 public class Progresso extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date data_misurazione;
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
+    private LocalDate dataMisurazione;
 
-    private float peso_kg;
+    @Column(nullable = false)
+    private float pesoKg;
 
-    private float altezza_cm;
+    @Column(nullable = false)
+    private float altezzaCm;
 
-    private float percentaule_massa_grassa;
+    private float percentualeMassaGrassa;
 
-    private float percentaule_massa_magra;
+    private float percentualeMassaMagra;
+
+    @Column(length = 500)
+    private String note;
 
     @ManyToOne
     @JoinColumn(name = "created_by_user")
