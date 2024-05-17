@@ -82,9 +82,14 @@ public class AllenamentoEsercizioService {
                                 .collect(Collectors.toCollection(ArrayList::new));
         }
 
-        public void deleteAllenamentoEsercizio(String allenamento_nome, Authentication connectedUser) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'deleteAllenamentoEsercizio'");
+        public void deleteAllenamentoEsercizio(Long id, Authentication connectedUser) {
+                User user = userExtractor.getUserFromAuthentication(connectedUser);
+                AllenamentoEsercizio allenamentoEsercizio = allenamentoEsercizioRepository.findById(id)
+                                .orElseThrow(() -> new EntityNotFoundException("No allenamento esercizio found with ID:: " + id));
+                if (!allenamentoEsercizio.getAllenamento().getCreator().getId().equals(user.getId())) {
+                        throw new OperationNotPermittedException("Stai cercando di cancellare un allenamento esercizio che non hai creato tu!");
+                }
+                allenamentoEsercizioRepository.delete(allenamentoEsercizio);
         }
 
 }

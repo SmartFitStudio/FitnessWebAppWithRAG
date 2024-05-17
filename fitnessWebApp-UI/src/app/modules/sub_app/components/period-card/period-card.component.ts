@@ -13,14 +13,9 @@ import { NgIf } from '@angular/common';
 export class PeriodCardComponent {
   private _periodo!: PeriodoResponse;
 
-
   @Input()
   set periodo(value: PeriodoResponse) {
     this._periodo = value;
-  }
-
-  get periodo(): PeriodoResponse {
-    return this._periodo;
   }
 
   @Output() private delete: EventEmitter<PeriodoResponse> = new EventEmitter<PeriodoResponse>();
@@ -42,4 +37,8 @@ export class PeriodCardComponent {
     this.openDetail.emit(this._periodo)
   }
 
+  //BOILERPLATE CODE
+  get periodo(): PeriodoResponse {
+    return this._periodo;
+  }
 }

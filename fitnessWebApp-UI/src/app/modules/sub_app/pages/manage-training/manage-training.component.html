@@ -1,12 +1,15 @@
 <!--Inserisci prima tutte le info di contesto-->
-<div class="alert alert-danger mt-2" role="alert" *ngIf="errorMsg.length">
+<app-feedback-info-point [level]="level" *ngIf="errorMsg.length > 0">
     <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{msg}}</p>
-  </div>
+</app-feedback-info-point>
 <form class="row row-cols-lg-auto g-3 align-items-center" [formGroup]="trainingForm">
     <div class="tab initial_info" [ngClass]="{'hidden': openedTab != 0}">
         <label for="nome_allenamento" class="form-label">Nome</label>
         <input formControlName="nome_allenamento" type="text" id="nome_allenamento"
             class="form-control" aria-describedby="nome_allenamento_helper" name="nome_allenamento">
+            <small class="text-danger" *ngIf="!IsNomeAllenamentoInputValid">
+                Il nome dell'allenamento è obbligatorio
+              </small>
         <div id="nome_allenamento_helper" class="form-text">
             Inserisci qui il nome dell'allenamento cosi da poterlo identificare facilmente.
             Scegli con attenzione, il nome non potrà essere modificato in seguito e dovrà essere univoco tra i tuoi allenamenti.
@@ -24,6 +27,9 @@
         <input formControlName="durata_in_ore_allenamento" type="number"
             id="durata_allenamento" class="form-control" aria-describedby="durata_allenamento_helper"
             name="durata_allenamento">
+            <small class="text-danger" *ngIf="!IsDurataAllenamentoInputValid">
+                La durata dell'allenamento deve essere maggiore di 0.
+            </small>
         <div id="durata_allenamento_helper" class="form-text">
             Inserisci qui la durata approssimativa dell'allenamento in ore. Se non la inserisci verrà calcolata dal
             sistema.

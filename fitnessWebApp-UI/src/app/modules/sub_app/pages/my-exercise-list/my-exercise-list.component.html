@@ -1,12 +1,6 @@
-<div
-  *ngIf="message"
-  class="alert "
-  [class.alert-danger]="level==='error'"
-  [class.alert-success]="level==='success'"
-  role="alert"
->
-  <p>{{message}}</p>
-</div>
+<app-feedback-info-point [level]="level" *ngIf="messages.length > 0">
+  <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
+</app-feedback-info-point>
 
 <div class="lista_esercizi" *ngIf="(exerciseResponse$ | async) as exerciseResponse">
   <div class="buttons">

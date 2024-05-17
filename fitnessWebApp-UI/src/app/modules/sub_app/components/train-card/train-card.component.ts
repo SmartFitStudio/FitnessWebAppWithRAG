@@ -10,14 +10,9 @@ import { AllenamentoResponse } from '../../../../services/models';
 export class TrainCardComponent {
   private _train!: AllenamentoResponse;
 
-
   @Input()
   set train(value: AllenamentoResponse) {
     this._train = value;
-  }
-
-  get train(): AllenamentoResponse {
-    return this._train;
   }
 
   @Output() private delete: EventEmitter<AllenamentoResponse> = new EventEmitter<AllenamentoResponse>();
@@ -37,6 +32,11 @@ export class TrainCardComponent {
 
   openDetails(){
     this.openDetail.emit(this._train)
+  }
+
+  //BOILERPLATE CODE
+  get train(): AllenamentoResponse {
+    return this._train;
   }
 
 }

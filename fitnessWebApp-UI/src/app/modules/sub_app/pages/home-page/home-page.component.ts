@@ -5,6 +5,7 @@ import { ScheduleEvent } from '../../services/models/scheduleEvent';
 import { PeriodsService } from '../../../../services/services';
 import { CalendarComponent } from '../../components/calendar/calendar.component';
 import {UserProgressCardComponent} from '../../components/user-progress-card/user-progress-card.component';
+import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 @Component({
     selector: 'app-home-page',
     templateUrl: './home-page.component.html',
@@ -13,14 +14,17 @@ import {UserProgressCardComponent} from '../../components/user-progress-card/use
     imports: [CalendarComponent,UserProgressCardComponent],
 })
 export class HomePageComponent implements OnInit{
+  viewMode: View = 'Agenda';
+  messages: string[] = [];
   private _eventSetting: EventSettingsModel = {};
   private events: ScheduleEvent[] = [];
-  viewMode: View = 'Agenda';
 
   constructor(
     private periodManagerService: PeriodManagerService,
-    private periodoService: PeriodsService //Il periodo attivo è ottenuto tramite singleton dell'istanza di periodManagerService creata nel main
+    private periodoService: PeriodsService, //Il periodo attivo è ottenuto tramite singleton dell'istanza di periodManagerService creata nel main
+    private handleError: ErrorHandlerService
   ) {
+    //impostazioni per il calendario
     this._eventSetting.allowAdding = false;
     this._eventSetting.allowDeleting = false;
     this._eventSetting.allowEditing = false;
@@ -34,6 +38,9 @@ export class HomePageComponent implements OnInit{
             complete: () => {
               periodInfoSubscription$.unsubscribe();
               this.events = this.periodManagerService.getScheduleEvents(20);
+            },
+            error: (error) => {
+              this.messages = this.handleError.handleError(error);
             }
           });
         }
@@ -41,11 +48,13 @@ export class HomePageComponent implements OnInit{
     });
   }
 
+  /*BOILERPLATE CODE */
+
   get eventSettings(): EventSettingsModel {
    if(this.events.length === 0){
     this.events = this.periodManagerService.getScheduleEvents(20); //ripetizione ma devo perche  this._eventSetting.dataSource non è una collection
     this._eventSetting.dataSource = this.events;
-    return {};
+    return {};//Empty eventSetting object
    }
     return this._eventSetting;
   }

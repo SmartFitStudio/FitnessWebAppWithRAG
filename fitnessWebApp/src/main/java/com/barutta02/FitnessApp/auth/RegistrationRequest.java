@@ -16,7 +16,7 @@ import lombok.Setter;
 @Builder
 public class RegistrationRequest {
 
-    @NotEmpty(message = "Il nome è obbligatorio") //from validation dependency i specified the validation control
+    @NotEmpty(message = "Il nome è obbligatorio")
     @NotNull(message = "Il nome è obbligatorio")
     private String firstname;
     @NotEmpty(message = "Il cognome è obbligatorio")

@@ -18,6 +18,7 @@ import java.util.Set;
 import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.ACCOUNT_DISABLED;
 import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.ACCOUNT_LOCKED;
 import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.BAD_CREDENTIALS;
+import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.OPERATION_NOT_PERMITTED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -60,7 +61,7 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .businessErrorCode(BAD_CREDENTIALS.getCode())
                                 .businessErrorDescription(BAD_CREDENTIALS.getDescription())
-                                .error("Login and / or Password is incorrect")
+                                .error("Login fallito: credenziali non valide")
                                 .build()
                 );
     }
@@ -98,6 +99,25 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ExceptionResponse> handleException(IllegalArgumentException exp) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(OPERATION_NOT_PERMITTED.getCode())
+                                .businessErrorDescription(exp.getMessage())
+                                .error(OPERATION_NOT_PERMITTED.getDescription())
+                                .build()
+                );
+    }
+
+    /**
+     * Qui gestiamo le eccezioni lanciate dalle annotazioni di validazione
+     * 
+     * @param exp
+     * @return
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exp) {
         Set<String> errors = new HashSet<>();
@@ -124,7 +144,7 @@ public class GlobalExceptionHandler {
                 .status(INTERNAL_SERVER_ERROR)
                 .body(
                         ExceptionResponse.builder()
-                                .businessErrorDescription("Internal error, please contact the admin")
+                                .businessErrorDescription("Errore interno del server, riprova più tardi.")
                                 .error(exp.getMessage())
                                 .build()
                 );

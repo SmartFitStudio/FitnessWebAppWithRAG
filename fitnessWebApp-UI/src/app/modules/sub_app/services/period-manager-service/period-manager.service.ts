@@ -15,6 +15,7 @@ export class PeriodManagerService implements OnDestroy {
   private allenamento_list: AllenamentoResponse[] = []; //Lista degli allenamenti associati al periodo
   private active_periodo: PeriodoResponse | undefined | null = undefined; //Se nullo non ho ancora recuperato i dati
   private subscription_active_period?: Subscription;
+  
   private periodoRequest: PeriodoRequest={
     id: undefined,
     name: "",
@@ -30,7 +31,6 @@ export class PeriodManagerService implements OnDestroy {
     private periodoAllenamentoService: PeriodTrainingService) { }
 
   ngOnDestroy(): void {
-    //this.clearInfo();
     if (this.subscription_active_period)
       this.subscription_active_period.unsubscribe();
   }
@@ -129,8 +129,7 @@ export class PeriodManagerService implements OnDestroy {
             this.getTrainingPeriod$(),
             this.getActivePeriod$()
           ]);
-        }),
-        catchError((error) => { throw (error) })
+        })
       );
   }
 
@@ -141,8 +140,7 @@ export class PeriodManagerService implements OnDestroy {
           this.periodoAllenamentoRequest_list = response.map((value) => this.mapPeriodoAllenamentoResponseToPeriodoAllenamentoRequest(value));
           this.initial_periodoAllenamentoRequest_list = this.periodoAllenamentoRequest_list; //mi serve per poter eliminare solo quelli tolti.
           return this.getTraining$();
-        }),
-        catchError((error) => { throw (error) })
+        })
       );
   }
 
@@ -155,8 +153,7 @@ export class PeriodManagerService implements OnDestroy {
         map((response) => {
           this.allenamento_list = response;
           return response;
-        }),
-        catchError((error) => { throw (error) })
+        })
       );
   }
 
@@ -321,7 +318,6 @@ export class PeriodManagerService implements OnDestroy {
   */
   public savePeriodo$(): Observable<any> {
     this.fillEmptyData();
-    console.log(this.periodoRequest);
     return this.periodoService.savePeriodo({ body: this.periodoRequest })
       .pipe(
         mergeMap((response) => {
@@ -340,12 +336,7 @@ export class PeriodManagerService implements OnDestroy {
           return toDeleteTraining.length === 0 ? EMPTY : forkJoin(
             toDeleteTraining.map((id) => this.periodoAllenamentoService.deletePeriodoAllenamento({ 'periodo-allenamento-id': id }))
           );
-        }),
-        map(() => {
-          //this.clearInfo();
-          return; // Indicate completion without specific data
-        }),
-        catchError((error) => { throw (error) })
+        })
       );
   }
 
@@ -362,13 +353,12 @@ La funzione filtra gli oggetti che sono presenti nella lista iniziale ma non nel
   public disableActivePeriodo$(): Observable<any> {
     if(this.active_periodo){
       this.active_periodo.attivo = false;
-      return this.periodoService.savePeriodo({ body: this.active_periodo })
+      return this.periodoService.disableActivePeriod()
       .pipe(
         map(() => {
           this.active_periodo = undefined;
           return;
-        }),
-        catchError((error) => { throw (error) })
+        })
       );
     }else{
       return EMPTY;

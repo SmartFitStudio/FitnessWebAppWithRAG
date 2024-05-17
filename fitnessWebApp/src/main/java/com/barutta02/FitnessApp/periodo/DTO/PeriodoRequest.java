@@ -24,10 +24,10 @@ public record PeriodoRequest(
     @NotNull(message = "La durata in giorni è necessaria") 
     @Min(value = 1, message = "Value must be greater than 0")
     int durata_in_giorni,
-    @NotNull(message = "La data di inizio è necessaria") 
+    @NotNull(message = "La data di inizio è necessaria")
     //@FutureOrPresent(message = "La data di inizio deve essere presente o futura")
     LocalDate data_inizio,
-    @Future(message = "La data di fine deve essere futura")
+    //@Future(message = "La data di fine deve essere futura")
     LocalDate data_fine,
 
     @NotNull(message = "E' necessario specificare se il periodo è attivo")
