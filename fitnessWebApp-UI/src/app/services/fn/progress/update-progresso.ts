@@ -6,16 +6,19 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { ProgressoRequest } from '../../models/progresso-request';
 
-export interface DeleteAllenamentoEsercizio$Params {
-  'allenamentoEsercizio-id': number;
+export interface UpdateProgresso$Params {
+  'progresso-id': number;
+      body: ProgressoRequest
 }
 
-export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, params: DeleteAllenamentoEsercizio$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+export function updateProgresso(http: HttpClient, rootUrl: string, params: UpdateProgresso$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 }>> {
-  const rb = new RequestBuilder(rootUrl, deleteAllenamentoEsercizio.PATH, 'delete');
+  const rb = new RequestBuilder(rootUrl, updateProgresso.PATH, 'put');
   if (params) {
-    rb.path('allenamentoEsercizio-id', params['allenamentoEsercizio-id'], {});
+    rb.path('progresso-id', params['progresso-id'], {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -29,4 +32,4 @@ export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, pa
   );
 }
 
-deleteAllenamentoEsercizio.PATH = '/trainingexercise/{allenamentoEsercizio-id}';
+updateProgresso.PATH = '/progress/{progresso-id}';

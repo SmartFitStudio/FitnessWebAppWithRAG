@@ -70,7 +70,7 @@ export class ExerciseService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveExercise$Response(params: SaveExercise$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  saveExercise$Response(params: SaveExercise$Params, context?: HttpContext): Observable<StrictHttpResponse<ExerciseResponse>> {
     return saveExercise(this.http, this.rootUrl, params, context);
   }
 
@@ -80,9 +80,9 @@ export class ExerciseService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveExercise(params: SaveExercise$Params, context?: HttpContext): Observable<number> {
+  saveExercise(params: SaveExercise$Params, context?: HttpContext): Observable<ExerciseResponse> {
     return this.saveExercise$Response(params, context).pipe(
-      map((r: StrictHttpResponse<number>): number => r.body)
+      map((r: StrictHttpResponse<ExerciseResponse>): ExerciseResponse => r.body)
     );
   }
 

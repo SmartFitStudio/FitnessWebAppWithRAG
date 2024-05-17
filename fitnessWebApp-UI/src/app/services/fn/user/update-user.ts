@@ -6,16 +6,17 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { UserRequest } from '../../models/user-request';
 
-export interface DeleteAllenamentoEsercizio$Params {
-  'allenamentoEsercizio-id': number;
+export interface UpdateUser$Params {
+      body: UserRequest
 }
 
-export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, params: DeleteAllenamentoEsercizio$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+export function updateUser(http: HttpClient, rootUrl: string, params: UpdateUser$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 }>> {
-  const rb = new RequestBuilder(rootUrl, deleteAllenamentoEsercizio.PATH, 'delete');
+  const rb = new RequestBuilder(rootUrl, updateUser.PATH, 'put');
   if (params) {
-    rb.path('allenamentoEsercizio-id', params['allenamentoEsercizio-id'], {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -29,4 +30,4 @@ export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, pa
   );
 }
 
-deleteAllenamentoEsercizio.PATH = '/trainingexercise/{allenamentoEsercizio-id}';
+updateUser.PATH = '/users';

@@ -1,6 +1,7 @@
 package com.barutta02.FitnessApp.periodo_allenamento;
 
 
+import com.barutta02.FitnessApp.allenamento.DTO.AllenamentoResponse;
 import com.barutta02.FitnessApp.common.PageResponse;
 import com.barutta02.FitnessApp.periodo_allenamento.DTO.PeriodoAllenamentoRequest;
 import com.barutta02.FitnessApp.periodo_allenamento.DTO.PeriodoAllenamentoResponse;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("periodTraining")
@@ -34,7 +37,12 @@ public class PeriodoAllenamentoController {
             @Valid @RequestBody PeriodoAllenamentoRequest request,
             Authentication connectedUser //the connected user is passed as an argument
     ) {
-        return ResponseEntity.ok(service.save(request, connectedUser));
+        PeriodoAllenamentoResponse createdResource = service.save(request, connectedUser);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{periodo-allenamento-id}")
+                .buildAndExpand(createdResource.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(createdResource);
     }
 
 
@@ -62,6 +70,6 @@ public class PeriodoAllenamentoController {
         Authentication connectedUser
     ) {
         service.deletePeriodoAllenamento(periodo_allenamento_id, connectedUser);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

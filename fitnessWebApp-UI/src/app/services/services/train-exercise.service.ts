@@ -102,7 +102,7 @@ export class TrainExerciseService extends BaseService {
   }
 
   /** Path part for operation `deleteAllenamentoEsercizio()` */
-  static readonly DeleteAllenamentoEsercizioPath = '/trainingexercise/{allenamento-nome}/{index}';
+  static readonly DeleteAllenamentoEsercizioPath = '/trainingexercise/{allenamentoEsercizio-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

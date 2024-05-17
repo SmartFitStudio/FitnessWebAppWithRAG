@@ -77,9 +77,9 @@ export class ManageExerciseComponent implements OnInit {
       this.bindFormWith_ExerciseRequest();
       this.exerciseService.saveExercise({ body: this._exerciseRequest })
         .subscribe({
-          next: (exerciseId) => {
+          next: (response) => {
             if (this._selectedCover) {
-              this.uploadCoverImage(exerciseId);
+              this.uploadCoverImage(response.id);
             }
             this.router.navigate([sub_appRoutingModule.full_myExercisesPath]);
           },

@@ -7,15 +7,15 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface DeleteAllenamentoEsercizio$Params {
-  'allenamentoEsercizio-id': number;
+export interface DeleteProgresso$Params {
+  'progresso-id': number;
 }
 
-export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, params: DeleteAllenamentoEsercizio$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+export function deleteProgresso(http: HttpClient, rootUrl: string, params: DeleteProgresso$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 }>> {
-  const rb = new RequestBuilder(rootUrl, deleteAllenamentoEsercizio.PATH, 'delete');
+  const rb = new RequestBuilder(rootUrl, deleteProgresso.PATH, 'delete');
   if (params) {
-    rb.path('allenamentoEsercizio-id', params['allenamentoEsercizio-id'], {});
+    rb.path('progresso-id', params['progresso-id'], {});
   }
 
   return http.request(
@@ -29,4 +29,4 @@ export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, pa
   );
 }
 
-deleteAllenamentoEsercizio.PATH = '/trainingexercise/{allenamentoEsercizio-id}';
+deleteProgresso.PATH = '/progress/{progresso-id}';

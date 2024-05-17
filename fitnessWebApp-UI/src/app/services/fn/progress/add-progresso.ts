@@ -6,16 +6,17 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { ProgressoRequest } from '../../models/progresso-request';
+import { ProgressoResponse } from '../../models/progresso-response';
 
-export interface DeleteAllenamentoEsercizio$Params {
-  'allenamentoEsercizio-id': number;
+export interface AddProgresso$Params {
+      body: ProgressoRequest
 }
 
-export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, params: DeleteAllenamentoEsercizio$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-}>> {
-  const rb = new RequestBuilder(rootUrl, deleteAllenamentoEsercizio.PATH, 'delete');
+export function addProgresso(http: HttpClient, rootUrl: string, params: AddProgresso$Params, context?: HttpContext): Observable<StrictHttpResponse<ProgressoResponse>> {
+  const rb = new RequestBuilder(rootUrl, addProgresso.PATH, 'post');
   if (params) {
-    rb.path('allenamentoEsercizio-id', params['allenamentoEsercizio-id'], {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -23,10 +24,9 @@ export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, pa
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<{
-      }>;
+      return r as StrictHttpResponse<ProgressoResponse>;
     })
   );
 }
 
-deleteAllenamentoEsercizio.PATH = '/trainingexercise/{allenamentoEsercizio-id}';
+addProgresso.PATH = '/progress';

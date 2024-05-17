@@ -31,6 +31,171 @@
     }
   ],
   "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "updateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "deleteUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/progress/{progresso-id}": {
+      "get": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "getProgresso",
+        "parameters": [
+          {
+            "name": "progresso-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressoResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "updateProgresso",
+        "parameters": [
+          {
+            "name": "progresso-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProgressoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "deleteProgresso",
+        "parameters": [
+          {
+            "name": "progresso-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/periods/disable_active_period": {
       "put": {
         "tags": [
@@ -135,6 +300,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AllenamentoEsercizioResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/progress": {
+      "post": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "addProgresso",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProgressoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressoResponse"
                 }
               }
             }
@@ -264,8 +459,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/ExerciseResponse"
                 }
               }
             }
@@ -614,6 +808,63 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/AllenamentoEsercizioResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/progress/last/{N}": {
+      "get": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "getLastNProgressi",
+        "parameters": [
+          {
+            "name": "N",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProgressoResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/progress/all": {
+      "get": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "getAllProgressi",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProgressoResponse"
                   }
                 }
               }
@@ -1041,7 +1292,7 @@
         }
       }
     },
-    "/trainingexercise/{allenamento-nome}/{index}": {
+    "/trainingexercise/{allenamentoEsercizio-id}": {
       "delete": {
         "tags": [
           "TrainExercise"
@@ -1049,20 +1300,12 @@
         "operationId": "deleteAllenamentoEsercizio",
         "parameters": [
           {
-            "name": "allenamento-nome",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "index",
+            "name": "allenamentoEsercizio-id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int64"
             }
           }
         ],
@@ -1144,6 +1387,67 @@
   },
   "components": {
     "schemas": {
+      "UserRequest": {
+        "required": [
+          "dateOfBirth",
+          "firstname",
+          "lastname"
+        ],
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "ProgressoRequest": {
+        "required": [
+          "altezzaCm",
+          "dataMisurazione",
+          "percentualeMassaGrassa",
+          "percentualeMassaMagra",
+          "pesoKg"
+        ],
+        "type": "object",
+        "properties": {
+          "dataMisurazione": {
+            "type": "string",
+            "format": "date"
+          },
+          "pesoKg": {
+            "type": "number",
+            "format": "float"
+          },
+          "altezzaCm": {
+            "type": "number",
+            "format": "float"
+          },
+          "percentualeMassaGrassa": {
+            "type": "number",
+            "format": "float"
+          },
+          "percentualeMassaMagra": {
+            "type": "number",
+            "format": "float"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
       "PeriodoResponse": {
         "required": [
           "attivo",
@@ -1235,7 +1539,7 @@
             "type": "string"
           },
           "durata_in_ore": {
-            "minimum": 1,
+            "minimum": 0,
             "type": "number",
             "format": "float"
           }
@@ -1353,6 +1657,46 @@
           "recupero": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "ProgressoResponse": {
+        "required": [
+          "altezzaCm",
+          "dataMisurazione",
+          "id",
+          "percentualeMassaGrassa",
+          "percentualeMassaMagra",
+          "pesoKg"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataMisurazione": {
+            "type": "string",
+            "format": "date"
+          },
+          "pesoKg": {
+            "type": "number",
+            "format": "float"
+          },
+          "altezzaCm": {
+            "type": "number",
+            "format": "float"
+          },
+          "percentualeMassaGrassa": {
+            "type": "number",
+            "format": "float"
+          },
+          "percentualeMassaMagra": {
+            "type": "number",
+            "format": "float"
+          },
+          "note": {
+            "type": "string"
           }
         }
       },
@@ -1532,7 +1876,8 @@
         "required": [
           "description",
           "id",
-          "name"
+          "name",
+          "shareable"
         ],
         "type": "object",
         "properties": {
@@ -1652,6 +1997,34 @@
         "properties": {
           "token": {
             "type": "string"
+          }
+        }
+      },
+      "UserResponse": {
+        "required": [
+          "dateOfBirth",
+          "email",
+          "firstname",
+          "lastname",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
           }
         }
       },

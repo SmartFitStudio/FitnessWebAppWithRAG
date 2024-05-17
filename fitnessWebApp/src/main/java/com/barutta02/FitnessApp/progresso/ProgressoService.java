@@ -29,6 +29,12 @@ public class ProgressoService {
     private final ProgressoMapper progressoMapper;
     private final UserExtractor userExtractor;
 
+    public ProgressoResponse save(ProgressoRequest request, Authentication connectedUser) {
+        User user = userExtractor.getUserFromAuthentication(connectedUser);
+        Progresso progresso = progressoMapper.toProgresso(request,user);
+        return progressoMapper.toProgressoResponse(progressoRepository.save(progresso));
+    }
+    
     public ProgressoResponse getProgresso(Long progresso_id, Authentication connectedUser) {
         Progresso progresso = progressoRepository.findById(progresso_id)
             .orElseThrow(() -> new EntityNotFoundException("Nessun progresso trovato con ID: " + progresso_id));
@@ -57,11 +63,6 @@ public class ProgressoService {
             .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public ProgressoResponse addProgresso(ProgressoRequest request, Authentication connectedUser) {
-        User user = userExtractor.getUserFromAuthentication(connectedUser);
-        Progresso progresso = progressoMapper.toProgresso(request,user);
-        return progressoMapper.toProgressoResponse(progressoRepository.save(progresso));
-    }
 
     @Transactional
     public void updateProgresso(Long progresso_id, ProgressoRequest request, Authentication connectedUser){

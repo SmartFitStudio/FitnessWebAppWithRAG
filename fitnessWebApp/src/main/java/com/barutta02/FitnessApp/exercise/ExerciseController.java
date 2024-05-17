@@ -1,5 +1,6 @@
 package com.barutta02.FitnessApp.exercise;
 
+import com.barutta02.FitnessApp.allenamento_esercizio.DTO.AllenamentoEsercizioResponse;
 import com.barutta02.FitnessApp.common.PageResponse;
 import com.barutta02.FitnessApp.exercise.DTO.ExerciseRequest;
 import com.barutta02.FitnessApp.exercise.DTO.ExerciseResponse;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("exercises")
@@ -37,11 +40,16 @@ public class ExerciseController {
     private final ExerciseService service;
 
     @PostMapping
-    public ResponseEntity<Long> saveExercise(
+    public ResponseEntity<ExerciseResponse> saveExercise(
             @Valid @RequestBody ExerciseRequest request,
             Authentication connectedUser // the connected user is passed as an argument
     ) {
-        return ResponseEntity.ok(service.save(request, connectedUser));
+        ExerciseResponse createdResource = service.save(request, connectedUser);
+          URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                                              .path("/{exercise-id}")
+                                              .buildAndExpand(createdResource.getId())
+                                              .toUri();
+        return ResponseEntity.created(location).body(createdResource);
     }
 
     /*
@@ -76,14 +84,6 @@ public class ExerciseController {
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
             Authentication connectedUser) {
         return ResponseEntity.ok(service.findExerciseFromStore(page,size,connectedUser));
-    }
-
-    @DeleteMapping("/{exercise-id}")
-    public ResponseEntity<?> deleteExercise(
-            @PathVariable("exercise-id") Long exerciseId,
-            Authentication connectedUser) {
-        service.deleteExercise(exerciseId, connectedUser);
-        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -122,10 +122,18 @@ public class ExerciseController {
      */
     @PostMapping(value = "/cover/{exercise-id}", consumes = "multipart/form-data")
     public ResponseEntity<?> uploadBookCoverPicture(
-            @PathVariable("exercise-id") Long bookId,
+            @PathVariable("exercise-id") Long exerciseId,
             @Parameter() @RequestPart("file") MultipartFile file,
             Authentication connectedUser) {
-        service.uploadExerciseCoverPicture(file, connectedUser, bookId);
+        service.uploadExerciseCoverPicture(file, connectedUser, exerciseId);
         return ResponseEntity.accepted().build();
+    }
+
+    @DeleteMapping("/{exercise-id}")
+    public ResponseEntity<?> deleteExercise(
+            @PathVariable("exercise-id") Long exerciseId,
+            Authentication connectedUser) {
+        service.deleteExercise(exerciseId, connectedUser);
+        return ResponseEntity.noContent().build();
     }
 }

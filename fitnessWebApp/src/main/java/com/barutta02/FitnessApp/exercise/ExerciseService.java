@@ -35,7 +35,7 @@ public class ExerciseService {
     private final FileStorageService fileStorageService;
     private final UserExtractor userExtractor;
 
-    public Long save(ExerciseRequest request, Authentication connectedUser) {
+    public ExerciseResponse save(ExerciseRequest request, Authentication connectedUser) {
         User user = userExtractor.getUserFromAuthentication(connectedUser); // Get the connected user from the
                                                                             // Authentication object (Spring Security
         Exercise exercise = exerciseMapper.toExercise(request, user); // Convert the BookRequest object to a Book object
@@ -48,7 +48,7 @@ public class ExerciseService {
                             "Stai modificando un esercizio inesistente:: " + exercise.getId()));
             exercise.setCover(oldExercise.getCover());
         }
-        return exerciseRepository.save(exercise).getId(); // Save the book in the database and return its ID
+        return exerciseMapper.toExerciseResponse(exerciseRepository.save(exercise)); // Save the book in the database and return its ID
     }
 
     public ExerciseResponse findById(Long exercise_id) {

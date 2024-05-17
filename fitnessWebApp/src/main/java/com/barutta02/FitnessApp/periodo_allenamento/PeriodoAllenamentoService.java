@@ -1,13 +1,11 @@
 package com.barutta02.FitnessApp.periodo_allenamento;
 
 import com.barutta02.FitnessApp.allenamento.Allenamento;
-import com.barutta02.FitnessApp.allenamento.AllenamentoRepository;
 import com.barutta02.FitnessApp.allenamento.AllenamentoService;
 
 import com.barutta02.FitnessApp.common.PageResponse;
 import com.barutta02.FitnessApp.config.UserExtractor;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
-import com.barutta02.FitnessApp.exercise.Exercise;
 import com.barutta02.FitnessApp.periodo.Periodo;
 import com.barutta02.FitnessApp.periodo.PeriodoService;
 import com.barutta02.FitnessApp.periodo_allenamento.DTO.PeriodoAllenamentoRequest;
