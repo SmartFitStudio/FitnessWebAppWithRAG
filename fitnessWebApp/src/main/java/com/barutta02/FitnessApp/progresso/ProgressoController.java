@@ -1,5 +1,7 @@
 package com.barutta02.FitnessApp.progresso;
 
+import java.util.ArrayList;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +36,19 @@ public class ProgressoController {
         return ResponseEntity.ok(service.getProgresso(id, connectedUser));
     }
 
+    @GetMapping("/last/{N}")
+    public ResponseEntity<ArrayList<ProgressoResponse>> getLastNProgressi(
+        @PathVariable("N") Integer N, 
+        Authentication connectedUser) {
+        return ResponseEntity.ok(service.getLastNProgressi(N, connectedUser));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<ArrayList<ProgressoResponse>> getAllProgressi(
+        Authentication connectedUser) {
+        return ResponseEntity.ok(service.getAllProgressi(connectedUser));
+    }
+
     @PostMapping()
     public ResponseEntity<ProgressoResponse> addProgresso(
         @Valid @RequestBody ProgressoRequest request,
@@ -41,11 +56,12 @@ public class ProgressoController {
         return ResponseEntity.ok(service.addProgresso(request, connectedUser));
     }
 
-    @PutMapping()
+    @PutMapping("/{progresso-id}")
     public ResponseEntity<?> updateProgresso(
+        @PathVariable("progresso-id") Long id,
         @Valid @RequestBody ProgressoRequest request, 
         Authentication connectedUser) {
-        service.updateProgresso(request, connectedUser);
+        service.updateProgresso(id, request, connectedUser);
         return ResponseEntity.ok().build();
     }
 

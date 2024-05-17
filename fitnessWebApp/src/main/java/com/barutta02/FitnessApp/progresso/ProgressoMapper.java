@@ -12,23 +12,22 @@ public class ProgressoMapper {
     public ProgressoResponse toProgressoResponse(Progresso progresso) {
         return ProgressoResponse.builder()
             .id(progresso.getId())
-            .data_misurazione(progresso.getData_misurazione())
-            .peso_kg(progresso.getPeso_kg())
-            .altezza_cm(progresso.getAltezza_cm())
-            .percentaule_massa_grassa(progresso.getPercentaule_massa_grassa())
-            .percentaule_massa_magra(progresso.getPercentaule_massa_magra())
+            .dataMisurazione(progresso.getDataMisurazione())
+            .pesoKg(progresso.getPesoKg())
+            .altezzaCm(progresso.getAltezzaCm())
+            .percentualeMassaGrassa(progresso.getPercentualeMassaGrassa())
+            .percentualeMassaMagra(progresso.getPercentualeMassaMagra())
             .note(progresso.getNote()!=null?progresso.getNote():"")
             .build();
     }
 
     public Progresso toProgresso(ProgressoRequest progressoRequest, User creator) {
         return Progresso.builder()
-            .id(progressoRequest.id())
-            .data_misurazione(progressoRequest.data_misurazione())
-            .peso_kg(progressoRequest.peso_kg())
-            .altezza_cm(progressoRequest.altezza_cm())
-            .percentaule_massa_grassa(progressoRequest.percentaule_massa_grassa())
-            .percentaule_massa_magra(progressoRequest.percentaule_massa_magra())
+            .dataMisurazione(progressoRequest.dataMisurazione())
+            .pesoKg(progressoRequest.pesoKg())
+            .altezzaCm(progressoRequest.altezzaCm())
+            .percentualeMassaGrassa(progressoRequest.percentualeMassaGrassa())
+            .percentualeMassaMagra(progressoRequest.percentualeMassaMagra())
             .note(progressoRequest.note())
             .creator(creator)
             .build();
