@@ -1,7 +1,6 @@
-<div *ngIf="message" class="alert " [class.alert-danger]="level==='error'" [class.alert-success]="level==='success'"
-    role="alert">
-    <p>{{message}}</p>
-</div>
+<app-feedback-info-point [level]="level" *ngIf="messages.length > 0">
+    <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
+  </app-feedback-info-point>
 <a [routerLink]="newPeriodsLink" class="def_button" *ngIf="isAddingPermitted"><i class="fa-solid fa-plus"></i>
     Aggiungi</a>
 <div class="row" *ngIf="(periodsResponse$ | async) as periodsListResponse">

@@ -1,4 +1,7 @@
 <section class="sectionContainer">
+    <app-feedback-info-point [level]="level" *ngIf="messages.length > 0">
+        <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
+    </app-feedback-info-point>
     <div class ="train_general_info">
         <div class="first_column_info">
             <h2 class="trainName">{{nomeAllenamento}}</h2>

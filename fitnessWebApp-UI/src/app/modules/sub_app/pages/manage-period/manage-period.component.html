@@ -1,4 +1,4 @@
-<app-feedback-info-point [level]="'error'" *ngIf="errorMsg.length > 0">
+<app-feedback-info-point [level]="level" *ngIf="errorMsg.length > 0">
     <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{msg}}</p>
 </app-feedback-info-point>
 <!--POP UP per inserire l'allenamento-->
@@ -18,7 +18,7 @@
                 <label for="nome_periodo" class="form-label">Nome</label>
                 <input formControlName="nome_periodo" type="text" id="nome_periodo" class="form-control"
                     aria-describedby="nome_periodo_helper" name="nome_periodo" >
-                    <small class="text-danger" *ngIf="periodForm.get('nome_periodo')?.invalid">
+                    <small class="text-danger" *ngIf="!IsNomePeriodoInputValid">
                         Il nome del periodo è obbligatorio
                       </small>
                 <div id="nome_periodo_helper" class="form-text">
@@ -29,14 +29,14 @@
                     formControlName="obiettivo" >
                     <option *ngFor="let c of obbiettivi">{{ c }}</option>
                 </select>
-                <small class="text-danger" *ngIf="periodForm.get('obiettivo')?.invalid && (periodForm.get('obiettivo')?.dirty || periodForm.get('obiettivo')?.touched)">
+                <small class="text-danger" *ngIf="!IsObiettivoInputValid">
                     L'obiettivo del periodo è obbligatorio
                 </small>
 
                 <label for="durata_in_giorni" class="form-label">Durata in giorni del ciclo</label>
                 <input formControlName="durata_in_giorni" type="number" id="durata_in_giorni" class="form-control"
                     aria-describedby="durata_in_giorni_helper" name="durata_in_giorni" min="0" max="30" >
-                    <small class="text-danger" *ngIf="periodForm.get('durata_in_giorni')?.invalid">
+                    <small class="text-danger" *ngIf="!IsDurataInputValid">
                         La durata del ciclo è obbligatoria e deve essere maggiore di 0
                     </small>
                 <div id="durata_in_giorni_helper" class="form-text">
@@ -46,7 +46,7 @@
                 <label for="data_inizio" class="form-label">Data inzio</label>
                 <input formControlName="data_inizio" type="date" id="data_inizio" class="form-control"
                     aria-describedby="data_inizio_helper" name="durata_in_giorni">
-                    <small class="text-danger" *ngIf="periodForm.get('data_inizio')?.invalid">
+                    <small class="text-danger" *ngIf="!IsDataInizioInputValid">
                         La data di inizio è obbligatoria.
                     </small>
                 <div id="data_inizio_helper" class="form-text">

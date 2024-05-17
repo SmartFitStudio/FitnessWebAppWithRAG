@@ -32,23 +32,23 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
 })
 
 export class ManagePeriodComponent implements OnInit, OnDestroy {
-  isLinear = false;
-  nome_periodo_attivo: string = "";
-  private _isPopUpOpen: boolean = false;
-  private is_updating = false;
-  private lastPutRequestInfo: { day: number, periodo: PeriodoGiornata } | null = null;
-  private subs: Subscription[] = [];
-  obbiettivi: Array<String> = getObbiettivoPeriodoValues();
+  nome_periodo_attivo: string = ""; //per mostrare il nome del periodo attivo
   errorMsg: Array<String> = [];
+  level: 'success' |'error' = 'success';
   periodForm = this.formBuilder.group({
     nome_periodo: ['', Validators.required],
     obiettivo: [ObbiettivoPeriodo.NON_DEFINITO, Validators.required],
     durata_in_giorni: [7, [Validators.required, Validators.min(1)]],
-    data_inizio: ['', Validators.required], 
+    data_inizio: ['', Validators.required],
     data_fine: [''],
     is_attivo: [false, Validators.required]
   });
 
+  private _isPopUpOpen: boolean = false;
+  private lastPutRequestInfo: { day: number, periodo: PeriodoGiornata } | null = null; //informazione sull'ultima richiesta di aggiunta di un allenamento
+  private subs: Subscription[] = [];
+  //FOR THE SELECT INPUT VALUES
+  private _obbiettivi: Array<String> = getObbiettivoPeriodoValues();
 
   constructor(private formBuilder: FormBuilder,
     private _periodManager: PeriodManagerService,
@@ -58,10 +58,6 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
   ) { }
 
-
-
-  
-  
   ngOnDestroy(): void {
     this.subs.forEach(sub => {
       sub.unsubscribe();
@@ -81,33 +77,34 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
             data_fine: this._periodManager.periodoDataFine,
             is_attivo: this._periodManager.periodoAttivo
           });
-          if (this._periodManager.periodoName !== "") {
-            this.is_updating = true;
-          }
+          this.level = 'success';
+          this.errorMsg = ['Informazioni caricate correttamente'];
         },
         error: (error) => {
+          this.level = 'error';
           this.errorMsg = this.errorHandler.handleError(error);
         }
       }));
     }
-   
+    //Recupero il periodo attivo
     this.retrieveActivePeriod();
-    
+    //imposto il controllo sulla attivazione del periodo
     this.controlActivationPeriodo();
   }
 
   private retrieveActivePeriod() {
-      //Senza aspettare l'operazione sopra, recupero anche il periodo attivo
-      this.subs.push(this._periodManager.getActivePeriod$().subscribe(
-        {
-          error: (error) => {
-            this.errorMsg = this.errorHandler.handleError(error);
-          }
+    //Senza aspettare l'operazione sopra, recupero anche il periodo attivo
+    this.subs.push(this._periodManager.getActivePeriod$().subscribe(
+      {
+        error: (error) => {
+          this.level = 'error';
+          this.errorMsg = this.errorHandler.handleError(error);
         }
-      ));
+      }
+    ));
   }
 
-  private controlActivationPeriodo(){
+  private controlActivationPeriodo() {
     if (this.periodForm.get('is_attivo')) {
       //mi iscrivo ai cambiamenti del checkbox sul periodo
       let obs$ = this.periodForm.get('is_attivo')?.valueChanges.subscribe(isActive => {
@@ -126,71 +123,21 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
     }
   }
 
-  //DO la possibilità di disattivare il periodo attivo
+  //Do la possibilità di disattivare il periodo attivo
   disable_active_period() {
     this._periodManager.disableActivePeriodo$().subscribe({
       complete: () => {
         this.nome_periodo_attivo = "";
       },
       error: (error) => {
+        this.level = 'error';
         this.errorMsg = this.errorHandler.handleError(error);
       }
     });
   }
 
-  get isPopUpOpen(): boolean {
-    return this._isPopUpOpen;
-  }
-  get isUpdating(): boolean {
-    return this.is_updating;
-  }
-
-  get nome_periodo(): string {
-    return this.periodForm.value.nome_periodo ? this.periodForm.value.nome_periodo : "Non definito";
-  }
-  get obiettivo(): string {
-    return this.periodForm.value.obiettivo ? this.periodForm.value.obiettivo : "Non definito";
-  }
-  get period_length(): number {
-    return this.periodForm.value.durata_in_giorni ? this.periodForm.value.durata_in_giorni : 0;
-  }
-
-  get allenamenti_periodo(): PeriodoAllenamentoRequest[] {
-    return this._periodManager.allenamentiPeriodo;
-  }
-
-  public getAllenamentoById(id: number): AllenamentoResponse | undefined {
-    return this._periodManager.getAllenamentoById(id);
-  }
-
-
-  private updatePeriodInfo() {
-    if (this.periodForm.value.nome_periodo)
-      this._periodManager.periodoName = this.periodForm.value.nome_periodo;
-    if (this.periodForm.value.obiettivo)
-      this._periodManager.periodoObiettivo = this.periodForm.value.obiettivo;
-    if (this.periodForm.value.durata_in_giorni)
-      this._periodManager.periodoDurataInGiorni = this.periodForm.value.durata_in_giorni;
-    if (this.periodForm.value.data_inizio)
-      this._periodManager.periodoDataInizio = this.periodForm.value.data_inizio;
-    if (this.periodForm.value.data_fine)
-      this._periodManager.periodoDataFine = this.periodForm.value.data_fine;
-    this._periodManager.periodoAttivo = this.periodForm.value.is_attivo as boolean;
-  }
-  closeDialog() {
-    this._isPopUpOpen = false;
-  }
-
-  getAllenamentoPeriodoByDay(day: number): PeriodoAllenamentoRequest[] {
-    return this._periodManager.getAllenamentiPeriodoByDay(day);
-  }
-
-  private emptyErrorMsg() {
-    this.errorMsg = [];
-  }
-
   addNewTraining($event: { day: number, periodo: PeriodoGiornata }) {
-    this.emptyErrorMsg();
+    this.errorMsg = [];
     if (this.periodForm.value.nome_periodo) {
       this.lastPutRequestInfo = $event;
       this._isPopUpOpen = true;
@@ -204,7 +151,7 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
   }
 
   add_training_top_period($event: AllenamentoResponse) {
-    this.emptyErrorMsg();
+    this.errorMsg = [];
     if (this.periodForm.value.nome_periodo) {
       this.updatePeriodInfo();
       if (this.lastPutRequestInfo && this.periodForm.value.nome_periodo && $event.name) {
@@ -222,6 +169,12 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
   }
 
   submitPeriod() {
+    this.errorMsg = [];
+    if (!this.periodForm.valid) {
+      this.errorMsg.push("Compila correttamente i campi obbligatori");
+      return;
+    }
+
     this.updatePeriodInfo();
     this.subs.push(this._periodManager.savePeriodo$().subscribe({
       complete: () => {
@@ -231,9 +184,70 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
         this.errorMsg = this.errorHandler.handleError(err);
         this.errorMsg.push("Errore nel salvataggio del periodo");
       }
-    })); 
+    }));
   }
 
+  /*BOILERPLATE CODE */
+  private updatePeriodInfo() {
+    if (this.periodForm.valid) {
+      if (this.periodForm.value.nome_periodo)
+        this._periodManager.periodoName = this.periodForm.value.nome_periodo;
+      if (this.periodForm.value.obiettivo)
+        this._periodManager.periodoObiettivo = this.periodForm.value.obiettivo;
+      if (this.periodForm.value.durata_in_giorni)
+        this._periodManager.periodoDurataInGiorni = this.periodForm.value.durata_in_giorni;
+      if (this.periodForm.value.data_inizio)
+        this._periodManager.periodoDataInizio = this.periodForm.value.data_inizio;
+      if (this.periodForm.value.data_fine)
+        this._periodManager.periodoDataFine = this.periodForm.value.data_fine;
+      this._periodManager.periodoAttivo = this.periodForm.value.is_attivo as boolean;
+    }
+  }
+  closeDialog() {
+    this._isPopUpOpen = false;
+  }
 
+  getAllenamentoPeriodoByDay(day: number): PeriodoAllenamentoRequest[] {
+    return this._periodManager.getAllenamentiPeriodoByDay(day);
+  }
 
+  get isPopUpOpen(): boolean {
+    return this._isPopUpOpen;
+  }
+  get nome_periodo(): string {
+    return this.periodForm.value.nome_periodo ? this.periodForm.value.nome_periodo : "Non definito";
+  }
+  get obiettivo(): string {
+    return this.periodForm.value.obiettivo ? this.periodForm.value.obiettivo : "Non definito";
+  }
+  get period_length(): number {
+    return this.periodForm.value.durata_in_giorni ? this.periodForm.value.durata_in_giorni : 0;
+  }
+  get allenamenti_periodo(): PeriodoAllenamentoRequest[] {
+    return this._periodManager.allenamentiPeriodo;
+  }
+  get obbiettivi(): Array<String> {
+    return this._obbiettivi;
+  }
+  public getAllenamentoById(id: number): AllenamentoResponse | undefined {
+    return this._periodManager.getAllenamentoById(id);
+  }
+  get IsNomePeriodoInputValid(): boolean {
+    return this.periodForm.controls.nome_periodo.valid;
+  }
+  get IsObiettivoInputValid(): boolean {
+    return this.periodForm.controls.obiettivo.valid;
+  }
+  get IsDurataInputValid(): boolean {
+    return this.periodForm.controls.durata_in_giorni.valid;
+  }
+  get IsDataInizioInputValid(): boolean {
+    return this.periodForm.controls.data_inizio.valid;
+  }
+  get IsDataFineInputValid(): boolean {
+    return this.periodForm.controls.data_fine.valid;
+  }
+  get IsFormValid(): boolean {
+    return this.periodForm.valid;
+  }
 }

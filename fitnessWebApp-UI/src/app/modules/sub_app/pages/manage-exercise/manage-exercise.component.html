@@ -16,7 +16,7 @@
           <label for="nome" class="form-label">Nome esercizio</label>
           <input  type="text" class="form-control" id="nome" name="nome"
             placeholder="Nome Esercizio" formControlName="exerciseName">
-            <small class="text-danger" *ngIf="exerciseForm.get('exerciseName')?.invalid && (exerciseForm.get('exerciseName')?.dirty || exerciseForm.get('exerciseName')?.touched)">
+            <small class="text-danger" *ngIf="!IsExerciseNameInputValid">
               Il nome dell'esercizio è obbligatorio
             </small>
         </div>
@@ -24,7 +24,7 @@
           <label for="description" class="form-label">Descrizione</label>
           <input formControlName="exerciseDescription" type="text" class="form-control" id="description"
             name="description" placeholder="Descrizione">
-            <small class="text-danger" *ngIf="exerciseForm.get('exerciseDescription')?.invalid && (exerciseForm.get('exerciseDescription')?.dirty || exerciseForm.get('exerciseDescription')?.touched)">
+            <small class="text-danger" *ngIf="!IsExerciseDescriptionInputValid">
               La descrizione dell'esercizio è obbligatoria
             </small>
         </div>

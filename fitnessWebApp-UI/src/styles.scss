@@ -106,3 +106,18 @@ body {
 .right{
   float: right;
 }
+
+small.text-danger{
+  position: relative;
+  top:.3em;
+  padding: .3em;
+  color: #fff!important;
+  font-size: .9em!important;
+  background-color: #f88282;
+  border-radius: 10px;
+}
+.text-danger::before {
+  content: "\f06a"; 
+  font-family: FontAwesome; 
+  font-style: normal;
+}

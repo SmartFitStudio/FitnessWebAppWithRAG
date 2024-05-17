@@ -3,44 +3,36 @@ import {  AllenamentoEsercizioRequest, ExerciseResponse, PageResponseExerciseRes
 import { ExerciseService } from '../../../../services/services';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { Router, RouterLink } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { EMPTY, Observable, catchError, map } from 'rxjs';
 import { ExerciseCardComponent } from '../../components/exercise-card/exercise-card.component';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
+import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 
 @Component({
     selector: 'app-my-exercise-list',
     templateUrl: './my-exercise-list.component.html',
     styleUrls: ['./my-exercise-list.component.scss'],
     standalone: true,
-    imports: [NgIf, RouterLink, NgFor, ExerciseCardComponent, AsyncPipe]
+    imports: [NgIf, RouterLink, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
 export class MyExerciseListComponent implements OnInit {
   exerciseResponse$?: Observable<PageResponseExerciseResponse>;
-  totalPages? = 0;
-  page = 0;
-  size = 5;
-  pages: any = [];
-  message = '';
+  messages: Array<string>= [];
   level: 'success' |'error' = 'success';
 
+  private totalPages? = 0;
+  private _page = 0;
+  private _size = 5;
+  private _pages: any = [];
   private _isListForInput = false; // La lista è per la selezione di un esercizio da aggiungere ad un allenamento? Viene passato dal padre
   private _is_adding_permitted = true; // Do la possibilità all'utente di andare sulla schermata per creare un nuovo esericizio? di default si, ma viene passato dal padre
 
   constructor(
     private exerciseService: ExerciseService,
-    private router: Router
+    private router: Router,
+    private handleError: ErrorHandlerService
   ) {
-  }
-
-  /*
-  Funzione di trackby utilizzata per evitare che angular ricarichi tutti i componenti della lista nell' ngfor
-  */
-  trackByExerciseResponse(index: number, exercise: ExerciseResponse): number {
-    return exercise.id as number;
-  }
-
-  ngOnInit(): void {
-    this.findAllMyExercise();
   }
 
   @Input()
@@ -53,44 +45,40 @@ export class MyExerciseListComponent implements OnInit {
     this._is_adding_permitted = value;
   }
 
-  get isListForInput() {
-    return this._isListForInput;
-  }
-
-  get newExerciseLink(): string {
-    return sub_appRoutingModule.full_manageExercisePath;
-  }
-
-  get isAddingPermitted() {
-    return this._is_adding_permitted;
+  ngOnInit(): void {
+    this.findAllMyExercise();
   }
 
   private findAllMyExercise() {
-    
     this.exerciseResponse$ = this.exerciseService.findAllExercise({
-      page: this.page,
-      size: this.size
+      page: this._page,
+      size: this._size
     }).pipe(
       map((response: PageResponseExerciseResponse) => {
         this.totalPages = response.totalPages;
-         this.pages = Array(response.totalPages)
+         this._pages = Array(response.totalPages)
             .fill(0)
             .map((x, i) => i);
         return response;
-      })
-    );
+      }),
+      catchError((error) => {
+        this.messages = this.handleError.handleError(error);
+        this.level = 'error';
+        return EMPTY;
+      }
+    ));
   }
 
   deleteExercise(exerciseResponse: ExerciseResponse) {
     this.exerciseService.deleteExercise({ 'exercise-id': exerciseResponse.id as number})
       .subscribe({
         next: () => {
-          this.message = 'Exercise deleted';
+          this.messages = ['Esercizio eliminato con successo'];
           this.level = 'success';
           this.findAllMyExercise();
         },
-        error: () => {
-          this.message = 'Error deleting exercise';
+        error: (error) => {
+          this.messages = this.handleError.handleError(error);
           this.level = 'error';
         }
       });
@@ -99,42 +87,64 @@ export class MyExerciseListComponent implements OnInit {
   editExercise(exerciseResponse: ExerciseResponse) {
     this.router.navigate([sub_appRoutingModule.full_manageExercisePath , exerciseResponse.id]);
   }
-  get goToStore(): string {
-    return sub_appRoutingModule.full_exerciseStorePath;
-  }
-
-  gotToPage(page: number) {
-    this.page = page;
-    this.findAllMyExercise();
-  }
-
-  goToFirstPage() {
-    this.page = 0;
-    this.findAllMyExercise();
-  }
-
-  goToPreviousPage() {
-    this.page --;
-    this.findAllMyExercise();
-  }
-
-  goToLastPage() {
-    this.page = this.totalPages as number - 1;
-    this.findAllMyExercise();
-  }
-
-  goToNextPage() {
-    this.page++;
-    this.findAllMyExercise();
-  }
-
-  isLastPage() {
-    return this.page === this.totalPages as number - 1;
-  }
 
   @Output() private addExerciseToTraining: EventEmitter<AllenamentoEsercizioRequest> = new EventEmitter<AllenamentoEsercizioRequest>();
-
   addExerciseToTrainingHandler($event: AllenamentoEsercizioRequest){
     this.addExerciseToTraining.emit($event);
+  }
+
+  /*BOILERPLATE CODE */
+  gotToPage(page: number) {
+    this._page = page;
+    this.findAllMyExercise();
+  }
+  goToFirstPage() {
+    this._page = 0;
+    this.findAllMyExercise();
+  }
+  goToPreviousPage() {
+    this._page --;
+    this.findAllMyExercise();
+  }
+  goToLastPage() {
+    this._page = this.totalPages as number - 1;
+    this.findAllMyExercise();
+  }
+  goToNextPage() {
+    this._page++;
+    this.findAllMyExercise();
+  }
+  isLastPage() {
+    return this._page === this.totalPages as number - 1;
+  }
+  get page(): number {
+    return this._page;
+  }
+  get size(): number {
+    return this._size;
+  }
+  get pages(): any {
+    return this._pages;
+  }
+  get isListForInput() {
+    return this._isListForInput;
+  }
+
+  get isAddingPermitted() {
+    return this._is_adding_permitted;
+  }
+  /*
+  Funzione di trackby utilizzata per evitare che angular ricarichi tutti i componenti della lista nell' ngfor
+  */
+  trackByExerciseResponse(index: number, exercise: ExerciseResponse): number {
+    return exercise.id as number;
+  }
+
+  //LINKS
+  get newExerciseLink(): string {
+    return sub_appRoutingModule.full_manageExercisePath;
+  }
+  get goToStore(): string {
+    return sub_appRoutingModule.full_exerciseStorePath;
   }
 }

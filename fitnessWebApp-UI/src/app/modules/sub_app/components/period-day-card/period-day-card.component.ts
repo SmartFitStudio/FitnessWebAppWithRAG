@@ -15,35 +15,13 @@ private _index!: number;
 private _allenamenti:  PeriodoAllenamentoRequest[] = []; //
 
 @Input({required: true})
-get index(): number {
-  return this._index;
-}
 set index(value: number) {
   this._index = value;
 }
 
 @Input()
-get allenamenti(): PeriodoAllenamentoRequest[] {
-  return this._allenamenti;
-}
 set allenamenti(value: PeriodoAllenamentoRequest[]) {
   this._allenamenti = value;
-}
-
-get PeriodoGiornata(): typeof PeriodoGiornata {
-  return PeriodoGiornata;
-}
-
-get allenamentoPerodoMattina (): PeriodoAllenamentoRequest | undefined {
-  return this.allenamenti.find((allenamento) => allenamento.periodo_giornata == 'MATTINA');
-}
-
-get allenamentoPerodoPomeriggio (): PeriodoAllenamentoRequest | undefined {
-  return this.allenamenti.find((allenamento) => allenamento.periodo_giornata == 'POMERIGGIO');
-}
-
-get allenamentoPerodoSera (): PeriodoAllenamentoRequest | undefined {
-  return this.allenamenti.find((allenamento) => allenamento.periodo_giornata == 'SERA');
 }
 
 @Output() private requestToAdd: EventEmitter<{day: number, periodo:PeriodoGiornata}> = new EventEmitter<{day: number, periodo:PeriodoGiornata}>();
@@ -52,9 +30,27 @@ get allenamentoPerodoSera (): PeriodoAllenamentoRequest | undefined {
 addAllenamento(periodo: PeriodoGiornata) {
   this.requestToAdd.emit({day:this._index, periodo: periodo});
 }
-
 removeAllenamento(periodo: PeriodoGiornata) {
   this.requestToRemove.emit({day:this._index, periodo: periodo});
 }
 
+//BOILERPLATE CODE
+get PeriodoGiornata(): typeof PeriodoGiornata {
+  return PeriodoGiornata;
+}
+get allenamenti(): PeriodoAllenamentoRequest[] {
+  return this._allenamenti;
+}
+get index(): number {
+  return this._index;
+}
+get allenamentoPerodoMattina (): PeriodoAllenamentoRequest | undefined {
+  return this.allenamenti.find((allenamento) => allenamento.periodo_giornata == 'MATTINA');
+}
+get allenamentoPerodoPomeriggio (): PeriodoAllenamentoRequest | undefined {
+  return this.allenamenti.find((allenamento) => allenamento.periodo_giornata == 'POMERIGGIO');
+}
+get allenamentoPerodoSera (): PeriodoAllenamentoRequest | undefined {
+  return this.allenamenti.find((allenamento) => allenamento.periodo_giornata == 'SERA');
+}
 }

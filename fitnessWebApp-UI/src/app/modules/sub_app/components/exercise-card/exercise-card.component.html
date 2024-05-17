@@ -8,12 +8,12 @@
       <i (click)="onEdit()" class="fa-solid fa-pen-to-square"></i>
       <i (click)="onDelete()" class="fa-solid fa-trash"></i>
     </div>
-    <div *ngIf="storeViewActive"  class="d-flex gap-2 iteractionButtons">
+    <div *ngIf="storeViewActive" class="d-flex gap-2 iteractionButtons">
       <i (click)="importExercise()" class="fa-solid fa-file-import"></i>
     </div>
     <button *ngIf="isAnOrderedInput" (click)="changeInputView()" class="def_button">
       <ng-container *ngIf="!isOpenInputView; else closeIcon">
-        <i class="fa-solid fa-gears" ></i>
+        <i class="fa-solid fa-gears"></i>
       </ng-container>
       <ng-template #closeIcon>
         <i class="fa-solid fa-xmark"></i>
@@ -27,14 +27,23 @@
         <label class="sr-only" [for]="'serieInput' + exercise.id">Serie</label>
         <input formControlName="serie" type="number" class="form-control mb-2 mr-sm-2" [id]="'serieInput' + exercise.id"
           placeholder="Serie" min="0" name="serie">
+          <small class="text-danger" *ngIf="!IsSerieInputValid">
+            E' necessario inserire un valore maggiore di 0
+          </small>
         <!--Ripetizioni o tempi-->
         <label class="sr-only" [for]="'ripetizioniInput' + exercise.id">Ripetizioni</label>
         <input formControlName="ripetizioni" type="number" class="form-control mb-2 mr-sm-2"
           [id]="'ripetizioniInput' + exercise.id" placeholder="Ripetizioni" min="0" name="ripetizioni">
+          <small class="text-danger" *ngIf="!IsRipetizioniInputValid">
+            E' necessario inserire un valore maggiore di 0
+          </small>
         <!--Recupero-->
         <label class="sr-only" [for]="'recuperoInput' + exercise.id">Recupero</label>
         <input formControlName="recupero" type="number" class="form-control mb-2 mr-sm-2"
           [id]="'recuperoInput' + exercise.id" placeholder="Recupero" min="0" name="recupero">
+          <small class="text-danger" *ngIf="!IsRecuperoInputValid">
+            E' necessario inserire un valore maggiore di 0
+          </small>
       </form>
     </div>
   </div>

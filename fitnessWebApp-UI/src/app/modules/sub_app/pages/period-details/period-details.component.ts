@@ -6,26 +6,33 @@ import { ObbiettivoPeriodo } from '../../../../services//myModels/obbiettivoPeri
 import { EventSettingsModel } from '@syncfusion/ej2-angular-schedule';
 import { ObiettivoPeriodoPipePipe } from '../../services/pipes/obiettivo-periodo-pipe.pipe';
 import { CalendarComponent } from '../../components/calendar/calendar.component';
+import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
+import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
+import { NgFor } from '@angular/common';
 
 @Component({
-    selector: 'app-period-details',
-    templateUrl: './period-details.component.html',
-    styleUrls: ['./period-details.component.scss'],
-    providers: [PeriodManagerService] // Fornisce il servizio a livello di componente, quindi ogni componente avrà la sua istanza di PeriodManagerService
-    ,
-    standalone: true,
-    imports: [CalendarComponent, ObiettivoPeriodoPipePipe]
+  selector: 'app-period-details',
+  templateUrl: './period-details.component.html',
+  styleUrls: ['./period-details.component.scss'],
+  providers: [PeriodManagerService] // Fornisce il servizio a livello di componente, quindi ogni componente avrà la sua istanza di PeriodManagerService
+  ,
+  standalone: true,
+  imports: [NgFor, CalendarComponent, ObiettivoPeriodoPipePipe, FeedbackInfoPointComponent]
 })
 export class PeriodDetailsComponent implements OnInit {
+  messages: Array<string> = [];
+  level: 'success' | 'error' = 'success';
 
   private _eventSetting: EventSettingsModel = {};
   private infoTaken: boolean = false;
+
   constructor(private periodManagerService: PeriodManagerService,
-  private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private handleError: ErrorHandlerService) {
     this._eventSetting.allowAdding = false;
     this._eventSetting.allowDeleting = false;
     this._eventSetting.allowEditing = false;
-   }
+  }
 
   ngOnInit(): void {
     const period_id = this.activatedRoute.snapshot.params['period_id'];
@@ -36,11 +43,15 @@ export class PeriodDetailsComponent implements OnInit {
           this._eventSetting.dataSource = this.periodManagerService.getScheduleEvents(20);
           this.infoTaken = true;
           periodInfoSubscription$.unsubscribe();
+        }, error: (error) => {
+          this.level = 'error';
+          this.messages = this.handleError.handleError(error);
         }
       });
     }
   }
 
+  /**BOILERPLATE CODE */
 
   get period_name(): string {
     return this.periodManagerService.periodoName;
@@ -66,8 +77,7 @@ export class PeriodDetailsComponent implements OnInit {
     return this.periodManagerService.allenamentoPeriodoResponseList;
   }
 
-
-  get eventSettings(): EventSettingsModel  {
+  get eventSettings(): EventSettingsModel {
     if (!this.infoTaken) {
       return {};
     }

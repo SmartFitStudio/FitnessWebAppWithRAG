@@ -22,13 +22,13 @@ export class MyTrainingListNoPaginationComponent implements OnInit {
     });
   }
 
-  get trainings(): AllenamentoResponse[] {
-    return this._trainings;
-  }
-
   @Output() private add_training: EventEmitter<AllenamentoResponse> = new EventEmitter<AllenamentoResponse>();
-
   aggiungiAllenamento($event: AllenamentoResponse) {
     this.add_training.emit($event);
+  }
+
+  //BOILERPLATE CODE
+  get trainings(): AllenamentoResponse[] {
+    return this._trainings;
   }
 }

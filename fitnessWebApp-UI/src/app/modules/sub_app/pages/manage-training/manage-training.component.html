@@ -1,5 +1,5 @@
 <!--Inserisci prima tutte le info di contesto-->
-<app-feedback-info-point [level]="'error'" *ngIf="errorMsg.length > 0">
+<app-feedback-info-point [level]="level" *ngIf="errorMsg.length > 0">
     <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{msg}}</p>
 </app-feedback-info-point>
 <form class="row row-cols-lg-auto g-3 align-items-center" [formGroup]="trainingForm">
@@ -7,7 +7,7 @@
         <label for="nome_allenamento" class="form-label">Nome</label>
         <input formControlName="nome_allenamento" type="text" id="nome_allenamento"
             class="form-control" aria-describedby="nome_allenamento_helper" name="nome_allenamento">
-            <small class="text-danger" *ngIf="trainingForm.get('nome_allenamento')?.invalid">
+            <small class="text-danger" *ngIf="!IsNomeAllenamentoInputValid">
                 Il nome dell'allenamento è obbligatorio
               </small>
         <div id="nome_allenamento_helper" class="form-text">
@@ -27,7 +27,7 @@
         <input formControlName="durata_in_ore_allenamento" type="number"
             id="durata_allenamento" class="form-control" aria-describedby="durata_allenamento_helper"
             name="durata_allenamento">
-            <small class="text-danger" *ngIf="trainingForm.get('durata_in_ore_allenamento')?.invalid">
+            <small class="text-danger" *ngIf="!IsDurataAllenamentoInputValid">
                 La durata dell'allenamento deve essere maggiore di 0.
             </small>
         <div id="durata_allenamento_helper" class="form-text">

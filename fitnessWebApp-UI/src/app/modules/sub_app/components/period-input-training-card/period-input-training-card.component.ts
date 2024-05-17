@@ -8,14 +8,9 @@ import { AllenamentoResponse } from '../../../../services/models';
     standalone: true
 })
 export class PeriodInputTrainingCardComponent {
-
-
   private _training!: AllenamentoResponse;
 
   @Input({required:true})
-  get training(): AllenamentoResponse {
-    return this._training;
-  }
   set training(value: AllenamentoResponse) {
     this._training = value;
   }
@@ -24,5 +19,10 @@ export class PeriodInputTrainingCardComponent {
 
   aggiungi(){
     this.add.emit(this._training);
+  }
+
+  //BOILERPLATE CODE
+  get training(): AllenamentoResponse {
+    return this._training;
   }
 }

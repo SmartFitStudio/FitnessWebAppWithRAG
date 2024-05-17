@@ -14,14 +14,17 @@ import { ErrorHandlerService } from '../../../../services/myServices/error-handl
     imports: [CalendarComponent,UserProgressCardComponent],
 })
 export class HomePageComponent implements OnInit{
+  viewMode: View = 'Agenda';
+  messages: string[] = [];
   private _eventSetting: EventSettingsModel = {};
   private events: ScheduleEvent[] = [];
-  viewMode: View = 'Agenda';
 
   constructor(
     private periodManagerService: PeriodManagerService,
-    private periodoService: PeriodsService //Il periodo attivo è ottenuto tramite singleton dell'istanza di periodManagerService creata nel main
+    private periodoService: PeriodsService, //Il periodo attivo è ottenuto tramite singleton dell'istanza di periodManagerService creata nel main
+    private handleError: ErrorHandlerService
   ) {
+    //impostazioni per il calendario
     this._eventSetting.allowAdding = false;
     this._eventSetting.allowDeleting = false;
     this._eventSetting.allowEditing = false;
@@ -37,13 +40,15 @@ export class HomePageComponent implements OnInit{
               this.events = this.periodManagerService.getScheduleEvents(20);
             },
             error: (error) => {
-              //ErrorHandlerService.handleError(error);
+              this.messages = this.handleError.handleError(error);
             }
           });
         }
       }
     });
   }
+
+  /*BOILERPLATE CODE */
 
   get eventSettings(): EventSettingsModel {
    if(this.events.length === 0){

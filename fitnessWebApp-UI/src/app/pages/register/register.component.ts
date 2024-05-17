@@ -6,18 +6,18 @@ import { AppRoutingModule } from '../../app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
 import { ErrorHandlerService } from '../../services/myServices/error-handler/error-handler.service';
-import { ErrorListComponent } from '../../component/error-list/error-list.component';
+import { FeedbackInfoPointComponent } from '../../component/feedback-info-point/feedback-info-point.component';
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, FormsModule,ErrorListComponent]
+    imports: [NgIf, NgFor, FormsModule,FeedbackInfoPointComponent]
 })
 export class RegisterComponent {
 
   registerRequest: RegistrationRequest = {email: '',  firstname: '', lastname: '', password: '', username: ''};
-  errorMsg: Array<string> = [];
+  messages: Array<string> = [];
 
   constructor(
     private router: Router,
@@ -33,7 +33,7 @@ export class RegisterComponent {
 
   register() {
     localStorage.clear(); // NOTE: controlla che sia corretto farlo
-    this.errorMsg = [];
+    this.messages = [];
     this.authService.register({
       body: this.registerRequest
     })
@@ -42,7 +42,7 @@ export class RegisterComponent {
           this.router.navigate([AppRoutingModule.activateAccountPath]);
         },
         error: (err) => {
-          this.errorMsg = this.handleError.handleError(err);
+          this.messages = this.handleError.handleError(err);
         }
       });
   }
