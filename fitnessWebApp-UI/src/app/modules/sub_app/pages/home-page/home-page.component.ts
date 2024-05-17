@@ -4,16 +4,16 @@ import { PeriodManagerService } from '../../services/period-manager-service/peri
 import { ScheduleEvent } from '../../services/models/scheduleEvent';
 import { PeriodsService } from '../../../../services/services';
 import { CalendarComponent } from '../../components/calendar/calendar.component';
-import {UserProgressCardComponent} from '../../components/user-progress-card/user-progress-card.component';
+import { UserProgressCardComponent } from '../../components/user-progress-card/user-progress-card.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 @Component({
-    selector: 'app-home-page',
-    templateUrl: './home-page.component.html',
-    styleUrls: ['./home-page.component.scss'],
-    standalone: true,
-    imports: [CalendarComponent,UserProgressCardComponent],
+  selector: 'app-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.scss'],
+  standalone: true,
+  imports: [CalendarComponent, UserProgressCardComponent],
 })
-export class HomePageComponent implements OnInit{
+export class HomePageComponent implements OnInit {
   viewMode: View = 'Agenda';
   messages: string[] = [];
   private _eventSetting: EventSettingsModel = {};
@@ -40,7 +40,9 @@ export class HomePageComponent implements OnInit{
               this.events = this.periodManagerService.getScheduleEvents(20);
             },
             error: (error) => {
-              this.messages = this.handleError.handleError(error);
+              this.handleError.handleError(error).forEach((value) => {
+                this.messages.push(value.message);
+              });
             }
           });
         }
@@ -51,11 +53,11 @@ export class HomePageComponent implements OnInit{
   /*BOILERPLATE CODE */
 
   get eventSettings(): EventSettingsModel {
-   if(this.events.length === 0){
-    this.events = this.periodManagerService.getScheduleEvents(20); //ripetizione ma devo perche  this._eventSetting.dataSource non è una collection
-    this._eventSetting.dataSource = this.events;
-    return {};//Empty eventSetting object
-   }
+    if (this.events.length === 0) {
+      this.events = this.periodManagerService.getScheduleEvents(20); //ripetizione ma devo perche  this._eventSetting.dataSource non è una collection
+      this._eventSetting.dataSource = this.events;
+      return {};//Empty eventSetting object
+    }
     return this._eventSetting;
   }
 

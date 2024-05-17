@@ -45,7 +45,9 @@ export class PeriodDetailsComponent implements OnInit {
           periodInfoSubscription$.unsubscribe();
         }, error: (error) => {
           this.level = 'error';
-          this.messages = this.handleError.handleError(error);
+          this.handleError.handleError(error).forEach((value) => {
+            this.messages.push(value.message);
+          });
         }
       });
     }

@@ -62,7 +62,9 @@ export class MyExerciseListComponent implements OnInit {
         return response;
       }),
       catchError((error) => {
-        this.messages = this.handleError.handleError(error);
+        this.handleError.handleError(error).forEach((value) => {
+          this.messages.push(value.message);
+        });
         this.level = 'error';
         return EMPTY;
       }
@@ -78,7 +80,9 @@ export class MyExerciseListComponent implements OnInit {
           this.findAllMyExercise();
         },
         error: (error) => {
-          this.messages = this.handleError.handleError(error);
+          this.handleError.handleError(error).forEach((value) => {
+            this.messages.push(value.message);
+          });
           this.level = 'error';
         }
       });

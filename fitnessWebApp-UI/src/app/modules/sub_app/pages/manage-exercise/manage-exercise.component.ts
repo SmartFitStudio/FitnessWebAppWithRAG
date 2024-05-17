@@ -62,8 +62,10 @@ export class ManageExerciseComponent implements OnInit {
           }
           this.bind_ExerciseRequestWithForm(this._exerciseRequest);
         },
-        error: (err) => {
-          this.errorMsg = this.handleError.handleError(err);
+        error: (error) => {
+          this.handleError.handleError(error).forEach((value) => {
+            this.errorMsg.push(value.message);
+          });
         }
       });
     }
@@ -81,8 +83,10 @@ export class ManageExerciseComponent implements OnInit {
             }
             this.router.navigate([sub_appRoutingModule.full_myExercisesPath]);
           },
-          error: (err) => {
-            this.errorMsg = this.handleError.handleError(err);
+          error: (error) => {
+            this.handleError.handleError(error).forEach((value) => {
+              this.errorMsg.push(value.message);
+            });
           }
         });
     } else {
@@ -98,8 +102,10 @@ export class ManageExerciseComponent implements OnInit {
       }
     })
       .subscribe({
-        error: (err) => {
-          this.errorMsg = this.handleError.handleError(err);
+        error: (error) => {
+          this.handleError.handleError(error).forEach((value) => {
+            this.errorMsg.push(value.message);
+          });
         }
       });
   }
