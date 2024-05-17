@@ -15,30 +15,30 @@ def create_context(query):
     # generate an answer based on given user query and retrieved context information
     return "\n\n".join([doc.page_content for doc, _score in docs_chroma]) #context text
 
-def create_prompt_from_template(context_text, query):
+def create_prompt_from_template(context_text, query, user_data):
     PROMPT_TEMPLATE = """
-    Rispondi alla domanda basandoti principalmente sul seguente contesto:
+    I dati dell'utente a cui stai rispondendo sono i seguenti:
+    {user_data}
+    Rispondi alla sua domanda basandoti principalmente sul seguente contesto:
     {context}
-    La domanda a cui rispondere basandosi sul contesto è la seguente: 
+    La domanda a cui devi rispondere basandoti sul contesto è la seguente: 
     {question}
     Fornisci una risposta dettagliata.
     Non giustificare la tua risposta.
-    Non fornire informazioni che non sono menzionate nel contesto.
     Rispondi in italiano.
     Evita frasi che citino il fatto che tu stia usando un contesto.
-    La risposta deve contenere solo testo.
     Non inserire note.
     """
     # load retrieved context and user query in the prompt template
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-    return prompt_template.format(context=context_text, question=query) #prompt
+    return prompt_template.format(context=context_text, question=query, user_data=user_data) #prompt
 
 def generate_answer(prompt):
     return common.chat_model.invoke(prompt).content #response text
 
-def answer_question(query):
+def answer_question(query, user_data):
     context_text = create_context(query)
-    prompt = create_prompt_from_template(context_text, query)
+    prompt = create_prompt_from_template(context_text, query, user_data)
     return generate_answer(prompt)
 
 def generate_json():
