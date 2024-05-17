@@ -113,9 +113,6 @@ public class PeriodoService {
             User user = userExtractor.getUserFromAuthentication(connectedUser);
             Periodo periodo = periodoRepository.findByNameAndCreator_Username(nome_periodo,user.getUsername())
                     .orElseThrow(() -> new EntityNotFoundException("Nessun periodo creato da te è stato trovato con nome:: " + nome_periodo));
-            if (!Objects.equals(periodo.getCreator().getId(), user.getId())) { //NOTE: Controllo inutile ma vabhe
-                throw new OperationNotPermittedException("Stai cercando di cancellare un periodo che non hai creato tu!");
-            }
             periodoRepository.delete(periodo);
         }
 

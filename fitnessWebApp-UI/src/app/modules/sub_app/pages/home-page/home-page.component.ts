@@ -38,6 +38,7 @@ export class HomePageComponent implements OnInit {
             complete: () => {
               periodInfoSubscription$.unsubscribe();
               this.events = this.periodManagerService.getScheduleEvents(20);
+              console.log(this.events);
             },
             error: (error) => {
               this.handleError.handleError(error).forEach((value) => {
