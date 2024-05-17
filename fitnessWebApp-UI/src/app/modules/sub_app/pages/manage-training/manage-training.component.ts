@@ -72,7 +72,7 @@ export class ManageTrainingComponent implements OnInit {
   }
 
   submitTrain() {
-    if (this.trainingForm.valid) {
+    if (!this.trainingForm.valid) {
       this.level = 'error';
       this.errorMsg.push("Compila correttamente i campi obbligatori");
       return;

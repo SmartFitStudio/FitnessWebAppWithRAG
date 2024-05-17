@@ -353,7 +353,7 @@ La funzione filtra gli oggetti che sono presenti nella lista iniziale ma non nel
   public disableActivePeriodo$(): Observable<any> {
     if(this.active_periodo){
       this.active_periodo.attivo = false;
-      return this.periodoService.savePeriodo({ body: this.active_periodo })
+      return this.periodoService.disableActivePeriod()
       .pipe(
         map(() => {
           this.active_periodo = undefined;

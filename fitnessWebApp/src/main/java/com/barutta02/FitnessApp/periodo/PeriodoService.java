@@ -39,13 +39,20 @@ public class PeriodoService {
     
         public PeriodoResponse save(PeriodoRequest request, Authentication connectedUser) {
             User user = userExtractor.getUserFromAuthentication(connectedUser);
-            log.info("" + request.attivo());
+            this.validatePeriodoRequest(request);
+
             Periodo periodo = periodoMapper.toPeriodo(request,user); //Convert the BookRequest object to a Book object
             Optional<Periodo> periodoAttivo = periodoRepository.findByCreatorAndAttivoIsTrue(user);
             if (request.attivo() && periodoAttivo.isPresent() && periodoAttivo.get().getId() != periodo.getId()){
                 throw new OperationNotPermittedException("Hai già un periodo attivo, devi prima completarlo o eliminarlo per crearne uno nuovo!");
             }
             return periodoMapper.toPeriodoResponse(periodoRepository.save(periodo));
+        }
+        
+        private void validatePeriodoRequest(PeriodoRequest request){
+            if (request.data_inizio().isAfter(request.data_fine())){
+                throw new IllegalArgumentException("La data di inizio non può essere successiva alla data di fine");
+            }
         }
     
         public PeriodoResponse findByIdCreator(Long id_periodo, Authentication connectedUser) {

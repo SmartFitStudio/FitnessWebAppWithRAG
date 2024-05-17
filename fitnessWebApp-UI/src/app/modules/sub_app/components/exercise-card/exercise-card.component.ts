@@ -80,6 +80,7 @@ export class ExerciseCardComponent {
     if(this.trainingExerciseForm.valid){
       this.addExerciseToTraining.emit(this.allenamentoEsercizioRequest);
       this.clearInput();
+      this.changeInputView();
     }
   }
 

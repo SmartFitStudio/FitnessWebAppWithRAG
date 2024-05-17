@@ -181,6 +181,7 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
         this.router.navigate([sub_appRoutingModule.full_myPeriodsPath]);
       },
       error: (err) => {
+        this.level = 'error';
         this.errorMsg = this.errorHandler.handleError(err);
         this.errorMsg.push("Errore nel salvataggio del periodo");
       }

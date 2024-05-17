@@ -8,7 +8,7 @@ import { ObiettivoPeriodoPipePipe } from '../../services/pipes/obiettivo-periodo
 import { CalendarComponent } from '../../components/calendar/calendar.component';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-period-details',
@@ -17,7 +17,7 @@ import { NgFor } from '@angular/common';
   providers: [PeriodManagerService] // Fornisce il servizio a livello di componente, quindi ogni componente avrà la sua istanza di PeriodManagerService
   ,
   standalone: true,
-  imports: [NgFor, CalendarComponent, ObiettivoPeriodoPipePipe, FeedbackInfoPointComponent]
+  imports: [NgFor,NgIf, CalendarComponent, ObiettivoPeriodoPipePipe, FeedbackInfoPointComponent]
 })
 export class PeriodDetailsComponent implements OnInit {
   messages: Array<string> = [];

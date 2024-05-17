@@ -18,6 +18,7 @@ import java.util.Set;
 import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.ACCOUNT_DISABLED;
 import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.ACCOUNT_LOCKED;
 import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.BAD_CREDENTIALS;
+import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.OPERATION_NOT_PERMITTED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -94,6 +95,19 @@ public class GlobalExceptionHandler {
                 .body(
                         ExceptionResponse.builder()
                                 .error(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ExceptionResponse> handleException(IllegalArgumentException exp) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(OPERATION_NOT_PERMITTED.getCode())
+                                .businessErrorDescription(exp.getMessage())
+                                .error(OPERATION_NOT_PERMITTED.getDescription())
                                 .build()
                 );
     }
