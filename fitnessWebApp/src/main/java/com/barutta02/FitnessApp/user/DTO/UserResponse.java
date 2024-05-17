@@ -3,6 +3,7 @@ package com.barutta02.FitnessApp.user.DTO;
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,5 +29,6 @@ public class UserResponse {
     private String username;
 
     @NotNull(message = "La data di nascita dell'utente è necessaria")
+    @Past(message = "La data di nascita deve essere passata")
     private LocalDate dateOfBirth;
 }

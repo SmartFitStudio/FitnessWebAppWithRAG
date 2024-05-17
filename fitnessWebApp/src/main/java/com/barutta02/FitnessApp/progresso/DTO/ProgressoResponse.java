@@ -18,14 +18,14 @@ public class ProgressoResponse {
     @NotNull(message = "L'id è necessario")
     private Long id;
     @NotNull(message = "La data di misurazione è necessaria")
-    private LocalDate data_misurazione;
+    private LocalDate dataMisurazione;
     @NotNull(message = "Il peso è necessario")
-    private float peso_kg;
+    private float pesoKg;
     @NotNull(message = "L'altezza è necessaria")
-    private float altezza_cm;
+    private float altezzaCm;
     @NotNull(message = "La percentuale di massa grassa è necessaria")
-    private float percentaule_massa_grassa;
+    private float percentualeMassaGrassa;
     @NotNull(message = "La percentuale di massa magra è necessaria")
-    private float percentaule_massa_magra;
+    private float percentualeMassaMagra;
     private String note;
 }

@@ -36,7 +36,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Entity
 @Table(name = "_progresso",
-       uniqueConstraints = {@UniqueConstraint(columnNames = {"data_misurazione", "created_by_user"})})
+       uniqueConstraints = {@UniqueConstraint(columnNames = {"dataMisurazione", "created_by_user"})})
 public class Progresso extends BaseEntity{
 
     @Id
@@ -45,17 +45,17 @@ public class Progresso extends BaseEntity{
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private LocalDate data_misurazione;
+    private LocalDate dataMisurazione;
 
     @Column(nullable = false)
-    private float peso_kg;
+    private float pesoKg;
 
     @Column(nullable = false)
-    private float altezza_cm;
+    private float altezzaCm;
 
-    private float percentaule_massa_grassa;
+    private float percentualeMassaGrassa;
 
-    private float percentaule_massa_magra;
+    private float percentualeMassaMagra;
 
     @Column(length = 500)
     private String note;

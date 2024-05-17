@@ -9,22 +9,21 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Positive;
 
 public record ProgressoRequest(
-    Long id,
     @NotNull(message = "La data di misurazione è necessaria")
     @PastOrPresent(message = "La data di misurazione deve essere passata o presente")
-    LocalDate data_misurazione,
+    LocalDate dataMisurazione,
     @NotNull(message = "Il peso è necessario")
     @Positive(message = "Il peso deve essere maggiore di 0")
-    float peso_kg,
+    float pesoKg,
     @NotNull(message = "L'altezza è necessaria")
     @Positive(message = "L'altezza deve essere maggiore di 0")
-    float altezza_cm,
+    float altezzaCm,
     @NotNull(message = "La percentuale di massa grassa è necessaria")
     @Positive(message = "La percentuale di massa grassa deve essere maggiore di 0")
-    float percentaule_massa_grassa,
+    float percentualeMassaGrassa,
     @NotNull(message = "La percentuale di massa magra è necessaria")
     @Positive(message = "La percentuale di massa magra deve essere maggiore di 0")
-    float percentaule_massa_magra,
+    float percentualeMassaMagra,
     @Length(max = 500, message = "Le note non possono superare i 500 caratteri")
     String note
 ){}

@@ -31,7 +31,7 @@ public class UserService {
         current_user.setFirstname(request.firstname());
         current_user.setLastname(request.lastname());
         current_user.setDateOfBirth(request.dateOfBirth());
-        if(request.oldPassword()!=null && request.newPassword()!=null){
+        if(request.oldPassword()!=null && request.newPassword()!=null && request.oldPassword().length()>=8 && request.newPassword().length()>=8){
             if(passwordEncoder.matches(request.oldPassword(), current_user.getPassword())){
                 current_user.setPassword(passwordEncoder.encode(request.newPassword()));
             } else {
@@ -44,4 +44,9 @@ public class UserService {
         return userMapper.toUserResponse(userExtractor.getUserFromAuthentication(connectedUser));
     }
 
+    @Transactional
+    public void deleteUser(Authentication connectedUser) {
+        User current_user = userRepository.findById(userExtractor.getUserFromAuthentication(connectedUser).getId()).orElseThrow(() -> new EntityNotFoundException("Utente non trovato"));
+        current_user.setEnabled(false);
+    }
 }

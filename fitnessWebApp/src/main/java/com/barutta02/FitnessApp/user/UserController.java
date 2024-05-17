@@ -2,6 +2,7 @@ package com.barutta02.FitnessApp.user;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,17 +27,25 @@ public class UserController {
     private final UserService service;
 
     @PutMapping
-    public void updateUser(
+    public ResponseEntity<?> updateUser(
             @Valid @RequestBody UserRequest request,
             Authentication connectedUser
     ) {
         service.updateUser(request, connectedUser);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping()
     public ResponseEntity<UserResponse> getUser(
             Authentication connectedUser) {
         return ResponseEntity.ok(service.getUser(connectedUser));
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<?> deleteUser(
+            Authentication connectedUser) {
+        service.deleteUser(connectedUser);
+        return ResponseEntity.ok().build();
     }
 
 }
