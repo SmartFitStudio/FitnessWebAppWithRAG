@@ -109,6 +109,7 @@ export class ManageTrainingComponent implements OnInit {
   }
   //Passa al prossimo tab
   next() {
+    this.errorMsg = [];
     if (!this.trainingForm.valid) {
       this.level = 'error';
       this.errorMsg.push("Compila correttamente i campi obbligatori");
