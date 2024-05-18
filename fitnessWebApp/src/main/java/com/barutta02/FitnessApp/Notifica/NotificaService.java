@@ -64,7 +64,7 @@ public class NotificaService {
                     .orElse(null);
                     if(periodoAttivo != null){
                         ArrayList<PeriodoAllenamento> allenamenti = periodoAllenamentoRepository
-                        .findByPeriodo_IdAndPeriodo_Creator_Username(periodoAttivo.getId(), user.getUsername())
+                        .findByPeriodo_IdAndPeriodo_Creator(periodoAttivo.getId(), user)
                         .orElse(null);
                 return generateTodayNotifications(periodoAttivo, allenamenti).stream()
                         .map(notificaMapper::toNotificaResponse)

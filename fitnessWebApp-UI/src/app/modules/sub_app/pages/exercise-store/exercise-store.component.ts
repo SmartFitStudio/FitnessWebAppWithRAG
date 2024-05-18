@@ -53,8 +53,9 @@ export class ExerciseStoreComponent {
         return response;
       }),
       catchError((error) => {
-        this.messages = this.handleError.handleError(error)
-        return EMPTY;
+        this.handleError.handleError(error).forEach((value) => {
+          this.messages.push(value.message);
+        });        return EMPTY;
       })
     );
   }

@@ -5,6 +5,7 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { ChatbotService } from '../../services/chatbot-service/chatbot.service';
 import { ConversationMessage } from '../../services/models/conversationMessage';
 import * as Showdown from 'showdown';
+
 @Component({
   selector: 'app-chatbot',
   standalone: true,

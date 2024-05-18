@@ -6,16 +6,17 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PeriodoResponse } from '../../models/periodo-response';
+import { UserRequest } from '../../models/user-request';
 
-export interface FindPeriodoById$Params {
-  'periodo-id': number;
+export interface UpdateUser$Params {
+      body: UserRequest
 }
 
-export function findPeriodoById(http: HttpClient, rootUrl: string, params: FindPeriodoById$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
-  const rb = new RequestBuilder(rootUrl, findPeriodoById.PATH, 'get');
+export function updateUser(http: HttpClient, rootUrl: string, params: UpdateUser$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+  const rb = new RequestBuilder(rootUrl, updateUser.PATH, 'put');
   if (params) {
-    rb.path('periodo-id', params['periodo-id'], {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -23,9 +24,10 @@ export function findPeriodoById(http: HttpClient, rootUrl: string, params: FindP
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<PeriodoResponse>;
+      return r as StrictHttpResponse<{
+      }>;
     })
   );
 }
 
-findPeriodoById.PATH = '/periods/{periodo-id}';
+updateUser.PATH = '/users';

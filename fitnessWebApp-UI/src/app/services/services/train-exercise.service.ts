@@ -12,10 +12,10 @@ import { StrictHttpResponse } from '../strict-http-response';
 import { AllenamentoEsercizioResponse } from '../models/allenamento-esercizio-response';
 import { deleteAllenamentoEsercizio } from '../fn/train-exercise/delete-allenamento-esercizio';
 import { DeleteAllenamentoEsercizio$Params } from '../fn/train-exercise/delete-allenamento-esercizio';
-import { findByAllenamentoNome } from '../fn/train-exercise/find-by-allenamento-nome';
-import { FindByAllenamentoNome$Params } from '../fn/train-exercise/find-by-allenamento-nome';
-import { findByAllenamentoNomeNoPagination } from '../fn/train-exercise/find-by-allenamento-nome-no-pagination';
-import { FindByAllenamentoNomeNoPagination$Params } from '../fn/train-exercise/find-by-allenamento-nome-no-pagination';
+import { findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination } from '../fn/train-exercise/find-all-auth-allenamento-esercizio-by-allenamento-id-no-pagination';
+import { FindAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination$Params } from '../fn/train-exercise/find-all-auth-allenamento-esercizio-by-allenamento-id-no-pagination';
+import { findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated } from '../fn/train-exercise/find-all-auth-allenamento-esercizio-by-allenamento-id-paginated';
+import { FindAllAuthAllenamentoEsercizioByAllenamentoIdPaginated$Params } from '../fn/train-exercise/find-all-auth-allenamento-esercizio-by-allenamento-id-paginated';
 import { PageResponseAllenamentoEsercizioResponse } from '../models/page-response-allenamento-esercizio-response';
 import { saveAllenamentoEsercizio } from '../fn/train-exercise/save-allenamento-esercizio';
 import { SaveAllenamentoEsercizio$Params } from '../fn/train-exercise/save-allenamento-esercizio';
@@ -51,58 +51,58 @@ export class TrainExerciseService extends BaseService {
     );
   }
 
-  /** Path part for operation `findByAllenamentoNome()` */
-  static readonly FindByAllenamentoNomePath = '/trainingexercise/{allenamento-nome}';
+  /** Path part for operation `findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated()` */
+  static readonly FindAllAuthAllenamentoEsercizioByAllenamentoIdPaginatedPath = '/trainingexercise/{allenamento-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findByAllenamentoNome()` instead.
+   * To access only the response body, use `findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findByAllenamentoNome$Response(params: FindByAllenamentoNome$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseAllenamentoEsercizioResponse>> {
-    return findByAllenamentoNome(this.http, this.rootUrl, params, context);
+  findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated$Response(params: FindAllAuthAllenamentoEsercizioByAllenamentoIdPaginated$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseAllenamentoEsercizioResponse>> {
+    return findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findByAllenamentoNome$Response()` instead.
+   * To access the full response (for headers, for example), `findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findByAllenamentoNome(params: FindByAllenamentoNome$Params, context?: HttpContext): Observable<PageResponseAllenamentoEsercizioResponse> {
-    return this.findByAllenamentoNome$Response(params, context).pipe(
+  findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated(params: FindAllAuthAllenamentoEsercizioByAllenamentoIdPaginated$Params, context?: HttpContext): Observable<PageResponseAllenamentoEsercizioResponse> {
+    return this.findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated$Response(params, context).pipe(
       map((r: StrictHttpResponse<PageResponseAllenamentoEsercizioResponse>): PageResponseAllenamentoEsercizioResponse => r.body)
     );
   }
 
-  /** Path part for operation `findByAllenamentoNomeNoPagination()` */
-  static readonly FindByAllenamentoNomeNoPaginationPath = '/trainingexercise/no_pagination/{allenamento-nome}';
+  /** Path part for operation `findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination()` */
+  static readonly FindAllAuthAllenamentoEsercizioByAllenamentoIdNoPaginationPath = '/trainingexercise/no_pagination/{allenamento-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findByAllenamentoNomeNoPagination()` instead.
+   * To access only the response body, use `findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findByAllenamentoNomeNoPagination$Response(params: FindByAllenamentoNomeNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AllenamentoEsercizioResponse>>> {
-    return findByAllenamentoNomeNoPagination(this.http, this.rootUrl, params, context);
+  findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination$Response(params: FindAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AllenamentoEsercizioResponse>>> {
+    return findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findByAllenamentoNomeNoPagination$Response()` instead.
+   * To access the full response (for headers, for example), `findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findByAllenamentoNomeNoPagination(params: FindByAllenamentoNomeNoPagination$Params, context?: HttpContext): Observable<Array<AllenamentoEsercizioResponse>> {
-    return this.findByAllenamentoNomeNoPagination$Response(params, context).pipe(
+  findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination(params: FindAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination$Params, context?: HttpContext): Observable<Array<AllenamentoEsercizioResponse>> {
+    return this.findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<AllenamentoEsercizioResponse>>): Array<AllenamentoEsercizioResponse> => r.body)
     );
   }
 
   /** Path part for operation `deleteAllenamentoEsercizio()` */
-  static readonly DeleteAllenamentoEsercizioPath = '/trainingexercise/{allenamento-nome}/{index}';
+  static readonly DeleteAllenamentoEsercizioPath = '/trainingexercise/{allenamentoEsercizio-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

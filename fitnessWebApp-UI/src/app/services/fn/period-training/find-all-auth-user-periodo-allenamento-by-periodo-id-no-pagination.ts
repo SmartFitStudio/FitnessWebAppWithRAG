@@ -8,14 +8,14 @@ import { RequestBuilder } from '../../request-builder';
 
 import { PeriodoAllenamentoResponse } from '../../models/periodo-allenamento-response';
 
-export interface FindByPeriodoNomeNoPagination$Params {
-  'periodo-nome': string;
+export interface FindAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination$Params {
+  'periodo-id': number;
 }
 
-export function findByPeriodoNomeNoPagination(http: HttpClient, rootUrl: string, params: FindByPeriodoNomeNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PeriodoAllenamentoResponse>>> {
-  const rb = new RequestBuilder(rootUrl, findByPeriodoNomeNoPagination.PATH, 'get');
+export function findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination(http: HttpClient, rootUrl: string, params: FindAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PeriodoAllenamentoResponse>>> {
+  const rb = new RequestBuilder(rootUrl, findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination.PATH, 'get');
   if (params) {
-    rb.path('periodo-nome', params['periodo-nome'], {});
+    rb.path('periodo-id', params['periodo-id'], {});
   }
 
   return http.request(
@@ -28,4 +28,4 @@ export function findByPeriodoNomeNoPagination(http: HttpClient, rootUrl: string,
   );
 }
 
-findByPeriodoNomeNoPagination.PATH = '/periodTraining/no_pagination/{periodo-nome}';
+findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination.PATH = '/periodTraining/no_pagination/{periodo-id}';

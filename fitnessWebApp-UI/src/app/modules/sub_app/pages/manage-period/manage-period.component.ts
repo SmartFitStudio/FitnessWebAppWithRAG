@@ -34,7 +34,7 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
 export class ManagePeriodComponent implements OnInit, OnDestroy {
   nome_periodo_attivo: string = ""; //per mostrare il nome del periodo attivo
   errorMsg: Array<String> = [];
-  level: 'success' |'error' = 'success';
+  level: 'success' | 'error' = 'success';
   periodForm = this.formBuilder.group({
     nome_periodo: ['', Validators.required],
     obiettivo: [ObbiettivoPeriodo.NON_DEFINITO, Validators.required],
@@ -54,7 +54,7 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
     private _periodManager: PeriodManagerService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private errorHandler: ErrorHandlerService,
+    private handleError: ErrorHandlerService,
     public dialog: MatDialog,
   ) { }
 
@@ -82,7 +82,9 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.level = 'error';
-          this.errorMsg = this.errorHandler.handleError(error);
+          this.handleError.handleError(error).forEach((value) => {
+            this.errorMsg.push(value.message);
+          });
         }
       }));
     }
@@ -98,7 +100,9 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
       {
         error: (error) => {
           this.level = 'error';
-          this.errorMsg = this.errorHandler.handleError(error);
+          this.handleError.handleError(error).forEach((value) => {
+            this.errorMsg.push(value.message);
+          });
         }
       }
     ));
@@ -131,7 +135,9 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.level = 'error';
-        this.errorMsg = this.errorHandler.handleError(error);
+        this.handleError.handleError(error).forEach((value) => {
+          this.errorMsg.push(value.message);
+        });
       }
     });
   }
@@ -180,10 +186,11 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
       complete: () => {
         this.router.navigate([sub_appRoutingModule.full_myPeriodsPath]);
       },
-      error: (err) => {
+      error: (error) => {
         this.level = 'error';
-        this.errorMsg = this.errorHandler.handleError(err);
-        this.errorMsg.push("Errore nel salvataggio del periodo");
+        this.handleError.handleError(error).forEach((value) => {
+          this.errorMsg.push(value.message);
+        }); this.errorMsg.push("Errore nel salvataggio del periodo");
       }
     }));
   }

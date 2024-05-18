@@ -1,6 +1,7 @@
 package com.barutta02.FitnessApp.exercise;
 
 import com.barutta02.FitnessApp.common.PageResponse;
+import com.barutta02.FitnessApp.common.Service_CRUD;
 import com.barutta02.FitnessApp.config.UserExtractor;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
 import com.barutta02.FitnessApp.exercise.DTO.ExerciseRequest;
@@ -28,14 +29,14 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class ExerciseService {
+public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseRequest, ExerciseResponse>{
 
     private final ExerciseRepository exerciseRepository;
     private final ExerciseMapper exerciseMapper;
     private final FileStorageService fileStorageService;
     private final UserExtractor userExtractor;
 
-    public Long save(ExerciseRequest request, Authentication connectedUser) {
+    public ExerciseResponse save(ExerciseRequest request, Authentication connectedUser) {
         User user = userExtractor.getUserFromAuthentication(connectedUser); // Get the connected user from the
                                                                             // Authentication object (Spring Security
         Exercise exercise = exerciseMapper.toExercise(request, user); // Convert the BookRequest object to a Book object
@@ -48,24 +49,43 @@ public class ExerciseService {
                             "Stai modificando un esercizio inesistente:: " + exercise.getId()));
             exercise.setCover(oldExercise.getCover());
         }
-        return exerciseRepository.save(exercise).getId(); // Save the book in the database and return its ID
+        return exerciseMapper.toExerciseResponse(exerciseRepository.save(exercise)); // Save the book in the database
+                                                                                     // and return its ID
     }
 
-    public ExerciseResponse findById(Long exercise_id) {
-        return exerciseRepository.findById(exercise_id)
-                .map(exerciseMapper::toExerciseResponse)
-                .orElseThrow(() -> new EntityNotFoundException("No exercise found with ID:: " + exercise_id));
+    public ExerciseResponse findAuthenticatedUserOrDefaultExerciseById(Long exercise_id, Authentication connectedUser) {
+        User user = userExtractor.getUserFromAuthentication(connectedUser);
+        return exerciseMapper.toExerciseResponse(this.findByIdAndCreatorOrDefault_creator(exercise_id, user));
     }
 
-    public PageResponse<ExerciseResponse> findAllExercise(int page, int size, Authentication connectedUser) {
+    /*
+     * Metodo per trovare un esercizio in base all'utente che lo ha oppure se è un esercizio di default
+    */
+    public Exercise findByIdAndCreatorOrDefault_creator(Long exercise_id, User creator) {
+        Exercise exercise = exerciseRepository.findByIdAndCreatorOrDefault(exercise_id, creator)
+                .orElseThrow(() -> new EntityNotFoundException("Non ci sono esercizi utilizzabili dall'utente con ID::" + exercise_id));
+        return exercise;
+    }
+
+    /**
+     * Mostra tutti gli esercizi creati dall'utente autenticato, oltre a quelli di
+     * default, ovvero che hanno creator nullo
+     * 
+     * @param page
+     * @param size
+     * @param connectedUser
+     * @return
+     */
+    public PageResponse<ExerciseResponse> findAllAuthenticatedUserExercises_paginated(int page, int size,
+            Authentication connectedUser) {
         User user = userExtractor.getUserFromAuthentication(connectedUser);
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Exercise> exercises = exerciseRepository.findAllDisplayableExercise(pageable, user.getId());
-        List<ExerciseResponse> exercisesResponse = exercises.stream()
+        Page<Exercise> exercises = exerciseRepository.findByCreatorOrCreatorIsNull(pageable, user);
+        List<ExerciseResponse> exercisesResponses = exercises.stream()
                 .map(exerciseMapper::toExerciseResponse)
                 .toList();
         return new PageResponse<>(
-                exercisesResponse,
+                exercisesResponses,
                 exercises.getNumber(),
                 exercises.getSize(),
                 exercises.getTotalElements(),
@@ -92,41 +112,7 @@ public class ExerciseService {
         return exerciseMapper.toExerciseResponse(exerciseRepository.save(newExercise));
     }
 
-    public PageResponse<ExerciseResponse> findAllExerciseByCreator(int page, int size, Authentication connectedUser) {
-        User user = userExtractor.getUserFromAuthentication(connectedUser);
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Exercise> exercises = exerciseRepository.findByCreator_Username(pageable, user.getUsername());
-        List<ExerciseResponse> exercisesResponses = exercises.stream()
-                .map(exerciseMapper::toExerciseResponse)
-                .toList();
-        return new PageResponse<>(
-                exercisesResponses,
-                exercises.getNumber(),
-                exercises.getSize(),
-                exercises.getTotalElements(),
-                exercises.getTotalPages(),
-                exercises.isFirst(),
-                exercises.isLast());
-    }
 
-    public void deleteExercise(Long exercise_id, Authentication connectedUser) {
-        User user = userExtractor.getUserFromAuthentication(connectedUser);
-        Exercise exercise = exerciseRepository.findById(exercise_id)
-                .orElseThrow(() -> new EntityNotFoundException("No exercise found with ID:: " + exercise_id));
-        if (!Objects.equals(exercise.getCreator().getId(), user.getId())) {
-            throw new OperationNotPermittedException("You cannot delete an exercise you do not own");
-        }
-        exerciseRepository.delete(exercise);
-    }
-
-    public Exercise findById(Long exercise_id, String creator_username) {
-        Exercise exercise = exerciseRepository.findById(exercise_id)
-                .orElseThrow(() -> new EntityNotFoundException("No exercise found with ID dio bello:: " + exercise_id));
-        if (exercise.getCreator() != null && !exercise.getCreator().getUsername().equals(creator_username)) {
-            throw new OperationNotPermittedException("You cannot access an exercise you do not own");
-        }
-        return exercise;
-    }
 
     public PageResponse<ExerciseResponse> findExerciseFromStore(int page, int size, Authentication connectedUser) {
         Page<Exercise> exercises = exerciseRepository.findByCreatorNotAndShareableIsTrue(
@@ -158,6 +144,11 @@ public class ExerciseService {
                                                                                           // salvare i file
         exercise.setCover(profilePicture); // it is a string of the path of the file
         exerciseRepository.save(exercise);
+    }
+
+    public void deleteById(Long exercise_id, Authentication connectedUser) {
+        User user = userExtractor.getUserFromAuthentication(connectedUser);
+        exerciseRepository.deleteByIdAndCreator(exercise_id, user);
     }
 
 }

@@ -6,13 +6,13 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PeriodoResponse } from '../../models/periodo-response';
+import { ProgressoResponse } from '../../models/progresso-response';
 
-export interface DisableActivePeriod$Params {
+export interface GetAllProgressi$Params {
 }
 
-export function disableActivePeriod(http: HttpClient, rootUrl: string, params?: DisableActivePeriod$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
-  const rb = new RequestBuilder(rootUrl, disableActivePeriod.PATH, 'put');
+export function getAllProgressi(http: HttpClient, rootUrl: string, params?: GetAllProgressi$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProgressoResponse>>> {
+  const rb = new RequestBuilder(rootUrl, getAllProgressi.PATH, 'get');
   if (params) {
   }
 
@@ -21,9 +21,9 @@ export function disableActivePeriod(http: HttpClient, rootUrl: string, params?: 
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<PeriodoResponse>;
+      return r as StrictHttpResponse<Array<ProgressoResponse>>;
     })
   );
 }
 
-disableActivePeriod.PATH = '/periods/disable_active_period';
+getAllProgressi.PATH = '/progress/all';

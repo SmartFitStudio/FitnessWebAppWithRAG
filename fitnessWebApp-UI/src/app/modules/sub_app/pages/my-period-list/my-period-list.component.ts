@@ -10,16 +10,16 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 
 @Component({
-    selector: 'app-my-period-list',
-    templateUrl: './my-period-list.component.html',
-    styleUrls: ['./my-period-list.component.scss'],
-    standalone: true,
-    imports: [NgIf, RouterLink, NgFor, PeriodCardComponent, AsyncPipe, FeedbackInfoPointComponent]
+  selector: 'app-my-period-list',
+  templateUrl: './my-period-list.component.html',
+  styleUrls: ['./my-period-list.component.scss'],
+  standalone: true,
+  imports: [NgIf, RouterLink, NgFor, PeriodCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
 export class MyPeriodListComponent implements OnInit {
   periodsResponse$!: Observable<PageResponsePeriodoResponse>;
-  messages: Array<string>= [];
-  level: 'success' |'error' = 'success'; 
+  messages: Array<string> = [];
+  level: 'success' | 'error' = 'success';
 
   private totalPages? = 0;
   private _page = 0;
@@ -44,27 +44,28 @@ export class MyPeriodListComponent implements OnInit {
   }
 
   private findAllMyPeriods() {
-    this.periodsResponse$ = this.periodsService.findAllPeriodoByCreator({
+    this.periodsResponse$ = this.periodsService.findAllAuthenticatedUserPeriodoPaginated({
       page: this._page,
       size: this._size
     }).pipe(
       map((response: PageResponsePeriodoResponse) => {
         this.totalPages = response.totalPages;
-         this._pages = Array(response.totalPages)
-            .fill(0)
-            .map((x, i) => i);
+        this._pages = Array(response.totalPages)
+          .fill(0)
+          .map((x, i) => i);
         return response;
       }),
       catchError((error) => {
         this.level = 'error';
-        this.messages = this.handleError.handleError(error)
-        return EMPTY;
+        this.handleError.handleError(error).forEach((value) => {
+          this.messages.push(value.message);
+        }); return EMPTY;
       })
     );
   }
 
   deletePeriod(periodResponse: PeriodoResponse) {
-    this.periodsService.deletePeriodo({'periodo-nome' : periodResponse.name})
+    this.periodsService.deletePeriodo({ 'periodo-id': periodResponse.id })
       .subscribe({
         next: () => {
           this.messages = ['Periodo eliminato'];
@@ -72,7 +73,9 @@ export class MyPeriodListComponent implements OnInit {
           this.findAllMyPeriods();
         },
         error: (error) => {
-          this.messages = this.handleError.handleError(error);
+          this.handleError.handleError(error).forEach((value) => {
+            this.messages.push(value.message);
+          });
           this.level = 'error';
         }
       });
@@ -80,11 +83,11 @@ export class MyPeriodListComponent implements OnInit {
   }
 
   editPeriod(periodResponse: PeriodoResponse) {
-    this.router.navigate([sub_appRoutingModule.full_managePeriodPath , periodResponse.id]);
+    this.router.navigate([sub_appRoutingModule.full_managePeriodPath, periodResponse.id]);
   }
 
   openDetails(periodResponse: PeriodoResponse) {
-    this.router.navigate([sub_appRoutingModule.full_periodDetailsPath , periodResponse.id]);
+    this.router.navigate([sub_appRoutingModule.full_periodDetailsPath, periodResponse.id]);
   }
 
   /*BOILERPLATE CODE */
@@ -99,7 +102,7 @@ export class MyPeriodListComponent implements OnInit {
   }
 
   goToPreviousPage() {
-    this._page --;
+    this._page--;
     this.findAllMyPeriods();
   }
 
@@ -117,7 +120,7 @@ export class MyPeriodListComponent implements OnInit {
     return this._page === this.totalPages as number - 1;
   }
   get newPeriodsLink(): string {
-    return sub_appRoutingModule.full_managePeriodPath; 
+    return sub_appRoutingModule.full_managePeriodPath;
   }
   get isAddingPermitted() {
     return this._is_adding_permitted;
@@ -131,10 +134,10 @@ export class MyPeriodListComponent implements OnInit {
   get pages() {
     return this._pages;
   }
-    /*
-  Funzione di trackby utilizzata per evitare che angular ricarichi tutti i componenti della lista nell' ngfor
-  */
-  trackByPeriodoResponse(index: number, periodo: PeriodoResponse): string{
-    return periodo.name ;
-}
+  /*
+Funzione di trackby utilizzata per evitare che angular ricarichi tutti i componenti della lista nell' ngfor
+*/
+  trackByPeriodoResponse(index: number, periodo: PeriodoResponse): string {
+    return periodo.name;
+  }
 }

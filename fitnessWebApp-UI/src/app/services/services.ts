@@ -1,3 +1,5 @@
+export { UserService } from './services/user.service';
+export { ProgressService } from './services/progress.service';
 export { PeriodsService } from './services/periods.service';
 export { NotificaService } from './services/notifica.service';
 export { TrainService } from './services/train.service';

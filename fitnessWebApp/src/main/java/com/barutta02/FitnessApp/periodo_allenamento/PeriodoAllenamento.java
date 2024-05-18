@@ -2,22 +2,18 @@ package com.barutta02.FitnessApp.periodo_allenamento;
 
 import com.barutta02.FitnessApp.allenamento.Allenamento;
 import com.barutta02.FitnessApp.common.BaseEntity;
-import com.barutta02.FitnessApp.exercise.Exercise;
 import com.barutta02.FitnessApp.periodo.Periodo;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

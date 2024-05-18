@@ -11,10 +11,10 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { deletePeriodoAllenamento } from '../fn/period-training/delete-periodo-allenamento';
 import { DeletePeriodoAllenamento$Params } from '../fn/period-training/delete-periodo-allenamento';
-import { findByPeriodoNome } from '../fn/period-training/find-by-periodo-nome';
-import { FindByPeriodoNome$Params } from '../fn/period-training/find-by-periodo-nome';
-import { findByPeriodoNomeNoPagination } from '../fn/period-training/find-by-periodo-nome-no-pagination';
-import { FindByPeriodoNomeNoPagination$Params } from '../fn/period-training/find-by-periodo-nome-no-pagination';
+import { findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination } from '../fn/period-training/find-all-auth-user-periodo-allenamento-by-periodo-id-no-pagination';
+import { FindAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination$Params } from '../fn/period-training/find-all-auth-user-periodo-allenamento-by-periodo-id-no-pagination';
+import { findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated } from '../fn/period-training/find-all-auth-user-periodo-allenamento-by-periodo-id-paginated';
+import { FindAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated$Params } from '../fn/period-training/find-all-auth-user-periodo-allenamento-by-periodo-id-paginated';
 import { PageResponsePeriodoAllenamentoResponse } from '../models/page-response-periodo-allenamento-response';
 import { PeriodoAllenamentoResponse } from '../models/periodo-allenamento-response';
 import { savePeriodoAllenamento } from '../fn/period-training/save-periodo-allenamento';
@@ -51,52 +51,52 @@ export class PeriodTrainingService extends BaseService {
     );
   }
 
-  /** Path part for operation `findByPeriodoNome()` */
-  static readonly FindByPeriodoNomePath = '/periodTraining/{periodo-nome}';
+  /** Path part for operation `findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated()` */
+  static readonly FindAllAuthUserPeriodoAllenamentoByPeriodoIdPaginatedPath = '/periodTraining/{periodo-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findByPeriodoNome()` instead.
+   * To access only the response body, use `findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findByPeriodoNome$Response(params: FindByPeriodoNome$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponsePeriodoAllenamentoResponse>> {
-    return findByPeriodoNome(this.http, this.rootUrl, params, context);
+  findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated$Response(params: FindAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponsePeriodoAllenamentoResponse>> {
+    return findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findByPeriodoNome$Response()` instead.
+   * To access the full response (for headers, for example), `findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findByPeriodoNome(params: FindByPeriodoNome$Params, context?: HttpContext): Observable<PageResponsePeriodoAllenamentoResponse> {
-    return this.findByPeriodoNome$Response(params, context).pipe(
+  findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated(params: FindAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated$Params, context?: HttpContext): Observable<PageResponsePeriodoAllenamentoResponse> {
+    return this.findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated$Response(params, context).pipe(
       map((r: StrictHttpResponse<PageResponsePeriodoAllenamentoResponse>): PageResponsePeriodoAllenamentoResponse => r.body)
     );
   }
 
-  /** Path part for operation `findByPeriodoNomeNoPagination()` */
-  static readonly FindByPeriodoNomeNoPaginationPath = '/periodTraining/no_pagination/{periodo-nome}';
+  /** Path part for operation `findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination()` */
+  static readonly FindAllAuthUserPeriodoAllenamentoByPeriodoIdNoPaginationPath = '/periodTraining/no_pagination/{periodo-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findByPeriodoNomeNoPagination()` instead.
+   * To access only the response body, use `findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findByPeriodoNomeNoPagination$Response(params: FindByPeriodoNomeNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PeriodoAllenamentoResponse>>> {
-    return findByPeriodoNomeNoPagination(this.http, this.rootUrl, params, context);
+  findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination$Response(params: FindAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PeriodoAllenamentoResponse>>> {
+    return findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findByPeriodoNomeNoPagination$Response()` instead.
+   * To access the full response (for headers, for example), `findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findByPeriodoNomeNoPagination(params: FindByPeriodoNomeNoPagination$Params, context?: HttpContext): Observable<Array<PeriodoAllenamentoResponse>> {
-    return this.findByPeriodoNomeNoPagination$Response(params, context).pipe(
+  findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination(params: FindAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination$Params, context?: HttpContext): Observable<Array<PeriodoAllenamentoResponse>> {
+    return this.findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<PeriodoAllenamentoResponse>>): Array<PeriodoAllenamentoResponse> => r.body)
     );
   }

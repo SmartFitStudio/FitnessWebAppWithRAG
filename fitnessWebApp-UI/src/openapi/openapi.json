@@ -31,12 +31,177 @@
     }
   ],
   "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "updateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "deleteUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/progress/{progresso-id}": {
+      "get": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "getProgresso",
+        "parameters": [
+          {
+            "name": "progresso-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressoResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "updateProgresso",
+        "parameters": [
+          {
+            "name": "progresso-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProgressoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "deleteProgresso",
+        "parameters": [
+          {
+            "name": "progresso-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/periods/disable_active_period": {
       "put": {
         "tags": [
           "Periods"
         ],
-        "operationId": "disableActivePeriod",
+        "operationId": "disableAuthenticatedUserActivePeriodo",
         "responses": {
           "200": {
             "description": "OK",
@@ -142,6 +307,36 @@
         }
       }
     },
+    "/progress": {
+      "post": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "addProgresso",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProgressoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/periods": {
       "post": {
         "tags": [
@@ -203,46 +398,6 @@
       }
     },
     "/exercises": {
-      "get": {
-        "tags": [
-          "Exercise"
-        ],
-        "operationId": "findAllExercise",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PageResponseExerciseResponse"
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "Exercise"
@@ -264,8 +419,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/ExerciseResponse"
                 }
               }
             }
@@ -472,6 +626,35 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Train"
+        ],
+        "operationId": "deleteAllenamento",
+        "parameters": [
+          {
+            "name": "allenamento-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/trainings/creator": {
@@ -479,7 +662,7 @@
         "tags": [
           "Train"
         ],
-        "operationId": "findAllAllenamentoByCreator",
+        "operationId": "findAllAllenamentoByAuthenticatedUser",
         "parameters": [
           {
             "name": "page",
@@ -521,7 +704,7 @@
         "tags": [
           "Train"
         ],
-        "operationId": "findAllAllenamentoByCreator_noPagination",
+        "operationId": "findAllAllenamentoByAuthenticatedUser_noPagination",
         "responses": {
           "200": {
             "description": "OK",
@@ -539,12 +722,12 @@
         }
       }
     },
-    "/trainingexercise/{allenamento-nome}": {
+    "/trainingexercise/{allenamento-id}": {
       "get": {
         "tags": [
           "TrainExercise"
         ],
-        "operationId": "findByAllenamentoNome",
+        "operationId": "findAllAuthAllenamentoEsercizioByAllenamentoId_paginated",
         "parameters": [
           {
             "name": "page",
@@ -567,11 +750,12 @@
             }
           },
           {
-            "name": "allenamento-nome",
+            "name": "allenamento-id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],
@@ -589,19 +773,20 @@
         }
       }
     },
-    "/trainingexercise/no_pagination/{allenamento-nome}": {
+    "/trainingexercise/no_pagination/{allenamento-id}": {
       "get": {
         "tags": [
           "TrainExercise"
         ],
-        "operationId": "findByAllenamentoNomeNoPagination",
+        "operationId": "findAllAuthAllenamentoEsercizioByAllenamentoId_NoPagination",
         "parameters": [
           {
-            "name": "allenamento-nome",
+            "name": "allenamento-id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],
@@ -622,12 +807,69 @@
         }
       }
     },
+    "/progress/last/{N}": {
+      "get": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "getLastNProgressi",
+        "parameters": [
+          {
+            "name": "N",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProgressoResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/progress/all": {
+      "get": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "getAllProgressi",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProgressoResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/periods/{periodo-id}": {
       "get": {
         "tags": [
           "Periods"
         ],
-        "operationId": "findPeriodoById",
+        "operationId": "findByAuthenticatedUserAndId",
         "parameters": [
           {
             "name": "periodo-id",
@@ -651,6 +893,35 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Periods"
+        ],
+        "operationId": "deletePeriodo",
+        "parameters": [
+          {
+            "name": "periodo-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/periods/is_there_an_active_period": {
@@ -658,7 +929,7 @@
         "tags": [
           "Periods"
         ],
-        "operationId": "isThereAnActivePeriod",
+        "operationId": "findAuthenticatedUserActivePeriodo",
         "responses": {
           "200": {
             "description": "OK",
@@ -678,7 +949,7 @@
         "tags": [
           "Periods"
         ],
-        "operationId": "findAllPeriodoByCreator",
+        "operationId": "findAllAuthenticatedUserPeriodo_paginated",
         "parameters": [
           {
             "name": "page",
@@ -715,12 +986,12 @@
         }
       }
     },
-    "/periodTraining/{periodo-nome}": {
+    "/periodTraining/{periodo-id}": {
       "get": {
         "tags": [
           "PeriodTraining"
         ],
-        "operationId": "findByPeriodoNome",
+        "operationId": "findAllAuthUserPeriodoAllenamentoByPeriodoId_paginated",
         "parameters": [
           {
             "name": "page",
@@ -743,11 +1014,12 @@
             }
           },
           {
-            "name": "periodo-nome",
+            "name": "periodo-id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],
@@ -765,19 +1037,20 @@
         }
       }
     },
-    "/periodTraining/no_pagination/{periodo-nome}": {
+    "/periodTraining/no_pagination/{periodo-id}": {
       "get": {
         "tags": [
           "PeriodTraining"
         ],
-        "operationId": "findByPeriodoNomeNoPagination",
+        "operationId": "findAllAuthUserPeriodoAllenamentoByPeriodoId_noPagination",
         "parameters": [
           {
-            "name": "periodo-nome",
+            "name": "periodo-id",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],
@@ -826,7 +1099,7 @@
         "tags": [
           "Exercise"
         ],
-        "operationId": "findExerciseById",
+        "operationId": "findAuthenticatedUserOrDefaultExerciseById",
         "parameters": [
           {
             "name": "exercise-id",
@@ -951,7 +1224,7 @@
         "tags": [
           "Exercise"
         ],
-        "operationId": "findAllExerciseByCreator",
+        "operationId": "findAllAuthenticatedUserExercises_paginated",
         "parameters": [
           {
             "name": "page",
@@ -1011,37 +1284,7 @@
         }
       }
     },
-    "/trainings/{allenamento-nome}": {
-      "delete": {
-        "tags": [
-          "Train"
-        ],
-        "operationId": "deleteAllenamento",
-        "parameters": [
-          {
-            "name": "allenamento-nome",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/trainingexercise/{allenamento-nome}/{index}": {
+    "/trainingexercise/{allenamentoEsercizio-id}": {
       "delete": {
         "tags": [
           "TrainExercise"
@@ -1049,50 +1292,12 @@
         "operationId": "deleteAllenamentoEsercizio",
         "parameters": [
           {
-            "name": "allenamento-nome",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "index",
+            "name": "allenamentoEsercizio-id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/periods/{periodo-nome}": {
-      "delete": {
-        "tags": [
-          "Periods"
-        ],
-        "operationId": "deletePeriodo",
-        "parameters": [
-          {
-            "name": "periodo-nome",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+              "format": "int64"
             }
           }
         ],
@@ -1144,6 +1349,67 @@
   },
   "components": {
     "schemas": {
+      "UserRequest": {
+        "required": [
+          "dateOfBirth",
+          "firstname",
+          "lastname"
+        ],
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "ProgressoRequest": {
+        "required": [
+          "altezzaCm",
+          "dataMisurazione",
+          "percentualeMassaGrassa",
+          "percentualeMassaMagra",
+          "pesoKg"
+        ],
+        "type": "object",
+        "properties": {
+          "dataMisurazione": {
+            "type": "string",
+            "format": "date"
+          },
+          "pesoKg": {
+            "type": "number",
+            "format": "float"
+          },
+          "altezzaCm": {
+            "type": "number",
+            "format": "float"
+          },
+          "percentualeMassaGrassa": {
+            "type": "number",
+            "format": "float"
+          },
+          "percentualeMassaMagra": {
+            "type": "number",
+            "format": "float"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
       "PeriodoResponse": {
         "required": [
           "attivo",
@@ -1235,7 +1501,7 @@
             "type": "string"
           },
           "durata_in_ore": {
-            "minimum": 1,
+            "minimum": 0,
             "type": "number",
             "format": "float"
           }
@@ -1353,6 +1619,46 @@
           "recupero": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "ProgressoResponse": {
+        "required": [
+          "altezzaCm",
+          "dataMisurazione",
+          "id",
+          "percentualeMassaGrassa",
+          "percentualeMassaMagra",
+          "pesoKg"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataMisurazione": {
+            "type": "string",
+            "format": "date"
+          },
+          "pesoKg": {
+            "type": "number",
+            "format": "float"
+          },
+          "altezzaCm": {
+            "type": "number",
+            "format": "float"
+          },
+          "percentualeMassaGrassa": {
+            "type": "number",
+            "format": "float"
+          },
+          "percentualeMassaMagra": {
+            "type": "number",
+            "format": "float"
+          },
+          "note": {
+            "type": "string"
           }
         }
       },
@@ -1532,7 +1838,8 @@
         "required": [
           "description",
           "id",
-          "name"
+          "name",
+          "shareable"
         ],
         "type": "object",
         "properties": {
@@ -1652,6 +1959,34 @@
         "properties": {
           "token": {
             "type": "string"
+          }
+        }
+      },
+      "UserResponse": {
+        "required": [
+          "dateOfBirth",
+          "email",
+          "firstname",
+          "lastname",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
           }
         }
       },

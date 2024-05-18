@@ -4,6 +4,8 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { UserService } from './services/user.service';
+import { ProgressService } from './services/progress.service';
 import { PeriodsService } from './services/periods.service';
 import { NotificaService } from './services/notifica.service';
 import { TrainService } from './services/train.service';
@@ -21,6 +23,8 @@ import { AuthenticationService } from './services/authentication.service';
   exports: [],
   declarations: [],
   providers: [
+    UserService,
+    ProgressService,
     PeriodsService,
     NotificaService,
     TrainService,

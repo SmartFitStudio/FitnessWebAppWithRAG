@@ -50,7 +50,7 @@ export class MyExerciseListComponent implements OnInit {
   }
 
   private findAllMyExercise() {
-    this.exerciseResponse$ = this.exerciseService.findAllExercise({
+    this.exerciseResponse$ = this.exerciseService.findAllAuthenticatedUserExercisesPaginated({
       page: this._page,
       size: this._size
     }).pipe(
@@ -62,7 +62,9 @@ export class MyExerciseListComponent implements OnInit {
         return response;
       }),
       catchError((error) => {
-        this.messages = this.handleError.handleError(error);
+        this.handleError.handleError(error).forEach((value) => {
+          this.messages.push(value.message);
+        });
         this.level = 'error';
         return EMPTY;
       }
@@ -78,7 +80,9 @@ export class MyExerciseListComponent implements OnInit {
           this.findAllMyExercise();
         },
         error: (error) => {
-          this.messages = this.handleError.handleError(error);
+          this.handleError.handleError(error).forEach((value) => {
+            this.messages.push(value.message);
+          });
           this.level = 'error';
         }
       });

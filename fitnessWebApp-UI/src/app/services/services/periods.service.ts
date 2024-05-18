@@ -11,14 +11,14 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { deletePeriodo } from '../fn/periods/delete-periodo';
 import { DeletePeriodo$Params } from '../fn/periods/delete-periodo';
-import { disableActivePeriod } from '../fn/periods/disable-active-period';
-import { DisableActivePeriod$Params } from '../fn/periods/disable-active-period';
-import { findAllPeriodoByCreator } from '../fn/periods/find-all-periodo-by-creator';
-import { FindAllPeriodoByCreator$Params } from '../fn/periods/find-all-periodo-by-creator';
-import { findPeriodoById } from '../fn/periods/find-periodo-by-id';
-import { FindPeriodoById$Params } from '../fn/periods/find-periodo-by-id';
-import { isThereAnActivePeriod } from '../fn/periods/is-there-an-active-period';
-import { IsThereAnActivePeriod$Params } from '../fn/periods/is-there-an-active-period';
+import { disableAuthenticatedUserActivePeriodo } from '../fn/periods/disable-authenticated-user-active-periodo';
+import { DisableAuthenticatedUserActivePeriodo$Params } from '../fn/periods/disable-authenticated-user-active-periodo';
+import { findAllAuthenticatedUserPeriodoPaginated } from '../fn/periods/find-all-authenticated-user-periodo-paginated';
+import { FindAllAuthenticatedUserPeriodoPaginated$Params } from '../fn/periods/find-all-authenticated-user-periodo-paginated';
+import { findAuthenticatedUserActivePeriodo } from '../fn/periods/find-authenticated-user-active-periodo';
+import { FindAuthenticatedUserActivePeriodo$Params } from '../fn/periods/find-authenticated-user-active-periodo';
+import { findByAuthenticatedUserAndId } from '../fn/periods/find-by-authenticated-user-and-id';
+import { FindByAuthenticatedUserAndId$Params } from '../fn/periods/find-by-authenticated-user-and-id';
 import { PageResponsePeriodoResponse } from '../models/page-response-periodo-response';
 import { PeriodoResponse } from '../models/periodo-response';
 import { savePeriodo } from '../fn/periods/save-periodo';
@@ -30,27 +30,27 @@ export class PeriodsService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `disableActivePeriod()` */
-  static readonly DisableActivePeriodPath = '/periods/disable_active_period';
+  /** Path part for operation `disableAuthenticatedUserActivePeriodo()` */
+  static readonly DisableAuthenticatedUserActivePeriodoPath = '/periods/disable_active_period';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `disableActivePeriod()` instead.
+   * To access only the response body, use `disableAuthenticatedUserActivePeriodo()` instead.
    *
    * This method doesn't expect any request body.
    */
-  disableActivePeriod$Response(params?: DisableActivePeriod$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
-    return disableActivePeriod(this.http, this.rootUrl, params, context);
+  disableAuthenticatedUserActivePeriodo$Response(params?: DisableAuthenticatedUserActivePeriodo$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
+    return disableAuthenticatedUserActivePeriodo(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `disableActivePeriod$Response()` instead.
+   * To access the full response (for headers, for example), `disableAuthenticatedUserActivePeriodo$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  disableActivePeriod(params?: DisableActivePeriod$Params, context?: HttpContext): Observable<PeriodoResponse> {
-    return this.disableActivePeriod$Response(params, context).pipe(
+  disableAuthenticatedUserActivePeriodo(params?: DisableAuthenticatedUserActivePeriodo$Params, context?: HttpContext): Observable<PeriodoResponse> {
+    return this.disableAuthenticatedUserActivePeriodo$Response(params, context).pipe(
       map((r: StrictHttpResponse<PeriodoResponse>): PeriodoResponse => r.body)
     );
   }
@@ -80,83 +80,33 @@ export class PeriodsService extends BaseService {
     );
   }
 
-  /** Path part for operation `findPeriodoById()` */
-  static readonly FindPeriodoByIdPath = '/periods/{periodo-id}';
+  /** Path part for operation `findByAuthenticatedUserAndId()` */
+  static readonly FindByAuthenticatedUserAndIdPath = '/periods/{periodo-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findPeriodoById()` instead.
+   * To access only the response body, use `findByAuthenticatedUserAndId()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findPeriodoById$Response(params: FindPeriodoById$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
-    return findPeriodoById(this.http, this.rootUrl, params, context);
+  findByAuthenticatedUserAndId$Response(params: FindByAuthenticatedUserAndId$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
+    return findByAuthenticatedUserAndId(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findPeriodoById$Response()` instead.
+   * To access the full response (for headers, for example), `findByAuthenticatedUserAndId$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findPeriodoById(params: FindPeriodoById$Params, context?: HttpContext): Observable<PeriodoResponse> {
-    return this.findPeriodoById$Response(params, context).pipe(
+  findByAuthenticatedUserAndId(params: FindByAuthenticatedUserAndId$Params, context?: HttpContext): Observable<PeriodoResponse> {
+    return this.findByAuthenticatedUserAndId$Response(params, context).pipe(
       map((r: StrictHttpResponse<PeriodoResponse>): PeriodoResponse => r.body)
-    );
-  }
-
-  /** Path part for operation `isThereAnActivePeriod()` */
-  static readonly IsThereAnActivePeriodPath = '/periods/is_there_an_active_period';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `isThereAnActivePeriod()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  isThereAnActivePeriod$Response(params?: IsThereAnActivePeriod$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
-    return isThereAnActivePeriod(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `isThereAnActivePeriod$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  isThereAnActivePeriod(params?: IsThereAnActivePeriod$Params, context?: HttpContext): Observable<PeriodoResponse> {
-    return this.isThereAnActivePeriod$Response(params, context).pipe(
-      map((r: StrictHttpResponse<PeriodoResponse>): PeriodoResponse => r.body)
-    );
-  }
-
-  /** Path part for operation `findAllPeriodoByCreator()` */
-  static readonly FindAllPeriodoByCreatorPath = '/periods/creator';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findAllPeriodoByCreator()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  findAllPeriodoByCreator$Response(params?: FindAllPeriodoByCreator$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponsePeriodoResponse>> {
-    return findAllPeriodoByCreator(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findAllPeriodoByCreator$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  findAllPeriodoByCreator(params?: FindAllPeriodoByCreator$Params, context?: HttpContext): Observable<PageResponsePeriodoResponse> {
-    return this.findAllPeriodoByCreator$Response(params, context).pipe(
-      map((r: StrictHttpResponse<PageResponsePeriodoResponse>): PageResponsePeriodoResponse => r.body)
     );
   }
 
   /** Path part for operation `deletePeriodo()` */
-  static readonly DeletePeriodoPath = '/periods/{periodo-nome}';
+  static readonly DeletePeriodoPath = '/periods/{periodo-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -181,6 +131,56 @@ export class PeriodsService extends BaseService {
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)
+    );
+  }
+
+  /** Path part for operation `findAuthenticatedUserActivePeriodo()` */
+  static readonly FindAuthenticatedUserActivePeriodoPath = '/periods/is_there_an_active_period';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findAuthenticatedUserActivePeriodo()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findAuthenticatedUserActivePeriodo$Response(params?: FindAuthenticatedUserActivePeriodo$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
+    return findAuthenticatedUserActivePeriodo(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `findAuthenticatedUserActivePeriodo$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findAuthenticatedUserActivePeriodo(params?: FindAuthenticatedUserActivePeriodo$Params, context?: HttpContext): Observable<PeriodoResponse> {
+    return this.findAuthenticatedUserActivePeriodo$Response(params, context).pipe(
+      map((r: StrictHttpResponse<PeriodoResponse>): PeriodoResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `findAllAuthenticatedUserPeriodoPaginated()` */
+  static readonly FindAllAuthenticatedUserPeriodoPaginatedPath = '/periods/creator';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findAllAuthenticatedUserPeriodoPaginated()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findAllAuthenticatedUserPeriodoPaginated$Response(params?: FindAllAuthenticatedUserPeriodoPaginated$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponsePeriodoResponse>> {
+    return findAllAuthenticatedUserPeriodoPaginated(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `findAllAuthenticatedUserPeriodoPaginated$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findAllAuthenticatedUserPeriodoPaginated(params?: FindAllAuthenticatedUserPeriodoPaginated$Params, context?: HttpContext): Observable<PageResponsePeriodoResponse> {
+    return this.findAllAuthenticatedUserPeriodoPaginated$Response(params, context).pipe(
+      map((r: StrictHttpResponse<PageResponsePeriodoResponse>): PageResponsePeriodoResponse => r.body)
     );
   }
 
