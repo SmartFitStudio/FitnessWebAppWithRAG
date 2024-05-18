@@ -8,18 +8,18 @@ import { RequestBuilder } from '../../request-builder';
 
 import { PageResponsePeriodoAllenamentoResponse } from '../../models/page-response-periodo-allenamento-response';
 
-export interface FindByPeriodoNome$Params {
+export interface FindAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated$Params {
   page?: number;
   size?: number;
-  'periodo-nome': string;
+  'periodo-id': number;
 }
 
-export function findByPeriodoNome(http: HttpClient, rootUrl: string, params: FindByPeriodoNome$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponsePeriodoAllenamentoResponse>> {
-  const rb = new RequestBuilder(rootUrl, findByPeriodoNome.PATH, 'get');
+export function findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated(http: HttpClient, rootUrl: string, params: FindAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponsePeriodoAllenamentoResponse>> {
+  const rb = new RequestBuilder(rootUrl, findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated.PATH, 'get');
   if (params) {
     rb.query('page', params.page, {});
     rb.query('size', params.size, {});
-    rb.path('periodo-nome', params['periodo-nome'], {});
+    rb.path('periodo-id', params['periodo-id'], {});
   }
 
   return http.request(
@@ -32,4 +32,4 @@ export function findByPeriodoNome(http: HttpClient, rootUrl: string, params: Fin
   );
 }
 
-findByPeriodoNome.PATH = '/periodTraining/{periodo-nome}';
+findAllAuthUserPeriodoAllenamentoByPeriodoIdPaginated.PATH = '/periodTraining/{periodo-id}';

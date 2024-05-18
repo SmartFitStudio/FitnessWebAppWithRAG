@@ -46,19 +46,19 @@ public class PeriodoAllenamentoController {
     }
 
 
-    @GetMapping("/{periodo-nome}")
+    @GetMapping("/{periodo-id}")
     public ResponseEntity<PageResponse<PeriodoAllenamentoResponse>> findAllAuthUserPeriodoAllenamentoByPeriodoId_paginated(
         @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
-            @PathVariable("periodo-nome") Long periodo_id,
+            @PathVariable("periodo-id") Long periodo_id,
             Authentication connectedUser
     ) {
         return ResponseEntity.ok(service.findAllAuthUserPeriodoAllenamentoByPeriodoId_paginated(page,size,periodo_id, connectedUser));
     }
 
-    @GetMapping("/no_pagination/{periodo-nome}")
+    @GetMapping("/no_pagination/{periodo-id}")
     public ResponseEntity<ArrayList<PeriodoAllenamentoResponse>> findAllAuthUserPeriodoAllenamentoByPeriodoId_noPagination(
-            @PathVariable("periodo-nome") Long periodo_id,
+            @PathVariable("periodo-id") Long periodo_id,
             Authentication connectedUser
     ) {
         return ResponseEntity.ok(service.findAllAuthUserPeriodoAllenamentoByPeriodoId_noPagination(periodo_id, connectedUser));

@@ -8,13 +8,13 @@ import { RequestBuilder } from '../../request-builder';
 
 import { PageResponseAllenamentoResponse } from '../../models/page-response-allenamento-response';
 
-export interface FindAllAllenamentoByCreator$Params {
+export interface FindAllAllenamentoByAuthenticatedUser$Params {
   page?: number;
   size?: number;
 }
 
-export function findAllAllenamentoByCreator(http: HttpClient, rootUrl: string, params?: FindAllAllenamentoByCreator$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseAllenamentoResponse>> {
-  const rb = new RequestBuilder(rootUrl, findAllAllenamentoByCreator.PATH, 'get');
+export function findAllAllenamentoByAuthenticatedUser(http: HttpClient, rootUrl: string, params?: FindAllAllenamentoByAuthenticatedUser$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseAllenamentoResponse>> {
+  const rb = new RequestBuilder(rootUrl, findAllAllenamentoByAuthenticatedUser.PATH, 'get');
   if (params) {
     rb.query('page', params.page, {});
     rb.query('size', params.size, {});
@@ -30,4 +30,4 @@ export function findAllAllenamentoByCreator(http: HttpClient, rootUrl: string, p
   );
 }
 
-findAllAllenamentoByCreator.PATH = '/trainings/creator';
+findAllAllenamentoByAuthenticatedUser.PATH = '/trainings/creator';

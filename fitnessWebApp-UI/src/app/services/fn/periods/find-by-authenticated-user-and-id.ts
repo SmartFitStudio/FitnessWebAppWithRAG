@@ -8,12 +8,14 @@ import { RequestBuilder } from '../../request-builder';
 
 import { PeriodoResponse } from '../../models/periodo-response';
 
-export interface IsThereAnActivePeriod$Params {
+export interface FindByAuthenticatedUserAndId$Params {
+  'periodo-id': number;
 }
 
-export function isThereAnActivePeriod(http: HttpClient, rootUrl: string, params?: IsThereAnActivePeriod$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
-  const rb = new RequestBuilder(rootUrl, isThereAnActivePeriod.PATH, 'get');
+export function findByAuthenticatedUserAndId(http: HttpClient, rootUrl: string, params: FindByAuthenticatedUserAndId$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
+  const rb = new RequestBuilder(rootUrl, findByAuthenticatedUserAndId.PATH, 'get');
   if (params) {
+    rb.path('periodo-id', params['periodo-id'], {});
   }
 
   return http.request(
@@ -26,4 +28,4 @@ export function isThereAnActivePeriod(http: HttpClient, rootUrl: string, params?
   );
 }
 
-isThereAnActivePeriod.PATH = '/periods/is_there_an_active_period';
+findByAuthenticatedUserAndId.PATH = '/periods/{periodo-id}';

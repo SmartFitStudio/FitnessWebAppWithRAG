@@ -11,12 +11,8 @@ import java.util.List;
 
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
-        @Query("""
-                SELECT exercise
-                FROM Exercise exercise
-                WHERE exercise.creator IS NULL OR exercise.creator.id = :userId
-                """)
-        Page<Exercise> findAllDisplayableExercise(Pageable pageable, int userId);
+
+        Page<Exercise> findByCreatorOrCreatorIsNull(Pageable pageable, User user);
 
         Page<Exercise> findByCreator(Pageable pageable, User user);
 

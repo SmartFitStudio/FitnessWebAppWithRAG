@@ -80,9 +80,9 @@ public class AllenamentoController {
      * (No Content). Se la risorsa da eliminare non esiste, si
      * può restituire un 404 (Not Found).
      */
-    @DeleteMapping("/{allenamento-nome}")
+    @DeleteMapping("/{allenamento-id}")
     public ResponseEntity<?> deleteAllenamento(
-            @PathVariable("allenamento-nome") Long allenamento_id,
+            @PathVariable("allenamento-id") Long allenamento_id,
             Authentication connectedUser) {
         service.deleteById(allenamento_id, connectedUser);
         return ResponseEntity.noContent().build();

@@ -12,10 +12,10 @@ import { StrictHttpResponse } from '../strict-http-response';
 import { AllenamentoResponse } from '../models/allenamento-response';
 import { deleteAllenamento } from '../fn/train/delete-allenamento';
 import { DeleteAllenamento$Params } from '../fn/train/delete-allenamento';
-import { findAllAllenamentoByCreator } from '../fn/train/find-all-allenamento-by-creator';
-import { FindAllAllenamentoByCreator$Params } from '../fn/train/find-all-allenamento-by-creator';
-import { findAllAllenamentoByCreatorNoPagination } from '../fn/train/find-all-allenamento-by-creator-no-pagination';
-import { FindAllAllenamentoByCreatorNoPagination$Params } from '../fn/train/find-all-allenamento-by-creator-no-pagination';
+import { findAllAllenamentoByAuthenticatedUser } from '../fn/train/find-all-allenamento-by-authenticated-user';
+import { FindAllAllenamentoByAuthenticatedUser$Params } from '../fn/train/find-all-allenamento-by-authenticated-user';
+import { findAllAllenamentoByAuthenticatedUserNoPagination } from '../fn/train/find-all-allenamento-by-authenticated-user-no-pagination';
+import { FindAllAllenamentoByAuthenticatedUserNoPagination$Params } from '../fn/train/find-all-allenamento-by-authenticated-user-no-pagination';
 import { findAllenamentoById } from '../fn/train/find-allenamento-by-id';
 import { FindAllenamentoById$Params } from '../fn/train/find-allenamento-by-id';
 import { PageResponseAllenamentoResponse } from '../models/page-response-allenamento-response';
@@ -78,58 +78,8 @@ export class TrainService extends BaseService {
     );
   }
 
-  /** Path part for operation `findAllAllenamentoByCreator()` */
-  static readonly FindAllAllenamentoByCreatorPath = '/trainings/creator';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findAllAllenamentoByCreator()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  findAllAllenamentoByCreator$Response(params?: FindAllAllenamentoByCreator$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseAllenamentoResponse>> {
-    return findAllAllenamentoByCreator(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findAllAllenamentoByCreator$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  findAllAllenamentoByCreator(params?: FindAllAllenamentoByCreator$Params, context?: HttpContext): Observable<PageResponseAllenamentoResponse> {
-    return this.findAllAllenamentoByCreator$Response(params, context).pipe(
-      map((r: StrictHttpResponse<PageResponseAllenamentoResponse>): PageResponseAllenamentoResponse => r.body)
-    );
-  }
-
-  /** Path part for operation `findAllAllenamentoByCreatorNoPagination()` */
-  static readonly FindAllAllenamentoByCreatorNoPaginationPath = '/trainings/creator/no_pagination';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findAllAllenamentoByCreatorNoPagination()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  findAllAllenamentoByCreatorNoPagination$Response(params?: FindAllAllenamentoByCreatorNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AllenamentoResponse>>> {
-    return findAllAllenamentoByCreatorNoPagination(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findAllAllenamentoByCreatorNoPagination$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  findAllAllenamentoByCreatorNoPagination(params?: FindAllAllenamentoByCreatorNoPagination$Params, context?: HttpContext): Observable<Array<AllenamentoResponse>> {
-    return this.findAllAllenamentoByCreatorNoPagination$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<AllenamentoResponse>>): Array<AllenamentoResponse> => r.body)
-    );
-  }
-
   /** Path part for operation `deleteAllenamento()` */
-  static readonly DeleteAllenamentoPath = '/trainings/{allenamento-nome}';
+  static readonly DeleteAllenamentoPath = '/trainings/{allenamento-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -154,6 +104,56 @@ export class TrainService extends BaseService {
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)
+    );
+  }
+
+  /** Path part for operation `findAllAllenamentoByAuthenticatedUser()` */
+  static readonly FindAllAllenamentoByAuthenticatedUserPath = '/trainings/creator';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findAllAllenamentoByAuthenticatedUser()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findAllAllenamentoByAuthenticatedUser$Response(params?: FindAllAllenamentoByAuthenticatedUser$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseAllenamentoResponse>> {
+    return findAllAllenamentoByAuthenticatedUser(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `findAllAllenamentoByAuthenticatedUser$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findAllAllenamentoByAuthenticatedUser(params?: FindAllAllenamentoByAuthenticatedUser$Params, context?: HttpContext): Observable<PageResponseAllenamentoResponse> {
+    return this.findAllAllenamentoByAuthenticatedUser$Response(params, context).pipe(
+      map((r: StrictHttpResponse<PageResponseAllenamentoResponse>): PageResponseAllenamentoResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `findAllAllenamentoByAuthenticatedUserNoPagination()` */
+  static readonly FindAllAllenamentoByAuthenticatedUserNoPaginationPath = '/trainings/creator/no_pagination';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findAllAllenamentoByAuthenticatedUserNoPagination()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findAllAllenamentoByAuthenticatedUserNoPagination$Response(params?: FindAllAllenamentoByAuthenticatedUserNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AllenamentoResponse>>> {
+    return findAllAllenamentoByAuthenticatedUserNoPagination(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `findAllAllenamentoByAuthenticatedUserNoPagination$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findAllAllenamentoByAuthenticatedUserNoPagination(params?: FindAllAllenamentoByAuthenticatedUserNoPagination$Params, context?: HttpContext): Observable<Array<AllenamentoResponse>> {
+    return this.findAllAllenamentoByAuthenticatedUserNoPagination$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<AllenamentoResponse>>): Array<AllenamentoResponse> => r.body)
     );
   }
 

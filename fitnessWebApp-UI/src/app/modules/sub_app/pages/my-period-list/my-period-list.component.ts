@@ -44,7 +44,7 @@ export class MyPeriodListComponent implements OnInit {
   }
 
   private findAllMyPeriods() {
-    this.periodsResponse$ = this.periodsService.findAllPeriodoByCreator({
+    this.periodsResponse$ = this.periodsService.findAllAuthenticatedUserPeriodoPaginated({
       page: this._page,
       size: this._size
     }).pipe(
@@ -65,7 +65,7 @@ export class MyPeriodListComponent implements OnInit {
   }
 
   deletePeriod(periodResponse: PeriodoResponse) {
-    this.periodsService.deletePeriodo({ 'periodo-nome': periodResponse.name })
+    this.periodsService.deletePeriodo({ 'periodo-id': periodResponse.id })
       .subscribe({
         next: () => {
           this.messages = ['Periodo eliminato'];

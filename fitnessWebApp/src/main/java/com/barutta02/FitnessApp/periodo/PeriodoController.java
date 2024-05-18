@@ -75,9 +75,9 @@ public class PeriodoController {
         return ResponseEntity.ok(service.findAllAuthenticatedUserPeriodo_paginated(page, size, connectedUser));
     }
     
-    @DeleteMapping("/{periodo-nome}")
+    @DeleteMapping("/{periodo-id}")
     public ResponseEntity<?> deletePeriodo(
-            @PathVariable("periodo-nome") Long periodo_id,
+            @PathVariable("periodo-id") Long periodo_id,
             Authentication connectedUser) {
         service.deletePeriodo(periodo_id, connectedUser);
         return ResponseEntity.noContent().build();

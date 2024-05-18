@@ -8,12 +8,12 @@ import { RequestBuilder } from '../../request-builder';
 
 import { ExerciseResponse } from '../../models/exercise-response';
 
-export interface FindExerciseById$Params {
+export interface FindAuthenticatedUserOrDefaultExerciseById$Params {
   'exercise-id': number;
 }
 
-export function findExerciseById(http: HttpClient, rootUrl: string, params: FindExerciseById$Params, context?: HttpContext): Observable<StrictHttpResponse<ExerciseResponse>> {
-  const rb = new RequestBuilder(rootUrl, findExerciseById.PATH, 'get');
+export function findAuthenticatedUserOrDefaultExerciseById(http: HttpClient, rootUrl: string, params: FindAuthenticatedUserOrDefaultExerciseById$Params, context?: HttpContext): Observable<StrictHttpResponse<ExerciseResponse>> {
+  const rb = new RequestBuilder(rootUrl, findAuthenticatedUserOrDefaultExerciseById.PATH, 'get');
   if (params) {
     rb.path('exercise-id', params['exercise-id'], {});
   }
@@ -28,4 +28,4 @@ export function findExerciseById(http: HttpClient, rootUrl: string, params: Find
   );
 }
 
-findExerciseById.PATH = '/exercises/{exercise-id}';
+findAuthenticatedUserOrDefaultExerciseById.PATH = '/exercises/{exercise-id}';

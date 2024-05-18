@@ -31,7 +31,7 @@ export class HomePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.periodoService.isThereAnActivePeriod().subscribe({
+    this.periodoService.findAuthenticatedUserActivePeriodo().subscribe({
       next: (response) => {
         if (response && response.id) {
           let periodInfoSubscription$ = this.periodManagerService.setInfoByPeriodName$(response.id).subscribe({

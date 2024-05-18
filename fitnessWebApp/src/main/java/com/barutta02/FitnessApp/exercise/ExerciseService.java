@@ -53,13 +53,17 @@ public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseReq
                                                                                      // and return its ID
     }
 
-    public ExerciseResponse findAuthenticatedUserExerciseById(Long exercise_id, Authentication connectedUser) {
+    public ExerciseResponse findAuthenticatedUserOrDefaultExerciseById(Long exercise_id, Authentication connectedUser) {
         User user = userExtractor.getUserFromAuthentication(connectedUser);
-        return this.exerciseMapper.toExerciseResponse(this.findByIdAndCreator(exercise_id, user));
+        return exerciseMapper.toExerciseResponse(this.findByIdAndCreatorOrDefault_creator(exercise_id, user));
     }
-    public Exercise findByIdAndCreator(Long exercise_id, User creator) {
-        Exercise exercise = exerciseRepository.findByIdAndCreator(exercise_id, creator)
-                .orElseThrow(() -> new EntityNotFoundException("No exercise found with ID dio bello:: " + exercise_id));
+
+    /*
+     * Metodo per trovare un esercizio in base all'utente che lo ha oppure se è un esercizio di default
+    */
+    public Exercise findByIdAndCreatorOrDefault_creator(Long exercise_id, User creator) {
+        Exercise exercise = exerciseRepository.findByIdAndCreatorOrDefault(exercise_id, creator)
+                .orElseThrow(() -> new EntityNotFoundException("Non ci sono esercizi utilizzabili dall'utente con ID::" + exercise_id));
         return exercise;
     }
 
@@ -76,7 +80,7 @@ public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseReq
             Authentication connectedUser) {
         User user = userExtractor.getUserFromAuthentication(connectedUser);
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Exercise> exercises = exerciseRepository.findByCreator(pageable, user);
+        Page<Exercise> exercises = exerciseRepository.findByCreatorOrCreatorIsNull(pageable, user);
         List<ExerciseResponse> exercisesResponses = exercises.stream()
                 .map(exerciseMapper::toExerciseResponse)
                 .toList();

@@ -48,7 +48,7 @@ export class TrainingManagerService {
                     this._train.description = allenamento.description;
                     this._train.durata_in_ore = allenamento.durata_in_ore;
 
-                    return this.getTrainingExercises$(allenamento.name);
+                    return this.getTrainingExercises$(allenamento.id);
                 }),
                 catchError((error) => { throw (error) })
             );
@@ -113,8 +113,8 @@ export class TrainingManagerService {
         /*
     mentre i due mergeMap sono concettualmente sequenziali, ciò non implica che l'intero processo sia sincrono. Le operazioni all'interno di ciascun mergeMap possono essere asincrone, ma verranno eseguite nell'ordine in cui sono definite nel flusso di osservabili.
     */
-    private getTrainingExercises$(allenamentoNome: string): Observable<any> {
-        return this.training_exercise_service.findByAllenamentoNomeNoPagination({ 'allenamento-nome': allenamentoNome })
+    private getTrainingExercises$(allenamento_id: number): Observable<any> {
+        return this.training_exercise_service.findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination({ 'allenamento-id': allenamento_id })
             .pipe(
                 mergeMap((esercizi) => {
                     this._trainingExercisesResponse = esercizi;
@@ -123,7 +123,7 @@ export class TrainingManagerService {
 
                     const exerciseRequests = [];
                     for (const exercise of this._trainingExerciseRequests) {
-                        exerciseRequests.push(this.exerciseService.findExerciseById({ 'exercise-id': exercise.id_esercizio }));
+                        exerciseRequests.push(this.exerciseService.findAuthenticatedUserOrDefaultExerciseById({ 'exercise-id': exercise.id_esercizio }));
                     }
                     return forkJoin(exerciseRequests);//iene utilizzato forkJoin per eseguire tutte queste richieste in parallelo. forkJoin restituisce un osservabile che emetterà un array con i risultati di tutte le richieste quando saranno complete.
                 }),
@@ -153,7 +153,7 @@ export class TrainingManagerService {
             return;
         }
         //recupero l'esercizio
-        this.exerciseService.findExerciseById({
+        this.exerciseService.findAuthenticatedUserOrDefaultExerciseById({
             'exercise-id': id as number
         }).subscribe({
             next: (exercise) => {

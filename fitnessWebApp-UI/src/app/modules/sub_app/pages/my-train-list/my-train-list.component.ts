@@ -44,7 +44,7 @@ export class MyTrainListComponent implements OnInit {
   }
 
   private findAllMyTrain() {
-    this.trainingsResponse$ = this.trainService.findAllAllenamentoByCreator({
+    this.trainingsResponse$ = this.trainService.findAllAllenamentoByAuthenticatedUser({
       page: this._page,
       size: this._size
     }).pipe(
@@ -66,7 +66,7 @@ export class MyTrainListComponent implements OnInit {
   }
 
   deleteTraining(trainResponse: AllenamentoResponse) {
-    this.trainService.deleteAllenamento({ 'allenamento-nome': trainResponse.name as string })
+    this.trainService.deleteAllenamento({ 'allenamento-id': trainResponse.id as number })
       .subscribe({
         next: () => {
           this.messages = ['Allenamento eliminato'];

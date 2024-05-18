@@ -8,14 +8,14 @@ import { RequestBuilder } from '../../request-builder';
 
 
 export interface DeleteAllenamento$Params {
-  'allenamento-nome': string;
+  'allenamento-id': number;
 }
 
 export function deleteAllenamento(http: HttpClient, rootUrl: string, params: DeleteAllenamento$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 }>> {
   const rb = new RequestBuilder(rootUrl, deleteAllenamento.PATH, 'delete');
   if (params) {
-    rb.path('allenamento-nome', params['allenamento-nome'], {});
+    rb.path('allenamento-id', params['allenamento-id'], {});
   }
 
   return http.request(
@@ -29,4 +29,4 @@ export function deleteAllenamento(http: HttpClient, rootUrl: string, params: Del
   );
 }
 
-deleteAllenamento.PATH = '/trainings/{allenamento-nome}';
+deleteAllenamento.PATH = '/trainings/{allenamento-id}';

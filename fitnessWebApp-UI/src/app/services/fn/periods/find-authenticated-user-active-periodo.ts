@@ -8,11 +8,11 @@ import { RequestBuilder } from '../../request-builder';
 
 import { PeriodoResponse } from '../../models/periodo-response';
 
-export interface DisableActivePeriod$Params {
+export interface FindAuthenticatedUserActivePeriodo$Params {
 }
 
-export function disableActivePeriod(http: HttpClient, rootUrl: string, params?: DisableActivePeriod$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
-  const rb = new RequestBuilder(rootUrl, disableActivePeriod.PATH, 'put');
+export function findAuthenticatedUserActivePeriodo(http: HttpClient, rootUrl: string, params?: FindAuthenticatedUserActivePeriodo$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
+  const rb = new RequestBuilder(rootUrl, findAuthenticatedUserActivePeriodo.PATH, 'get');
   if (params) {
   }
 
@@ -26,4 +26,4 @@ export function disableActivePeriod(http: HttpClient, rootUrl: string, params?: 
   );
 }
 
-disableActivePeriod.PATH = '/periods/disable_active_period';
+findAuthenticatedUserActivePeriodo.PATH = '/periods/is_there_an_active_period';

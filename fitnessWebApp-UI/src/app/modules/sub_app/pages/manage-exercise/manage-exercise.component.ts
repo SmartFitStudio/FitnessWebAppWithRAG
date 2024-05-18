@@ -46,7 +46,7 @@ export class ManageExerciseComponent implements OnInit {
   ngOnInit(): void {
     const exercise_id = this.activatedRoute.snapshot.params['exerciseId'];
     if (exercise_id) {
-      this.exerciseService.findExerciseById({
+      this.exerciseService.findAuthenticatedUserOrDefaultExerciseById({
         'exercise-id': exercise_id
       }).subscribe({
         next: (exercise) => {

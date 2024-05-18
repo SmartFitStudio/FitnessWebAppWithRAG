@@ -65,10 +65,10 @@ public class ExerciseController {
 
 
     @GetMapping("/{exercise-id}")
-    public ResponseEntity<ExerciseResponse> findAuthenticatedUserExerciseById(
+    public ResponseEntity<ExerciseResponse> findAuthenticatedUserOrDefaultExerciseById(
             @PathVariable("exercise-id") Long exerciseId,
             Authentication connectedUser ) {
-        return ResponseEntity.ok(service.findAuthenticatedUserExerciseById(exerciseId, connectedUser));
+        return ResponseEntity.ok(service.findAuthenticatedUserOrDefaultExerciseById(exerciseId, connectedUser));
     }
 
     /**

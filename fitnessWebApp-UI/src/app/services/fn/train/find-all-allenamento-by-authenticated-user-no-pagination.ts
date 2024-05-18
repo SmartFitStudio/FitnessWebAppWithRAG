@@ -8,11 +8,11 @@ import { RequestBuilder } from '../../request-builder';
 
 import { AllenamentoResponse } from '../../models/allenamento-response';
 
-export interface FindAllAllenamentoByCreatorNoPagination$Params {
+export interface FindAllAllenamentoByAuthenticatedUserNoPagination$Params {
 }
 
-export function findAllAllenamentoByCreatorNoPagination(http: HttpClient, rootUrl: string, params?: FindAllAllenamentoByCreatorNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AllenamentoResponse>>> {
-  const rb = new RequestBuilder(rootUrl, findAllAllenamentoByCreatorNoPagination.PATH, 'get');
+export function findAllAllenamentoByAuthenticatedUserNoPagination(http: HttpClient, rootUrl: string, params?: FindAllAllenamentoByAuthenticatedUserNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AllenamentoResponse>>> {
+  const rb = new RequestBuilder(rootUrl, findAllAllenamentoByAuthenticatedUserNoPagination.PATH, 'get');
   if (params) {
   }
 
@@ -26,4 +26,4 @@ export function findAllAllenamentoByCreatorNoPagination(http: HttpClient, rootUr
   );
 }
 
-findAllAllenamentoByCreatorNoPagination.PATH = '/trainings/creator/no_pagination';
+findAllAllenamentoByAuthenticatedUserNoPagination.PATH = '/trainings/creator/no_pagination';

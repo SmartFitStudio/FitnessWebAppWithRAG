@@ -44,18 +44,18 @@ public class AllenamentoEsercizioController {
         return ResponseEntity.created(location).body(createdResource);
     }
 
-    @GetMapping("/{allenamento-nome}")
+    @GetMapping("/{allenamento-id}")
     public ResponseEntity<PageResponse<AllenamentoEsercizioResponse>> findAllAuthAllenamentoEsercizioByAllenamentoId_paginated(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
-            @PathVariable("allenamento-nome") Long allenamento_id,
+            @PathVariable("allenamento-id") Long allenamento_id,
             Authentication connectedUser) {
         return ResponseEntity.ok(service.findAllAuthUserAllenamentoEsercizioByAllenamentoId_paginated(page, size, allenamento_id, connectedUser));
     }
 
-    @GetMapping("/no_pagination/{allenamento-nome}")
+    @GetMapping("/no_pagination/{allenamento-id}")
     public ResponseEntity<ArrayList<AllenamentoEsercizioResponse>> findAllAuthAllenamentoEsercizioByAllenamentoId_NoPagination(
-            @PathVariable("allenamento-nome") Long allenamento_id,
+            @PathVariable("allenamento-id") Long allenamento_id,
             Authentication connectedUser) {
         return ResponseEntity.ok(service.findAllAuthUserAllenamentoEsercizioByAllenamentoId_noPagination(allenamento_id, connectedUser));
     }

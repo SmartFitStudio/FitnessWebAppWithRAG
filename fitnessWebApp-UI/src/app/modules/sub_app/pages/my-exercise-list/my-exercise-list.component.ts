@@ -50,7 +50,7 @@ export class MyExerciseListComponent implements OnInit {
   }
 
   private findAllMyExercise() {
-    this.exerciseResponse$ = this.exerciseService.findAllExercise({
+    this.exerciseResponse$ = this.exerciseService.findAllAuthenticatedUserExercisesPaginated({
       page: this._page,
       size: this._size
     }).pipe(

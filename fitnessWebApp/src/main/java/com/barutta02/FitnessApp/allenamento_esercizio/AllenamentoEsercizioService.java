@@ -42,7 +42,7 @@ public class AllenamentoEsercizioService implements Service_CRUD<AllenamentoEser
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
                 Allenamento allenamento = allenamentoService
                 .findByIdAndCreator(request.id_allenamento(), user);
-                Exercise exercise = exerciseService.findByIdAndCreator(request.id_esercizio(), user);
+                Exercise exercise = exerciseService.findByIdAndCreatorOrDefault_creator(request.id_esercizio(), user);
                 AllenamentoEsercizio allenamentoEsercizio = allenamentoEsercizioMapper.toAllenamentoEsercizio(request,allenamento,exercise,
                                 user);
                 AllenamentoEsercizio saved = allenamentoEsercizioRepository.save(allenamentoEsercizio);

@@ -8,14 +8,12 @@ import { RequestBuilder } from '../../request-builder';
 
 import { PeriodoResponse } from '../../models/periodo-response';
 
-export interface FindPeriodoById$Params {
-  'periodo-id': number;
+export interface DisableAuthenticatedUserActivePeriodo$Params {
 }
 
-export function findPeriodoById(http: HttpClient, rootUrl: string, params: FindPeriodoById$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
-  const rb = new RequestBuilder(rootUrl, findPeriodoById.PATH, 'get');
+export function disableAuthenticatedUserActivePeriodo(http: HttpClient, rootUrl: string, params?: DisableAuthenticatedUserActivePeriodo$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
+  const rb = new RequestBuilder(rootUrl, disableAuthenticatedUserActivePeriodo.PATH, 'put');
   if (params) {
-    rb.path('periodo-id', params['periodo-id'], {});
   }
 
   return http.request(
@@ -28,4 +26,4 @@ export function findPeriodoById(http: HttpClient, rootUrl: string, params: FindP
   );
 }
 
-findPeriodoById.PATH = '/periods/{periodo-id}';
+disableAuthenticatedUserActivePeriodo.PATH = '/periods/disable_active_period';
