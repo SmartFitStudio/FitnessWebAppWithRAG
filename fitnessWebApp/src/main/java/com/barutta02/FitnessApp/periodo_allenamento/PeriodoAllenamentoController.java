@@ -47,21 +47,21 @@ public class PeriodoAllenamentoController {
 
 
     @GetMapping("/{periodo-nome}")
-    public ResponseEntity<PageResponse<PeriodoAllenamentoResponse>> findByPeriodoNome(
+    public ResponseEntity<PageResponse<PeriodoAllenamentoResponse>> findAllAuthUserPeriodoAllenamentoByPeriodoId_paginated(
         @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
-            @PathVariable("periodo-nome") String periodo_nome,
+            @PathVariable("periodo-nome") Long periodo_id,
             Authentication connectedUser
     ) {
-        return ResponseEntity.ok(service.findAllByPeriodo(page,size,periodo_nome, connectedUser));
+        return ResponseEntity.ok(service.findAllAuthUserPeriodoAllenamentoByPeriodoId_paginated(page,size,periodo_id, connectedUser));
     }
 
     @GetMapping("/no_pagination/{periodo-nome}")
-    public ResponseEntity<ArrayList<PeriodoAllenamentoResponse>> findByPeriodoNomeNoPagination(
-            @PathVariable("periodo-nome") String periodo_nome,
+    public ResponseEntity<ArrayList<PeriodoAllenamentoResponse>> findAllAuthUserPeriodoAllenamentoByPeriodoId_noPagination(
+            @PathVariable("periodo-nome") Long periodo_id,
             Authentication connectedUser
     ) {
-        return ResponseEntity.ok(service.findAllByPeriodoNoPagination(periodo_nome, connectedUser));
+        return ResponseEntity.ok(service.findAllAuthUserPeriodoAllenamentoByPeriodoId_noPagination(periodo_id, connectedUser));
     }
 
     @DeleteMapping("/{periodo-allenamento-id}")
@@ -69,7 +69,7 @@ public class PeriodoAllenamentoController {
         @PathVariable("periodo-allenamento-id") Long periodo_allenamento_id,
         Authentication connectedUser
     ) {
-        service.deletePeriodoAllenamento(periodo_allenamento_id, connectedUser);
+        service.deleteById(periodo_allenamento_id, connectedUser);
         return ResponseEntity.noContent().build();
     }
 }

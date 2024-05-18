@@ -4,6 +4,7 @@ import com.barutta02.FitnessApp.allenamento.Allenamento;
 import com.barutta02.FitnessApp.allenamento.AllenamentoService;
 
 import com.barutta02.FitnessApp.common.PageResponse;
+import com.barutta02.FitnessApp.common.Service_CRUD;
 import com.barutta02.FitnessApp.config.UserExtractor;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
 import com.barutta02.FitnessApp.periodo.Periodo;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class PeriodoAllenamentoService {
+public class PeriodoAllenamentoService implements Service_CRUD<PeriodoAllenamento, Long, PeriodoAllenamentoRequest, PeriodoAllenamentoResponse>{
         private final PeriodoAllenamentoRepository periodoAllenamentoRepo;
         private final AllenamentoService allenamentoService;
         private final PeriodoService periodoService;
@@ -40,8 +41,8 @@ public class PeriodoAllenamentoService {
         public PeriodoAllenamentoResponse save(PeriodoAllenamentoRequest request, Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
                 Allenamento allenamento = allenamentoService
-                .findByIdAndCreator_Username(request.id_allenamento(), user.getUsername()); //se non trova lancia   EntityNotFoundException
-                Periodo periodo = periodoService.findByIdAndUsername(request.id_periodo(), user.getUsername());//se non trova lancia   EntityNotFoundException
+                .findByIdAndCreator(request.id_allenamento(), user); //se non trova lancia   EntityNotFoundException
+                Periodo periodo = periodoService.findByIdAndUser(request.id_periodo(), user);//se non trova lancia   EntityNotFoundException
 
                 //codice da rimuovere se si vuole permettere la condivisione di allenamenti e periodi prossimamente
                 if(allenamento.getCreator().getId() != user.getId() || periodo.getCreator().getId() != user.getId())
@@ -52,13 +53,13 @@ public class PeriodoAllenamentoService {
                 return periodoAllenamentoMapper.toPeriodoAllenamentoResponse(periodoAllenamentoRepo.save(PeriodoAllenamento));
         }
 
-        public PageResponse<PeriodoAllenamentoResponse> findAllByPeriodo(int page, int size,
-                        String periodo_nome,
+        public PageResponse<PeriodoAllenamentoResponse> findAllAuthUserPeriodoAllenamentoByPeriodoId_paginated(int page, int size,
+                        Long periodo_id,
                         Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
                 Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
                 Page<PeriodoAllenamento> allenamenti_periodo = periodoAllenamentoRepo
-                                .findByPeriodo_NameAndPeriodo_Creator_Username(pageable,periodo_nome,user.getUsername());
+                                .findByPeriodo_IdAndPeriodo_Creator(pageable,periodo_id,user);
                 List<PeriodoAllenamentoResponse> Allenamenti_periodo_response = allenamenti_periodo.stream()
                                 .map(periodoAllenamentoMapper::toPeriodoAllenamentoResponse)
                                 .toList();
@@ -72,27 +73,24 @@ public class PeriodoAllenamentoService {
                                 allenamenti_periodo.isLast());
         }
 
-        public ArrayList<PeriodoAllenamentoResponse> findAllByPeriodoNoPagination(String periodo_nome,
+        public ArrayList<PeriodoAllenamentoResponse> findAllAuthUserPeriodoAllenamentoByPeriodoId_noPagination(Long periodo_id,
                         Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
 
                 ArrayList<PeriodoAllenamento> lista_allenamenti = periodoAllenamentoRepo
-                                .findByPeriodo_NameAndPeriodo_Creator_Username(periodo_nome, user.getUsername())
+                                .findByPeriodo_IdAndPeriodo_Creator(periodo_id, user)
                                 .orElseThrow(() -> new EntityNotFoundException(
-                                                "Nessun periodo creato da te è stato trovato con nome:: "
-                                                                + periodo_nome));
+                                                "Nessun periodo creato da te è stato trovato con id:: "
+                                                                + periodo_id));
                 return (ArrayList<PeriodoAllenamentoResponse>) lista_allenamenti.stream()
                                 .map(periodoAllenamentoMapper::toPeriodoAllenamentoResponse)
                                 .collect(Collectors.toCollection(ArrayList::new));
         }
 
-        public void deletePeriodoAllenamento(Long periodo_allenamento_id, Authentication connectedUser) {
+        public void deleteById(Long periodo_allenamento_id, Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
-                this.periodoAllenamentoRepo.deleteByIdAndPeriodo_Creator_Username(periodo_allenamento_id, user.getUsername());
+                this.periodoAllenamentoRepo.deleteByIdAndPeriodo_Creator(periodo_allenamento_id, user);
         }
 
-        public void deleteByNameAndCreator_Username(String periodo_nome, String allenamento_creator_username) {
-                periodoAllenamentoRepo.deleteByPeriodo_NameAndPeriodo_Creator_Username(periodo_nome,allenamento_creator_username);
-        }
 
 }

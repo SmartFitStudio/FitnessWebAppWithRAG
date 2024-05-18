@@ -65,11 +65,17 @@ public class ExerciseController {
 
 
     @GetMapping("/{exercise-id}")
-    public ResponseEntity<ExerciseResponse> findExerciseById(
-            @PathVariable("exercise-id") Long exerciseId) {
-        return ResponseEntity.ok(service.findById(exerciseId));
+    public ResponseEntity<ExerciseResponse> findAuthenticatedUserExerciseById(
+            @PathVariable("exercise-id") Long exerciseId,
+            Authentication connectedUser ) {
+        return ResponseEntity.ok(service.findAuthenticatedUserExerciseById(exerciseId, connectedUser));
     }
 
+    /**
+     * This method is used to get the list of exercise categories,
+     * 
+     * @return
+     */
     @GetMapping("/exerciseCategories")
     public ResponseEntity<List<String>> getExerciseCategories() {
         List<String> valori = Arrays.stream(CategoryExercise.values())
@@ -86,30 +92,13 @@ public class ExerciseController {
         return ResponseEntity.ok(service.findExerciseFromStore(page,size,connectedUser));
     }
 
-    /**
-     * Page response is a custom class that contains the list of elements and the
-     * total number of elements
-     * Questo viene usato per evitare che sovraccarico se ci sono troppi elementi
-     * 
-     * @param page          firtst page by default
-     * @param size          10 elements by default
-     * @param connectedUser
-     * @return
-     */
-    @GetMapping
-    public ResponseEntity<PageResponse<ExerciseResponse>> findAllExercise(
-            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size,
-            Authentication connectedUser) {
-        return ResponseEntity.ok(service.findAllExercise(page, size, connectedUser));
-    }
 
     @GetMapping("/creator")
-    public ResponseEntity<PageResponse<ExerciseResponse>> findAllExerciseByCreator(
+    public ResponseEntity<PageResponse<ExerciseResponse>> findAllAuthenticatedUserExercises_paginated(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
             Authentication connectedUser) {
-        return ResponseEntity.ok(service.findAllExerciseByCreator(page, size, connectedUser));
+        return ResponseEntity.ok(service.findAllAuthenticatedUserExercises_paginated(page, size, connectedUser));
     }
 
     /**
@@ -133,7 +122,7 @@ public class ExerciseController {
     public ResponseEntity<?> deleteExercise(
             @PathVariable("exercise-id") Long exerciseId,
             Authentication connectedUser) {
-        service.deleteExercise(exerciseId, connectedUser);
+        service.deleteById(exerciseId, connectedUser);
         return ResponseEntity.noContent().build();
     }
 }

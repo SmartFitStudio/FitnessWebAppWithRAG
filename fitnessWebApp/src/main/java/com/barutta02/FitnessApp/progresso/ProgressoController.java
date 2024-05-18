@@ -77,7 +77,7 @@ public class ProgressoController {
     public ResponseEntity<?> deleteProgresso(
             @PathVariable("progresso-id") Long id,
             Authentication connectedUser) {
-        service.deleteProgresso(id, connectedUser);
+        service.deleteById(id, connectedUser);
         return ResponseEntity.noContent().build();
     }
 }

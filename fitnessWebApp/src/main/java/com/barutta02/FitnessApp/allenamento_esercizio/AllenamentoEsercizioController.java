@@ -45,26 +45,26 @@ public class AllenamentoEsercizioController {
     }
 
     @GetMapping("/{allenamento-nome}")
-    public ResponseEntity<PageResponse<AllenamentoEsercizioResponse>> findByAllenamentoNome(
+    public ResponseEntity<PageResponse<AllenamentoEsercizioResponse>> findAllAuthAllenamentoEsercizioByAllenamentoId_paginated(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
-            @PathVariable("allenamento-nome") String allenamento_nome,
+            @PathVariable("allenamento-nome") Long allenamento_id,
             Authentication connectedUser) {
-        return ResponseEntity.ok(service.findAllByAllenamento(page, size, allenamento_nome, connectedUser));
+        return ResponseEntity.ok(service.findAllAuthUserAllenamentoEsercizioByAllenamentoId_paginated(page, size, allenamento_id, connectedUser));
     }
 
     @GetMapping("/no_pagination/{allenamento-nome}")
-    public ResponseEntity<ArrayList<AllenamentoEsercizioResponse>> findByAllenamentoNomeNoPagination(
-            @PathVariable("allenamento-nome") String allenamento_nome,
+    public ResponseEntity<ArrayList<AllenamentoEsercizioResponse>> findAllAuthAllenamentoEsercizioByAllenamentoId_NoPagination(
+            @PathVariable("allenamento-nome") Long allenamento_id,
             Authentication connectedUser) {
-        return ResponseEntity.ok(service.findAllByAllenamentoNoPagination(allenamento_nome, connectedUser));
+        return ResponseEntity.ok(service.findAllAuthUserAllenamentoEsercizioByAllenamentoId_noPagination(allenamento_id, connectedUser));
     }
 
     @DeleteMapping("/{allenamentoEsercizio-id}")
     public ResponseEntity<?> deleteAllenamentoEsercizio(
             @PathVariable("allenamentoEsercizio-id") Long id,
             Authentication connectedUser) {
-        service.deleteAllenamentoEsercizio(id, connectedUser);
+        service.deleteById(id, connectedUser);
         return ResponseEntity.noContent().build();
     }
 }

@@ -8,15 +8,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.barutta02.FitnessApp.user.User;
+
 public interface AllenamentoRepository extends JpaRepository<Allenamento, Long> {
 
-    Page<Allenamento> findByCreator_Username(Pageable pageable, String username);
+    Page<Allenamento> findByCreator(Pageable pageable, User user);
 
-    Optional<Allenamento> findByNameAndCreator_Username(String name,String username);
-    Optional<Allenamento> findByIdAndCreator_Username(Long id,String username);
+    Optional<Allenamento> findByNameAndCreator(String name,User user);
+    Optional<Allenamento> findByIdAndCreator(Long id,User user);
+    Optional<ArrayList<Allenamento>> findByCreator(User user);
 
-
-    Optional<ArrayList<Allenamento>> findByCreator_Username(String username);
+    void deleteByIdAndCreator(Long id, User user);
 }
 
 

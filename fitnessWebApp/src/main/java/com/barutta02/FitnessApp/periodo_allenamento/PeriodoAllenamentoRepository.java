@@ -8,14 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.barutta02.FitnessApp.user.User;
+
 public interface PeriodoAllenamentoRepository extends JpaRepository<PeriodoAllenamento, Long> {
-    Page<PeriodoAllenamento> findByPeriodo_NameAndPeriodo_Creator_Username(Pageable pageable, String name, String username); 
-    Optional<ArrayList<PeriodoAllenamento>> findByPeriodo_NameAndPeriodo_Creator_Username(String name,String username);
-    Optional<ArrayList<PeriodoAllenamento>> findByPeriodo_IdAndPeriodo_Creator_Username(Long Id,String username);
+    Page<PeriodoAllenamento> findByPeriodo_IdAndPeriodo_Creator(Pageable pageable, Long id, User user); 
+    Optional<ArrayList<PeriodoAllenamento>> findByPeriodo_IdAndPeriodo_Creator(Long Id,User user);
 
-    void deleteByPeriodo_NameAndPeriodo_Creator_Username(String name, String username);
-    void deleteByPeriodo_IdAndPeriodo_Creator_Username(Long Id, String username);
+    void deleteByPeriodo_IdAndPeriodo_Creator(Long Id, User user);
 
-    void deleteByIdAndPeriodo_Creator_Username(Long Id, String username);
+    void deleteByIdAndPeriodo_Creator(Long Id, User user);
     
 }

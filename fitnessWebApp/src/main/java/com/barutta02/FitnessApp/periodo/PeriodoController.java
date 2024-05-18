@@ -51,35 +51,35 @@ public class PeriodoController {
     }
 
     @GetMapping("/{periodo-id}")
-    public ResponseEntity<PeriodoResponse> findPeriodoById(
+    public ResponseEntity<PeriodoResponse> findByAuthenticatedUserAndId(
             @PathVariable("periodo-id") Long periodo_id,
             Authentication connectedUser) {
-        return ResponseEntity.ok(service.findByIdCreator(periodo_id, connectedUser));
+        return ResponseEntity.ok(service.findByAuthenticatedUserAndId(periodo_id, connectedUser));
     }
 
     @GetMapping("/is_there_an_active_period")
-    public ResponseEntity<PeriodoResponse> isThereAnActivePeriod(Authentication connectedUser) {
-        return ResponseEntity.ok(service.existsByCreatorAndAttivoIsTrue(connectedUser));
+    public ResponseEntity<PeriodoResponse> findAuthenticatedUserActivePeriodo(Authentication connectedUser) {
+        return ResponseEntity.ok(service.findAuthenticatedUserActivePeriodo(connectedUser));
     }
 
     @PutMapping("disable_active_period")
-    public ResponseEntity<PeriodoResponse> disableActivePeriod(Authentication connectedUser) {
-        return ResponseEntity.ok(service.disableActivePeriodo(connectedUser));
+    public ResponseEntity<PeriodoResponse> disableAuthenticatedUserActivePeriodo(Authentication connectedUser) {
+        return ResponseEntity.ok(service.disableAuthenticatedUserActivePeriodo(connectedUser));
     }
 
     @GetMapping("/creator")
-    public ResponseEntity<PageResponse<PeriodoResponse>> findAllPeriodoByCreator(
+    public ResponseEntity<PageResponse<PeriodoResponse>> findAllAuthenticatedUserPeriodo_paginated(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
             Authentication connectedUser) {
-        return ResponseEntity.ok(service.findAllMyPeriodi(page, size, connectedUser));
+        return ResponseEntity.ok(service.findAllAuthenticatedUserPeriodo_paginated(page, size, connectedUser));
     }
     
     @DeleteMapping("/{periodo-nome}")
     public ResponseEntity<?> deletePeriodo(
-            @PathVariable("periodo-nome") String periodo_nome,
+            @PathVariable("periodo-nome") Long periodo_id,
             Authentication connectedUser) {
-        service.deletePeriodo(periodo_nome, connectedUser);
+        service.deletePeriodo(periodo_id, connectedUser);
         return ResponseEntity.noContent().build();
     }
 }

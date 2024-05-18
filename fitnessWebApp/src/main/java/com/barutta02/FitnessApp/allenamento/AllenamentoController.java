@@ -58,21 +58,21 @@ public class AllenamentoController {
     public ResponseEntity<AllenamentoResponse> findAllenamentoById(
             @PathVariable("allenamento-id") Long allenamento_id,
             Authentication connectedUser) {
-        return ResponseEntity.ok(service.findByIdCreator(allenamento_id, connectedUser));
+        return ResponseEntity.ok(service.findByAuthUserAndAllenamentoId(allenamento_id, connectedUser));
     }
 
     @GetMapping("/creator")
-    public ResponseEntity<PageResponse<AllenamentoResponse>> findAllAllenamentoByCreator(
+    public ResponseEntity<PageResponse<AllenamentoResponse>> findAllAllenamentoByAuthenticatedUser(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
             Authentication connectedUser) {
-        return ResponseEntity.ok(service.findAllMyAllenamento(page, size, connectedUser));
+        return ResponseEntity.ok(service.findAllAuthUserAllenamento_paginated(page, size, connectedUser));
     }
 
     @GetMapping("/creator/no_pagination")
-    public ResponseEntity<ArrayList<AllenamentoResponse>> findAllAllenamentoByCreator_noPagination(
+    public ResponseEntity<ArrayList<AllenamentoResponse>> findAllAllenamentoByAuthenticatedUser_noPagination(
             Authentication connectedUser) {
-        return ResponseEntity.ok(service.findAllByCreator(connectedUser));
+        return ResponseEntity.ok(service.findAllAuthUserAllenamento_noPagination(connectedUser));
     }
 
     /*
@@ -82,9 +82,9 @@ public class AllenamentoController {
      */
     @DeleteMapping("/{allenamento-nome}")
     public ResponseEntity<?> deleteAllenamento(
-            @PathVariable("allenamento-nome") String allenamento_nome,
+            @PathVariable("allenamento-nome") Long allenamento_id,
             Authentication connectedUser) {
-        service.deleteAllenamento(allenamento_nome, connectedUser);
+        service.deleteById(allenamento_id, connectedUser);
         return ResponseEntity.noContent().build();
     }
 }
