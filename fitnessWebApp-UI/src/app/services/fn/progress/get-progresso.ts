@@ -6,14 +6,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PeriodoResponse } from '../../models/periodo-response';
+import { ProgressoResponse } from '../../models/progresso-response';
 
-export interface IsThereAnActivePeriod$Params {
+export interface GetProgresso$Params {
+  'progresso-id': number;
 }
 
-export function isThereAnActivePeriod(http: HttpClient, rootUrl: string, params?: IsThereAnActivePeriod$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
-  const rb = new RequestBuilder(rootUrl, isThereAnActivePeriod.PATH, 'get');
+export function getProgresso(http: HttpClient, rootUrl: string, params: GetProgresso$Params, context?: HttpContext): Observable<StrictHttpResponse<ProgressoResponse>> {
+  const rb = new RequestBuilder(rootUrl, getProgresso.PATH, 'get');
   if (params) {
+    rb.path('progresso-id', params['progresso-id'], {});
   }
 
   return http.request(
@@ -21,9 +23,9 @@ export function isThereAnActivePeriod(http: HttpClient, rootUrl: string, params?
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<PeriodoResponse>;
+      return r as StrictHttpResponse<ProgressoResponse>;
     })
   );
 }
 
-isThereAnActivePeriod.PATH = '/periods/is_there_an_active_period';
+getProgresso.PATH = '/progress/{progresso-id}';

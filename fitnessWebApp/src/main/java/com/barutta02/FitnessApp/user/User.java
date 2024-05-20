@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.FetchType.LAZY;
 
 /*
  * UserDetails: Questa interfaccia è utilizzata per rappresentare i dettagli di un utente all'interno del sistema di autenticazione di Spring Security. Contiene metodi per ottenere informazioni come il nome utente, la password, i ruoli assegnati all'utente e lo stato dell'account. Implementando questa interfaccia, la classe User fornisce i dettagli dell'utente necessari a Spring Security per autenticare e autorizzare l'utente all'interno dell'applicazione.
@@ -77,19 +78,19 @@ public class User implements UserDetails, Principal {
     private List<Role> roles;
     
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator", fetch = LAZY)
     private List<Exercise> exercises;
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator", fetch = LAZY)
     private List<Allenamento> allenamenti;
    
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator", fetch = LAZY)
     private List<Periodo> periodi;
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator", fetch = LAZY)
     private List<Notifica> notifiche;
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator", fetch = LAZY)
     private List<Progresso> progressi;
 
     //Automatically setted by Spring Data JPA

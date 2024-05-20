@@ -1,6 +1,8 @@
 package com.barutta02.FitnessApp.handler;
 
 import jakarta.mail.MessagingException;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -20,6 +22,7 @@ import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.ACCOUNT_LOCKED
 import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.BAD_CREDENTIALS;
 import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.OPERATION_NOT_PERMITTED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -137,6 +140,19 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleException(DataIntegrityViolationException exp) {
+        exp.printStackTrace();
+        return ResponseEntity
+                .status(CONFLICT)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(CONFLICT.value())
+                                .businessErrorDescription("La risorsa richiesta è già presente nel sistema.")
+                                .error(exp.getMessage())
+                                .build()
+                );
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleException(Exception exp) {
         exp.printStackTrace();

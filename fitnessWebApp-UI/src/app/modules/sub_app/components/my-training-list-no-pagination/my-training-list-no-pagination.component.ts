@@ -17,7 +17,7 @@ export class MyTrainingListNoPaginationComponent implements OnInit {
   constructor(private trainService: TrainService) { }
 
   ngOnInit(): void {
-    this.trainService.findAllAllenamentoByCreatorNoPagination().subscribe((trainings) => {
+    this.trainService.findAllAllenamentoByAuthenticatedUserNoPagination().subscribe((trainings) => {
       this._trainings = trainings;
     });
   }

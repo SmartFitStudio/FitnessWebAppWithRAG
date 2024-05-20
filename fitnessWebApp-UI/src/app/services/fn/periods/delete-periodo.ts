@@ -8,14 +8,14 @@ import { RequestBuilder } from '../../request-builder';
 
 
 export interface DeletePeriodo$Params {
-  'periodo-nome': string;
+  'periodo-id': number;
 }
 
 export function deletePeriodo(http: HttpClient, rootUrl: string, params: DeletePeriodo$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 }>> {
   const rb = new RequestBuilder(rootUrl, deletePeriodo.PATH, 'delete');
   if (params) {
-    rb.path('periodo-nome', params['periodo-nome'], {});
+    rb.path('periodo-id', params['periodo-id'], {});
   }
 
   return http.request(
@@ -29,4 +29,4 @@ export function deletePeriodo(http: HttpClient, rootUrl: string, params: DeleteP
   );
 }
 
-deletePeriodo.PATH = '/periods/{periodo-nome}';
+deletePeriodo.PATH = '/periods/{periodo-id}';

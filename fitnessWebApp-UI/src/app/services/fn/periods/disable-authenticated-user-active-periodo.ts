@@ -6,16 +6,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ExerciseResponse } from '../../models/exercise-response';
+import { PeriodoResponse } from '../../models/periodo-response';
 
-export interface FindExerciseById$Params {
-  'exercise-id': number;
+export interface DisableAuthenticatedUserActivePeriodo$Params {
 }
 
-export function findExerciseById(http: HttpClient, rootUrl: string, params: FindExerciseById$Params, context?: HttpContext): Observable<StrictHttpResponse<ExerciseResponse>> {
-  const rb = new RequestBuilder(rootUrl, findExerciseById.PATH, 'get');
+export function disableAuthenticatedUserActivePeriodo(http: HttpClient, rootUrl: string, params?: DisableAuthenticatedUserActivePeriodo$Params, context?: HttpContext): Observable<StrictHttpResponse<PeriodoResponse>> {
+  const rb = new RequestBuilder(rootUrl, disableAuthenticatedUserActivePeriodo.PATH, 'put');
   if (params) {
-    rb.path('exercise-id', params['exercise-id'], {});
   }
 
   return http.request(
@@ -23,9 +21,9 @@ export function findExerciseById(http: HttpClient, rootUrl: string, params: Find
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ExerciseResponse>;
+      return r as StrictHttpResponse<PeriodoResponse>;
     })
   );
 }
 
-findExerciseById.PATH = '/exercises/{exercise-id}';
+disableAuthenticatedUserActivePeriodo.PATH = '/periods/disable_active_period';

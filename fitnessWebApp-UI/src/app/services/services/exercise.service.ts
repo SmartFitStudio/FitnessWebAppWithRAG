@@ -12,12 +12,10 @@ import { StrictHttpResponse } from '../strict-http-response';
 import { deleteExercise } from '../fn/exercise/delete-exercise';
 import { DeleteExercise$Params } from '../fn/exercise/delete-exercise';
 import { ExerciseResponse } from '../models/exercise-response';
-import { findAllExercise } from '../fn/exercise/find-all-exercise';
-import { FindAllExercise$Params } from '../fn/exercise/find-all-exercise';
-import { findAllExerciseByCreator } from '../fn/exercise/find-all-exercise-by-creator';
-import { FindAllExerciseByCreator$Params } from '../fn/exercise/find-all-exercise-by-creator';
-import { findExerciseById } from '../fn/exercise/find-exercise-by-id';
-import { FindExerciseById$Params } from '../fn/exercise/find-exercise-by-id';
+import { findAllAuthenticatedUserExercisesPaginated } from '../fn/exercise/find-all-authenticated-user-exercises-paginated';
+import { FindAllAuthenticatedUserExercisesPaginated$Params } from '../fn/exercise/find-all-authenticated-user-exercises-paginated';
+import { findAuthenticatedUserOrDefaultExerciseById } from '../fn/exercise/find-authenticated-user-or-default-exercise-by-id';
+import { FindAuthenticatedUserOrDefaultExerciseById$Params } from '../fn/exercise/find-authenticated-user-or-default-exercise-by-id';
 import { getExerciseCategories } from '../fn/exercise/get-exercise-categories';
 import { GetExerciseCategories$Params } from '../fn/exercise/get-exercise-categories';
 import { getExercisesFromPublicStore } from '../fn/exercise/get-exercises-from-public-store';
@@ -36,31 +34,6 @@ export class ExerciseService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `findAllExercise()` */
-  static readonly FindAllExercisePath = '/exercises';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findAllExercise()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  findAllExercise$Response(params?: FindAllExercise$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseExerciseResponse>> {
-    return findAllExercise(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findAllExercise$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  findAllExercise(params?: FindAllExercise$Params, context?: HttpContext): Observable<PageResponseExerciseResponse> {
-    return this.findAllExercise$Response(params, context).pipe(
-      map((r: StrictHttpResponse<PageResponseExerciseResponse>): PageResponseExerciseResponse => r.body)
-    );
-  }
-
   /** Path part for operation `saveExercise()` */
   static readonly SaveExercisePath = '/exercises';
 
@@ -70,7 +43,7 @@ export class ExerciseService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveExercise$Response(params: SaveExercise$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  saveExercise$Response(params: SaveExercise$Params, context?: HttpContext): Observable<StrictHttpResponse<ExerciseResponse>> {
     return saveExercise(this.http, this.rootUrl, params, context);
   }
 
@@ -80,9 +53,9 @@ export class ExerciseService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveExercise(params: SaveExercise$Params, context?: HttpContext): Observable<number> {
+  saveExercise(params: SaveExercise$Params, context?: HttpContext): Observable<ExerciseResponse> {
     return this.saveExercise$Response(params, context).pipe(
-      map((r: StrictHttpResponse<number>): number => r.body)
+      map((r: StrictHttpResponse<ExerciseResponse>): ExerciseResponse => r.body)
     );
   }
 
@@ -140,27 +113,27 @@ export class ExerciseService extends BaseService {
     );
   }
 
-  /** Path part for operation `findExerciseById()` */
-  static readonly FindExerciseByIdPath = '/exercises/{exercise-id}';
+  /** Path part for operation `findAuthenticatedUserOrDefaultExerciseById()` */
+  static readonly FindAuthenticatedUserOrDefaultExerciseByIdPath = '/exercises/{exercise-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findExerciseById()` instead.
+   * To access only the response body, use `findAuthenticatedUserOrDefaultExerciseById()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findExerciseById$Response(params: FindExerciseById$Params, context?: HttpContext): Observable<StrictHttpResponse<ExerciseResponse>> {
-    return findExerciseById(this.http, this.rootUrl, params, context);
+  findAuthenticatedUserOrDefaultExerciseById$Response(params: FindAuthenticatedUserOrDefaultExerciseById$Params, context?: HttpContext): Observable<StrictHttpResponse<ExerciseResponse>> {
+    return findAuthenticatedUserOrDefaultExerciseById(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findExerciseById$Response()` instead.
+   * To access the full response (for headers, for example), `findAuthenticatedUserOrDefaultExerciseById$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findExerciseById(params: FindExerciseById$Params, context?: HttpContext): Observable<ExerciseResponse> {
-    return this.findExerciseById$Response(params, context).pipe(
+  findAuthenticatedUserOrDefaultExerciseById(params: FindAuthenticatedUserOrDefaultExerciseById$Params, context?: HttpContext): Observable<ExerciseResponse> {
+    return this.findAuthenticatedUserOrDefaultExerciseById$Response(params, context).pipe(
       map((r: StrictHttpResponse<ExerciseResponse>): ExerciseResponse => r.body)
     );
   }
@@ -244,27 +217,27 @@ export class ExerciseService extends BaseService {
     );
   }
 
-  /** Path part for operation `findAllExerciseByCreator()` */
-  static readonly FindAllExerciseByCreatorPath = '/exercises/creator';
+  /** Path part for operation `findAllAuthenticatedUserExercisesPaginated()` */
+  static readonly FindAllAuthenticatedUserExercisesPaginatedPath = '/exercises/creator';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findAllExerciseByCreator()` instead.
+   * To access only the response body, use `findAllAuthenticatedUserExercisesPaginated()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findAllExerciseByCreator$Response(params?: FindAllExerciseByCreator$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseExerciseResponse>> {
-    return findAllExerciseByCreator(this.http, this.rootUrl, params, context);
+  findAllAuthenticatedUserExercisesPaginated$Response(params?: FindAllAuthenticatedUserExercisesPaginated$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseExerciseResponse>> {
+    return findAllAuthenticatedUserExercisesPaginated(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `findAllExerciseByCreator$Response()` instead.
+   * To access the full response (for headers, for example), `findAllAuthenticatedUserExercisesPaginated$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findAllExerciseByCreator(params?: FindAllExerciseByCreator$Params, context?: HttpContext): Observable<PageResponseExerciseResponse> {
-    return this.findAllExerciseByCreator$Response(params, context).pipe(
+  findAllAuthenticatedUserExercisesPaginated(params?: FindAllAuthenticatedUserExercisesPaginated$Params, context?: HttpContext): Observable<PageResponseExerciseResponse> {
+    return this.findAllAuthenticatedUserExercisesPaginated$Response(params, context).pipe(
       map((r: StrictHttpResponse<PageResponseExerciseResponse>): PageResponseExerciseResponse => r.body)
     );
   }

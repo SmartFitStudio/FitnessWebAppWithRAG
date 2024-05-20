@@ -8,16 +8,14 @@ import { RequestBuilder } from '../../request-builder';
 
 
 export interface DeleteAllenamentoEsercizio$Params {
-  'allenamento-nome': string;
-  index: number;
+  'allenamentoEsercizio-id': number;
 }
 
 export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, params: DeleteAllenamentoEsercizio$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 }>> {
   const rb = new RequestBuilder(rootUrl, deleteAllenamentoEsercizio.PATH, 'delete');
   if (params) {
-    rb.path('allenamento-nome', params['allenamento-nome'], {});
-    rb.path('index', params.index, {});
+    rb.path('allenamentoEsercizio-id', params['allenamentoEsercizio-id'], {});
   }
 
   return http.request(
@@ -31,4 +29,4 @@ export function deleteAllenamentoEsercizio(http: HttpClient, rootUrl: string, pa
   );
 }
 
-deleteAllenamentoEsercizio.PATH = '/trainingexercise/{allenamento-nome}/{index}';
+deleteAllenamentoEsercizio.PATH = '/trainingexercise/{allenamentoEsercizio-id}';

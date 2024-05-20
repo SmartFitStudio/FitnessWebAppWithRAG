@@ -8,14 +8,14 @@ import { RequestBuilder } from '../../request-builder';
 
 import { AllenamentoEsercizioResponse } from '../../models/allenamento-esercizio-response';
 
-export interface FindByAllenamentoNomeNoPagination$Params {
-  'allenamento-nome': string;
+export interface FindAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination$Params {
+  'allenamento-id': number;
 }
 
-export function findByAllenamentoNomeNoPagination(http: HttpClient, rootUrl: string, params: FindByAllenamentoNomeNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AllenamentoEsercizioResponse>>> {
-  const rb = new RequestBuilder(rootUrl, findByAllenamentoNomeNoPagination.PATH, 'get');
+export function findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination(http: HttpClient, rootUrl: string, params: FindAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AllenamentoEsercizioResponse>>> {
+  const rb = new RequestBuilder(rootUrl, findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination.PATH, 'get');
   if (params) {
-    rb.path('allenamento-nome', params['allenamento-nome'], {});
+    rb.path('allenamento-id', params['allenamento-id'], {});
   }
 
   return http.request(
@@ -28,4 +28,4 @@ export function findByAllenamentoNomeNoPagination(http: HttpClient, rootUrl: str
   );
 }
 
-findByAllenamentoNomeNoPagination.PATH = '/trainingexercise/no_pagination/{allenamento-nome}';
+findAllAuthAllenamentoEsercizioByAllenamentoIdNoPagination.PATH = '/trainingexercise/no_pagination/{allenamento-id}';

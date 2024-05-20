@@ -45,8 +45,11 @@ export class LoginComponent {
           this.tokenService.token = res.token as string;
           this.router.navigate([AppRoutingModule.personalAreaPath]);
         },
-        error: (err) => {
-          this.messages = this.handleError.handleError(err);
+        error: (error) => {
+          this.handleError.handleError(error).forEach((value) => {
+            this.messages.push(value.message);
+            console.log(value.message);
+          });
         }
       });
     } else {

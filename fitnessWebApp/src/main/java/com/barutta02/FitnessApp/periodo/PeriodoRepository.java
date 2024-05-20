@@ -10,17 +10,15 @@ import com.barutta02.FitnessApp.user.User;
 
 public interface PeriodoRepository extends JpaRepository<Periodo, Long> {
 
-    Page<Periodo> findByCreator_Username(Pageable pageable, String username);
+    Page<Periodo> findByCreator(Pageable pageable, User user);
 
-    Optional<Periodo> findByNameAndCreator_Username(String name,String username);
-    Optional<Periodo> findByIdAndCreator_Username(Long id,String username);
-
+    Optional<Periodo> findByIdAndCreator(Long id,User user);
 
     //mi serve per capire se esiste gia un periodo attivo per un utente
     boolean existsByCreatorAndAttivoIsTrue(User creator);
 
     Optional<Periodo> findByCreatorAndAttivoIsTrue(User creator);
 
-
+    void deleteByIdAndCreator(Long id, User creator);
 
 }

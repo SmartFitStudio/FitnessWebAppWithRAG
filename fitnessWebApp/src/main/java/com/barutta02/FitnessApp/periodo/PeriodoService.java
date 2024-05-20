@@ -12,7 +12,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -39,19 +37,15 @@ public class PeriodoService {
 
     
         public PeriodoResponse save(PeriodoRequest request, Authentication connectedUser) {
-            try{
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
                 this.validatePeriodoRequest(request);
                 
-                Periodo periodo = periodoMapper.toPeriodo(request,user); //Convert the BookRequest object to a Book object
+                Periodo periodo = periodoMapper.toPeriodo(request,user);
                 Optional<Periodo> periodoAttivo = periodoRepository.findByCreatorAndAttivoIsTrue(user);
                 if (request.attivo() && periodoAttivo.isPresent() && periodoAttivo.get().getId() != periodo.getId()){
                     throw new OperationNotPermittedException("Hai già un periodo attivo, devi prima completarlo o eliminarlo per crearne uno nuovo!");
                 }
                 return periodoMapper.toPeriodoResponse(periodoRepository.save(periodo));
-            }catch (DataIntegrityViolationException dataIntegrityViolationException){
-                throw new IllegalArgumentException("Il nome del periodo è già stato utilizzato");
-            }
         }
         
         private void validatePeriodoRequest(PeriodoRequest request){
@@ -60,21 +54,33 @@ public class PeriodoService {
             }
         }
     
-        public PeriodoResponse findByIdCreator(Long id_periodo, Authentication connectedUser) {
+        public PeriodoResponse findByAuthenticatedUserAndId(Long id_periodo, Authentication connectedUser) {
             User user = userExtractor.getUserFromAuthentication(connectedUser);
-            return periodoRepository.findByIdAndCreator_Username(id_periodo,user.getUsername())
+            return periodoRepository.findByIdAndCreator(id_periodo,user)
                     .map(periodoMapper::toPeriodoResponse)
                     .orElseThrow(() -> new EntityNotFoundException("Nessun periodo creato da te è stato trovato con id:: " + id_periodo));
         }
 
-        public PeriodoResponse findByCreatorAndAttivoIsTrue(Authentication connectedUser) {
+        /**
+         * Find the active periodo for the authenticated user,
+         * if it exists.
+         * Null otherwise.
+         * @param connectedUser
+         * @return
+         */
+        public PeriodoResponse findAuthenticatedUserActivePeriodo(Authentication connectedUser) {
             User creator = userExtractor.getUserFromAuthentication(connectedUser);
             return periodoRepository.findByCreatorAndAttivoIsTrue(creator)
                     .map(periodoMapper::toPeriodoResponse)
                     .orElse(null);
         }
 
-        public PeriodoResponse disableActivePeriodo(Authentication connectedUser) {
+        /**
+         * Disable the active periodo for the authenticated user.
+         * @param connectedUser
+         * @return
+         */
+        public PeriodoResponse disableAuthenticatedUserActivePeriodo(Authentication connectedUser) {
             User user = userExtractor.getUserFromAuthentication(connectedUser);
             Periodo periodo_attivo = periodoRepository.findByCreatorAndAttivoIsTrue(user)
                     .orElseThrow(() -> new EntityNotFoundException("Nessun periodo attivo trovato per l'utente:: " + user.getUsername()));
@@ -82,10 +88,10 @@ public class PeriodoService {
             return periodoMapper.toPeriodoResponse(periodoRepository.save(periodo_attivo));
         }
 
-        public PageResponse<PeriodoResponse> findAllMyPeriodi(int page, int size, Authentication connectedUser) {
+        public PageResponse<PeriodoResponse> findAllAuthenticatedUserPeriodo_paginated(int page, int size, Authentication connectedUser) {
             User user = userExtractor.getUserFromAuthentication(connectedUser);
             Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-            Page<Periodo> periodi = periodoRepository.findByCreator_Username(pageable,user.getUsername());
+            Page<Periodo> periodi = periodoRepository.findByCreator(pageable,user);
             List<PeriodoResponse> periodiResponse = periodi.stream()
                     .map(periodoMapper::toPeriodoResponse)
                     .toList();
@@ -100,23 +106,15 @@ public class PeriodoService {
                 );
         }
 
-        public Periodo findByNameAndUsername(String nome_periodo, String username) {
-            return periodoRepository.findByNameAndCreator_Username(nome_periodo,username)
-                    .orElseThrow(() -> new EntityNotFoundException("Nessun periodo creato da te è stato trovato con nome:: " + nome_periodo));
-        }
-        public Periodo findByIdAndUsername(Long id_periodo, String username) {
-            return periodoRepository.findByIdAndCreator_Username(id_periodo,username)
+
+        public Periodo findByIdAndUser(Long id_periodo, User user) {
+            return periodoRepository.findByIdAndCreator(id_periodo,user)
                     .orElseThrow(() -> new EntityNotFoundException("Nessun periodo creato da te è stato trovato con id:: " + id_periodo));
         }
 
-        public void deletePeriodo(String nome_periodo, Authentication connectedUser) {
+        public void deletePeriodo(Long id, Authentication connectedUser) {
             User user = userExtractor.getUserFromAuthentication(connectedUser);
-            Periodo periodo = periodoRepository.findByNameAndCreator_Username(nome_periodo,user.getUsername())
-                    .orElseThrow(() -> new EntityNotFoundException("Nessun periodo creato da te è stato trovato con nome:: " + nome_periodo));
-            if (!Objects.equals(periodo.getCreator().getId(), user.getId())) { //NOTE: Controllo inutile ma vabhe
-                throw new OperationNotPermittedException("Stai cercando di cancellare un periodo che non hai creato tu!");
-            }
-            periodoRepository.delete(periodo);
+            periodoRepository.deleteByIdAndCreator(id, user);
         }
 
 }

@@ -115,7 +115,7 @@ export class PeriodManagerService implements OnDestroy {
   }
 
   public setInfoByPeriodName$(periodo_id: number): Observable<any> {
-    return this.periodoService.findPeriodoById({ 'periodo-id': periodo_id })
+    return this.periodoService.findByAuthenticatedUserAndId({ 'periodo-id': periodo_id })
       .pipe(
         mergeMap((response) => {
           this.periodoRequest.id = response.id;
@@ -134,7 +134,10 @@ export class PeriodManagerService implements OnDestroy {
   }
 
   private getTrainingPeriod$(): Observable<any> {
-    return this.periodoAllenamentoService.findByPeriodoNomeNoPagination({ 'periodo-nome': this.periodoRequest.name })
+    if (!this.periodoRequest.id) {
+      return EMPTY;
+    }
+    return this.periodoAllenamentoService.findAllAuthUserPeriodoAllenamentoByPeriodoIdNoPagination({ 'periodo-id': this.periodoRequest.id })
       .pipe(
         mergeMap((response) => {
           this.periodoAllenamentoRequest_list = response.map((value) => this.mapPeriodoAllenamentoResponseToPeriodoAllenamentoRequest(value));
@@ -158,7 +161,7 @@ export class PeriodManagerService implements OnDestroy {
   }
 
   public getActivePeriod$(): Observable<any> {
-    return this.periodoService.isThereAnActivePeriod()
+    return this.periodoService.findAuthenticatedUserActivePeriodo()
       .pipe(
         map((response) => {
           if(!response){ //Se non c'è un periodo attivo
@@ -353,7 +356,7 @@ La funzione filtra gli oggetti che sono presenti nella lista iniziale ma non nel
   public disableActivePeriodo$(): Observable<any> {
     if(this.active_periodo){
       this.active_periodo.attivo = false;
-      return this.periodoService.disableActivePeriod()
+      return this.periodoService.disableAuthenticatedUserActivePeriodo()
       .pipe(
         map(() => {
           this.active_periodo = undefined;

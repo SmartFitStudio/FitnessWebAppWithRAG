@@ -30,7 +30,9 @@ export class NotificationListComponent implements OnInit {
       },
       error: error => {
         this.level = 'error';
-        this.messages = this.handleError.handleError(error);
+        this.handleError.handleError(error).forEach((value) => {
+          this.messages.push(value.message);
+        });
       }
     })
   }
@@ -43,7 +45,9 @@ export class NotificationListComponent implements OnInit {
     this.notificationService.signNotificationAsRead({ id: $event }).subscribe({
       error: error => {
         this.level = 'error';
-        this.messages = this.handleError.handleError(error);
+        this.handleError.handleError(error).forEach((value) => {
+          this.messages.push(value.message);
+        });
       }
     }
     );

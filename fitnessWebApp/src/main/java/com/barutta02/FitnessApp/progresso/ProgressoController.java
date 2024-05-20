@@ -1,5 +1,6 @@
 package com.barutta02.FitnessApp.progresso;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.springframework.http.ResponseEntity;
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.barutta02.FitnessApp.allenamento.DTO.AllenamentoResponse;
 import com.barutta02.FitnessApp.progresso.DTO.ProgressoRequest;
 import com.barutta02.FitnessApp.progresso.DTO.ProgressoResponse;
 
@@ -26,51 +29,55 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 @Tag(name = "Progress")
 public class ProgressoController {
-    
+
     private final ProgressoService service;
+
+    @PostMapping()
+    public ResponseEntity<ProgressoResponse> addProgresso(
+            @Valid @RequestBody ProgressoRequest request,
+            Authentication connectedUser) {
+        ProgressoResponse createdResource = service.save(request, connectedUser);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{progresso-id}")
+                .buildAndExpand(createdResource.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(createdResource);
+    }
+
+    @PutMapping("/{progresso-id}")
+    public ResponseEntity<?> updateProgresso(
+            @PathVariable("progresso-id") Long id,
+            @Valid @RequestBody ProgressoRequest request,
+            Authentication connectedUser) {
+        service.updateProgresso(id, request, connectedUser);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/{progresso-id}")
     public ResponseEntity<ProgressoResponse> getProgresso(
-        @PathVariable("progresso-id") Long id, 
-        Authentication connectedUser) {
+            @PathVariable("progresso-id") Long id,
+            Authentication connectedUser) {
         return ResponseEntity.ok(service.getProgresso(id, connectedUser));
     }
 
     @GetMapping("/last/{N}")
     public ResponseEntity<ArrayList<ProgressoResponse>> getLastNProgressi(
-        @PathVariable("N") Integer N, 
-        Authentication connectedUser) {
+            @PathVariable("N") Integer N,
+            Authentication connectedUser) {
         return ResponseEntity.ok(service.getLastNProgressi(N, connectedUser));
     }
 
     @GetMapping("/all")
     public ResponseEntity<ArrayList<ProgressoResponse>> getAllProgressi(
-        Authentication connectedUser) {
+            Authentication connectedUser) {
         return ResponseEntity.ok(service.getAllProgressi(connectedUser));
-    }
-
-    @PostMapping()
-    public ResponseEntity<ProgressoResponse> addProgresso(
-        @Valid @RequestBody ProgressoRequest request,
-        Authentication connectedUser) {
-        return ResponseEntity.ok(service.addProgresso(request, connectedUser));
-    }
-
-    @PutMapping("/{progresso-id}")
-    public ResponseEntity<?> updateProgresso(
-        @PathVariable("progresso-id") Long id,
-        @Valid @RequestBody ProgressoRequest request, 
-        Authentication connectedUser) {
-        service.updateProgresso(id, request, connectedUser);
-        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{progresso-id}")
     public ResponseEntity<?> deleteProgresso(
-        @PathVariable("progresso-id") Long id,
-        Authentication connectedUser
-    ) {
-        service.deleteProgresso(id, connectedUser);
-        return ResponseEntity.ok().build();
+            @PathVariable("progresso-id") Long id,
+            Authentication connectedUser) {
+        service.deleteById(id, connectedUser);
+        return ResponseEntity.noContent().build();
     }
 }

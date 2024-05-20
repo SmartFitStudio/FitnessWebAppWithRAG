@@ -6,15 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { PageResponsePeriodoResponse } from '../../models/page-response-periodo-response';
+import { PageResponseExerciseResponse } from '../../models/page-response-exercise-response';
 
-export interface FindAllPeriodoByCreator$Params {
+export interface FindAllAuthenticatedUserExercisesPaginated$Params {
   page?: number;
   size?: number;
 }
 
-export function findAllPeriodoByCreator(http: HttpClient, rootUrl: string, params?: FindAllPeriodoByCreator$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponsePeriodoResponse>> {
-  const rb = new RequestBuilder(rootUrl, findAllPeriodoByCreator.PATH, 'get');
+export function findAllAuthenticatedUserExercisesPaginated(http: HttpClient, rootUrl: string, params?: FindAllAuthenticatedUserExercisesPaginated$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseExerciseResponse>> {
+  const rb = new RequestBuilder(rootUrl, findAllAuthenticatedUserExercisesPaginated.PATH, 'get');
   if (params) {
     rb.query('page', params.page, {});
     rb.query('size', params.size, {});
@@ -25,9 +25,9 @@ export function findAllPeriodoByCreator(http: HttpClient, rootUrl: string, param
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<PageResponsePeriodoResponse>;
+      return r as StrictHttpResponse<PageResponseExerciseResponse>;
     })
   );
 }
 
-findAllPeriodoByCreator.PATH = '/periods/creator';
+findAllAuthenticatedUserExercisesPaginated.PATH = '/exercises/creator';

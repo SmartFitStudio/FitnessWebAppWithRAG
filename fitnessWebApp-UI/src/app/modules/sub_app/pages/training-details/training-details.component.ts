@@ -12,11 +12,11 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 
 @Component({
-    selector: 'app-training-details',
-    templateUrl: './training-details.component.html',
-    styleUrls: ['./training-details.component.scss'],
-    standalone: true,
-    imports: [NgFor, NgIf, TrainExerciseCardComponent, FeedbackInfoPointComponent]
+  selector: 'app-training-details',
+  templateUrl: './training-details.component.html',
+  styleUrls: ['./training-details.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgIf, TrainExerciseCardComponent, FeedbackInfoPointComponent]
 })
 export class TrainingDetailsComponent implements OnInit, OnDestroy {
   messages: Array<string> = [];
@@ -47,12 +47,14 @@ export class TrainingDetailsComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.level = 'error';
-          this.messages = this.handleError.handleError(error);
+          this.handleError.handleError(error).forEach((value) => {
+            this.messages.push(value.message);
+          });
         }
       });
     }
   }
-  
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }

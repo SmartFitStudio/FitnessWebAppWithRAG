@@ -1,14 +1,11 @@
 <app-feedback-info-point [level]="level" *ngIf="messages.length > 0">
     <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
-  </app-feedback-info-point>
+</app-feedback-info-point>
 <a [routerLink]="newTrainLink" class="def_button" *ngIf="isAddingPermitted"><i class="fa-solid fa-plus"></i>
     Aggiungi</a>
 <div class="row" *ngIf="(trainingsResponse$ | async) as trainingResponse">
-    <app-train-card *ngFor="let train of trainingResponse.content; trackBy: trackByAllenamentoResponse"
-     [train]="train"
-     (delete)="deleteTraining($event)"
-     (edit)="editTraining($event)"
-     (openDetail)="openDetails($event)">
+    <app-train-card *ngFor="let train of trainingResponse.content; trackBy: trackByAllenamentoResponse" [train]="train"
+        (delete)="deleteTraining($event)" (edit)="editTraining($event)" (openDetail)="openDetails($event)">
     </app-train-card>
 </div>
 

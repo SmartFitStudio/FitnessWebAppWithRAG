@@ -6,6 +6,7 @@ import com.barutta02.FitnessApp.allenamento.AllenamentoService;
 import com.barutta02.FitnessApp.allenamento_esercizio.DTO.AllenamentoEsercizioRequest;
 import com.barutta02.FitnessApp.allenamento_esercizio.DTO.AllenamentoEsercizioResponse;
 import com.barutta02.FitnessApp.common.PageResponse;
+import com.barutta02.FitnessApp.common.Service_CRUD;
 import com.barutta02.FitnessApp.config.UserExtractor;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
 import com.barutta02.FitnessApp.exercise.Exercise;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class AllenamentoEsercizioService {
+public class AllenamentoEsercizioService implements Service_CRUD<AllenamentoEsercizio, Long, AllenamentoEsercizioRequest, AllenamentoEsercizioResponse>{
         private final AllenamentoEsercizioRepository allenamentoEsercizioRepository;
         private final AllenamentoService allenamentoService;
         private final ExerciseService exerciseService;
@@ -40,21 +41,21 @@ public class AllenamentoEsercizioService {
         public AllenamentoEsercizioResponse save(AllenamentoEsercizioRequest request, Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
                 Allenamento allenamento = allenamentoService
-                .findByIdAndCreator_Username(request.id_allenamento(), user.getUsername());
-                Exercise exercise = exerciseService.findById(request.id_esercizio(), user.getUsername());
+                .findByIdAndCreator(request.id_allenamento(), user);
+                Exercise exercise = exerciseService.findByIdAndCreatorOrDefault_creator(request.id_esercizio(), user);
                 AllenamentoEsercizio allenamentoEsercizio = allenamentoEsercizioMapper.toAllenamentoEsercizio(request,allenamento,exercise,
                                 user);
                 AllenamentoEsercizio saved = allenamentoEsercizioRepository.save(allenamentoEsercizio);
                 return allenamentoEsercizioMapper.toAllenamentoEsercizioResponse(saved);
         }
 
-        public PageResponse<AllenamentoEsercizioResponse> findAllByAllenamento(int page, int size,
-                        String allenamento_name,
+        public PageResponse<AllenamentoEsercizioResponse> findAllAuthUserAllenamentoEsercizioByAllenamentoId_paginated(int page, int size,
+                        Long allenamento_id,
                         Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
                 Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
                 Page<AllenamentoEsercizio> allenamentiEsercizi = allenamentoEsercizioRepository
-                                .findByAllenamento_NameAndAllenamento_Creator_Username(pageable,allenamento_name,user.getUsername());
+                                .findByAllenamento_IdAndAllenamento_Creator(pageable,allenamento_id,user);
                 List<AllenamentoEsercizioResponse> allenamentiEserciziResponse = allenamentiEsercizi.stream()
                                 .map(allenamentoEsercizioMapper::toAllenamentoEsercizioResponse)
                                 .toList();
@@ -68,28 +69,23 @@ public class AllenamentoEsercizioService {
                                 allenamentiEsercizi.isLast());
         }
 
-        public ArrayList<AllenamentoEsercizioResponse> findAllByAllenamentoNoPagination(String allenamento_name,
+        public ArrayList<AllenamentoEsercizioResponse> findAllAuthUserAllenamentoEsercizioByAllenamentoId_noPagination(Long allenamento_id,
                         Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
 
                 ArrayList<AllenamentoEsercizio> list_exercises = allenamentoEsercizioRepository
-                                .findByAllenamento_NameAndAllenamento_Creator_Username(allenamento_name, user.getUsername())
+                                .findByAllenamento_IdAndAllenamento_Creator(allenamento_id, user)
                                 .orElseThrow(() -> new EntityNotFoundException(
-                                                "Nessun allenamento creato da te è stato trovato con nome:: "
-                                                                + allenamento_name));
+                                                "Nessun allenamento creato da te è stato trovato con ID:: "
+                                                                + allenamento_id));
                 return (ArrayList<AllenamentoEsercizioResponse>) list_exercises.stream()
                                 .map(allenamentoEsercizioMapper::toAllenamentoEsercizioResponse)
                                 .collect(Collectors.toCollection(ArrayList::new));
         }
 
-        public void deleteAllenamentoEsercizio(Long id, Authentication connectedUser) {
+        public void deleteById(Long id, Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
-                AllenamentoEsercizio allenamentoEsercizio = allenamentoEsercizioRepository.findById(id)
-                                .orElseThrow(() -> new EntityNotFoundException("No allenamento esercizio found with ID:: " + id));
-                if (!allenamentoEsercizio.getAllenamento().getCreator().getId().equals(user.getId())) {
-                        throw new OperationNotPermittedException("Stai cercando di cancellare un allenamento esercizio che non hai creato tu!");
-                }
-                allenamentoEsercizioRepository.delete(allenamentoEsercizio);
+                allenamentoEsercizioRepository.deleteByIdAndAllenamento_Creator(id, user);
         }
 
 }

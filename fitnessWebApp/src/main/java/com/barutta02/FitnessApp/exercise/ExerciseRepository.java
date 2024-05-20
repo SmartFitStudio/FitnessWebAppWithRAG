@@ -11,14 +11,10 @@ import java.util.List;
 
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
-        @Query("""
-                SELECT exercise
-                FROM Exercise exercise
-                WHERE exercise.creator IS NULL OR exercise.creator.id = :userId
-                """)
-        Page<Exercise> findAllDisplayableExercise(Pageable pageable, int userId);
 
-        Page<Exercise> findByCreator_Username(Pageable pageable, String username);
+        Page<Exercise> findByCreatorOrCreatorIsNull(Pageable pageable, User user);
+
+        Page<Exercise> findByCreator(Pageable pageable, User user);
 
         Page<Exercise> findByCreatorNotAndShareableIsTrue(Pageable pageable, User user);
 
@@ -26,12 +22,12 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
         Optional<Exercise> findByName(String name);
 
-
-
         @Query("""
                 SELECT exercise
                 FROM Exercise exercise
-                WHERE (exercise.creator IS NULL OR exercise.creator.username = :username) AND exercise.id = :id
+                WHERE (exercise.creator IS NULL OR exercise.creator = :user) AND exercise.id = :id
                 """)
-        Optional<Exercise> findByIdAndCreator_UsernameOrDefault(Long id, String username);
+        Optional<Exercise> findByIdAndCreatorOrDefault(Long id, User user);
+
+        void deleteByIdAndCreator(Long id, User creator);
 }

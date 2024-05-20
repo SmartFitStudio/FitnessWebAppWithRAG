@@ -10,16 +10,16 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 
 @Component({
-    selector: 'app-my-train-list',
-    templateUrl: './my-train-list.component.html',
-    styleUrls: ['./my-train-list.component.scss'],
-    standalone: true,
-    imports: [NgIf, RouterLink, NgFor, TrainCardComponent, AsyncPipe,FeedbackInfoPointComponent]
+  selector: 'app-my-train-list',
+  templateUrl: './my-train-list.component.html',
+  styleUrls: ['./my-train-list.component.scss'],
+  standalone: true,
+  imports: [NgIf, RouterLink, NgFor, TrainCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
 export class MyTrainListComponent implements OnInit {
   trainingsResponse$!: Observable<PageResponseAllenamentoResponse>;
-  messages: Array<string>= [];
-  level: 'success' |'error' = 'success'; 
+  messages: Array<string> = [];
+  level: 'success' | 'error' = 'success';
 
   private totalPages? = 0;
   private _page = 0;
@@ -44,27 +44,29 @@ export class MyTrainListComponent implements OnInit {
   }
 
   private findAllMyTrain() {
-    this.trainingsResponse$ = this.trainService.findAllAllenamentoByCreator({
+    this.trainingsResponse$ = this.trainService.findAllAllenamentoByAuthenticatedUser({
       page: this._page,
       size: this._size
     }).pipe(
       map((response: PageResponseAllenamentoResponse) => {
         this.totalPages = response.totalPages;
-         this._pages = Array(response.totalPages)
-            .fill(0)
-            .map((x, i) => i);
+        this._pages = Array(response.totalPages)
+          .fill(0)
+          .map((x, i) => i);
         return response;
       }),
       catchError((error) => {
         this.level = 'error';
-        this.messages = this.handleError.handleError(error)
+        this.handleError.handleError(error).forEach((value) => {
+          this.messages.push(value.message);
+        });
         return EMPTY;
       })
     );
   }
 
   deleteTraining(trainResponse: AllenamentoResponse) {
-    this.trainService.deleteAllenamento({'allenamento-nome' : trainResponse.name as string})
+    this.trainService.deleteAllenamento({ 'allenamento-id': trainResponse.id as number })
       .subscribe({
         next: () => {
           this.messages = ['Allenamento eliminato'];
@@ -72,7 +74,9 @@ export class MyTrainListComponent implements OnInit {
           this.findAllMyTrain();
         },
         error: (error) => {
-          this.messages = this.handleError.handleError(error);
+          this.handleError.handleError(error).forEach((value) => {
+            this.messages.push(value.message);
+          });
           this.level = 'error';
         }
       });
@@ -80,11 +84,11 @@ export class MyTrainListComponent implements OnInit {
   }
 
   editTraining(allenamentoResponse: AllenamentoResponse) {
-    this.router.navigate([sub_appRoutingModule.full_manageTrainingPath , allenamentoResponse.id]);
+    this.router.navigate([sub_appRoutingModule.full_manageTrainingPath, allenamentoResponse.id]);
   }
 
   openDetails(allenamento: AllenamentoResponse) {
-    this.router.navigate([sub_appRoutingModule.full_trainingDetailsPath , allenamento.id]);
+    this.router.navigate([sub_appRoutingModule.full_trainingDetailsPath, allenamento.id]);
   }
 
   /*BOILERPLATE CODE*/
@@ -97,7 +101,7 @@ export class MyTrainListComponent implements OnInit {
     this.findAllMyTrain();
   }
   goToPreviousPage() {
-    this._page --;
+    this._page--;
     this.findAllMyTrain();
   }
   goToLastPage() {

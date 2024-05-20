@@ -20,7 +20,7 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
 })
 export class ManageTrainingComponent implements OnInit {
   errorMsg: Array<string> = [];
-  level: 'success' |'error' = 'success';
+  level: 'success' | 'error' = 'success';
   trainingForm = this.formBuilder.group({
     nome_allenamento: ['', Validators.required],
     descrizione_allenamento: [''],
@@ -34,7 +34,7 @@ export class ManageTrainingComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private _trainManager: TrainingManagerService,
     private formBuilder: FormBuilder,
-    private errorHandler: ErrorHandlerService
+    private handleError: ErrorHandlerService
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +51,9 @@ export class ManageTrainingComponent implements OnInit {
         },
         error: (error) => {
           this.level = 'error';
-          this.errorMsg = this.errorHandler.handleError(error);
+          this.handleError.handleError(error).forEach((value) => {
+            this.errorMsg.push(value.message);
+          });
         }
       });
     }
@@ -85,7 +87,12 @@ export class ManageTrainingComponent implements OnInit {
       },
       error: (error) => {
         this.level = 'error';
-        this.errorMsg.push(error.error.validationErrors);
+        this.handleError.handleError(error).forEach((value) => {
+          this.errorMsg.push(value.message);
+          if (value.code === 409) {
+            this.errorMsg.push("Stai creando un allenamento con lo stesso nome di un altro allenamento già esistente. Cambia il nome dell'allenamento e riprova.");
+          }
+        });
       }
     });
   }

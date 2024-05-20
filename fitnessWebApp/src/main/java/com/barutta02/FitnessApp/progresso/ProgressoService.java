@@ -1,6 +1,7 @@
 package com.barutta02.FitnessApp.progresso;
 
 
+import com.barutta02.FitnessApp.common.Service_CRUD;
 import com.barutta02.FitnessApp.config.UserExtractor;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
 import com.barutta02.FitnessApp.progresso.DTO.ProgressoRequest;
@@ -23,12 +24,18 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ProgressoService {
+public class ProgressoService implements Service_CRUD<Progresso, Long, ProgressoRequest, ProgressoResponse>{
 
     private final ProgressoRepository progressoRepository;  
     private final ProgressoMapper progressoMapper;
     private final UserExtractor userExtractor;
 
+    public ProgressoResponse save(ProgressoRequest request, Authentication connectedUser) {
+        User user = userExtractor.getUserFromAuthentication(connectedUser);
+        Progresso progresso = progressoMapper.toProgresso(request,user);
+        return progressoMapper.toProgressoResponse(progressoRepository.save(progresso));
+    }
+    
     public ProgressoResponse getProgresso(Long progresso_id, Authentication connectedUser) {
         Progresso progresso = progressoRepository.findById(progresso_id)
             .orElseThrow(() -> new EntityNotFoundException("Nessun progresso trovato con ID: " + progresso_id));
@@ -57,11 +64,6 @@ public class ProgressoService {
             .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public ProgressoResponse addProgresso(ProgressoRequest request, Authentication connectedUser) {
-        User user = userExtractor.getUserFromAuthentication(connectedUser);
-        Progresso progresso = progressoMapper.toProgresso(request,user);
-        return progressoMapper.toProgressoResponse(progressoRepository.save(progresso));
-    }
 
     @Transactional
     public void updateProgresso(Long progresso_id, ProgressoRequest request, Authentication connectedUser){
@@ -79,7 +81,7 @@ public class ProgressoService {
         progresso.setNote(request.note());
     }
 
-    public void deleteProgresso(Long progresso_id, Authentication connectedUser) {
+    public void deleteById(Long progresso_id, Authentication connectedUser) {
         Progresso progresso = progressoRepository.findById(progresso_id)
                 .orElseThrow(() -> new EntityNotFoundException("Nessun progresso trovato con ID: " + progresso_id));
         User user = userExtractor.getUserFromAuthentication(connectedUser);

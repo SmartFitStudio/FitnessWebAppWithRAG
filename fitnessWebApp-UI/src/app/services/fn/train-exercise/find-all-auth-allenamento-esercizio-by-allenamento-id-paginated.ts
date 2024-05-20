@@ -8,18 +8,18 @@ import { RequestBuilder } from '../../request-builder';
 
 import { PageResponseAllenamentoEsercizioResponse } from '../../models/page-response-allenamento-esercizio-response';
 
-export interface FindByAllenamentoNome$Params {
+export interface FindAllAuthAllenamentoEsercizioByAllenamentoIdPaginated$Params {
   page?: number;
   size?: number;
-  'allenamento-nome': string;
+  'allenamento-id': number;
 }
 
-export function findByAllenamentoNome(http: HttpClient, rootUrl: string, params: FindByAllenamentoNome$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseAllenamentoEsercizioResponse>> {
-  const rb = new RequestBuilder(rootUrl, findByAllenamentoNome.PATH, 'get');
+export function findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated(http: HttpClient, rootUrl: string, params: FindAllAuthAllenamentoEsercizioByAllenamentoIdPaginated$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseAllenamentoEsercizioResponse>> {
+  const rb = new RequestBuilder(rootUrl, findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated.PATH, 'get');
   if (params) {
     rb.query('page', params.page, {});
     rb.query('size', params.size, {});
-    rb.path('allenamento-nome', params['allenamento-nome'], {});
+    rb.path('allenamento-id', params['allenamento-id'], {});
   }
 
   return http.request(
@@ -32,4 +32,4 @@ export function findByAllenamentoNome(http: HttpClient, rootUrl: string, params:
   );
 }
 
-findByAllenamentoNome.PATH = '/trainingexercise/{allenamento-nome}';
+findAllAuthAllenamentoEsercizioByAllenamentoIdPaginated.PATH = '/trainingexercise/{allenamento-id}';
