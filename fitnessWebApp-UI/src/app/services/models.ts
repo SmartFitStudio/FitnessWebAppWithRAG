@@ -20,6 +20,8 @@ export { PeriodoRequest } from './models/periodo-request';
 export { PeriodoResponse } from './models/periodo-response';
 export { ProgressoRequest } from './models/progresso-request';
 export { ProgressoResponse } from './models/progresso-response';
+export { Question } from './models/question';
+export { RagllmResponse } from './models/ragllm-response';
 export { RegistrationRequest } from './models/registration-request';
 export { UserRequest } from './models/user-request';
 export { UserResponse } from './models/user-response';
