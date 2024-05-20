@@ -7,12 +7,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import com.barutta02.FitnessApp.user.User;
-import java.util.List;
+
+import java.util.ArrayList;
 
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
         Page<Exercise> findByCreatorOrCreatorIsNull(Pageable pageable, User user);
+
+        Optional<ArrayList<Exercise>> findByCreatorOrCreatorIsNull(User user);
 
         Page<Exercise> findByCreator(Pageable pageable, User user);
 

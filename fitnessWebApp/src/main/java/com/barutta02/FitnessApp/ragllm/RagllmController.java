@@ -5,9 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.barutta02.FitnessApp.ragllm.DTO.Question;
-import com.barutta02.FitnessApp.ragllm.DTO.RagllmResponse;
+import com.barutta02.FitnessApp.ragllm.DTO.ChatbotResponse;
+import com.barutta02.FitnessApp.ragllm.DTO.WorkoutBase;
+import com.barutta02.FitnessApp.ragllm.DTO.WorkoutResponse;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import reactor.core.publisher.Mono;
@@ -28,7 +31,12 @@ public class RagllmController {
     }
 
     @PostMapping(path = "/answer")
-    public ResponseEntity<RagllmResponse> answerQuestion(@RequestBody Question question, Authentication connectedUser) {
+    public ResponseEntity<ChatbotResponse> answerQuestion(@Valid @RequestBody Question question, Authentication connectedUser) {
         return ResponseEntity.ok(ragllmService.answerQuestion(question, connectedUser).block());
+    }
+
+    @PostMapping(path = "/generateWorkout")
+    public ResponseEntity<WorkoutResponse> generateWorkout(@Valid @RequestBody WorkoutBase workoutBase, Authentication connectedUser) {
+        return ResponseEntity.ok(ragllmService.generateWorkout(workoutBase, connectedUser).block());
     }
 }

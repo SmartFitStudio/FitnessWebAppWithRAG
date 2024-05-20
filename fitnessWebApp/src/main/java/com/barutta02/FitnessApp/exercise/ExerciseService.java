@@ -1,5 +1,7 @@
 package com.barutta02.FitnessApp.exercise;
 
+import com.barutta02.FitnessApp.allenamento.Allenamento;
+import com.barutta02.FitnessApp.allenamento.DTO.AllenamentoResponse;
 import com.barutta02.FitnessApp.common.PageResponse;
 import com.barutta02.FitnessApp.common.Service_CRUD;
 import com.barutta02.FitnessApp.config.UserExtractor;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -92,6 +95,16 @@ public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseReq
                 exercises.getTotalPages(),
                 exercises.isFirst(),
                 exercises.isLast());
+    }
+
+    public ArrayList<ExerciseResponse> findAllAuthenticatedUserExercises_noPagination(Authentication connectedUser) {
+        User user = userExtractor.getUserFromAuthentication(connectedUser);
+        ArrayList<Exercise> exercises = exerciseRepository.findByCreatorOrCreatorIsNull(user)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                "Nessun esercizio associato a te è stato trovato"));
+        return  exercises.stream()
+                .map(exerciseMapper::toExerciseResponse)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ExerciseResponse importExercise(Long exerciseId, Authentication connectedUser) {
