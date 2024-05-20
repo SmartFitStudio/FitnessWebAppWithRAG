@@ -7,8 +7,9 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
 
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { NgFor, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
+import { ProgressoResponse } from '../../../../services/models';
 
 @Component({
   selector: 'app-manage-progress',
@@ -31,6 +32,7 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private progressoService: ProgressService,
     @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
@@ -38,16 +40,35 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
   }
 
   ngOnInit(): void {
+    const progresso_id = this.activatedRoute.snapshot.params['progresso_id'];
+    if(progresso_id){
+      this.getProgressoById(progresso_id)
+    }
+    else{
+      this.getLastProgresso();
+    }
+    
+  }
+
+  private getProgressoById(id: number){
+    this.progressoService.getProgresso({
+      'progresso-id': id
+    }).subscribe({
+      next: (response) => {
+        this.patchValue(response);
+      },
+      error: (error) => {
+        this.handleErrorMessages(error);
+      }
+    });
+  }
+
+  private getLastProgresso(){
     this.progressoService.getLastNProgressi({
       N: 1
     }).subscribe({
       next: (response) => {
-        this.progressoForm.patchValue({
-          peso: response[0].pesoKg,
-          massa_grassa: response[0].percentualeMassaGrassa,
-          massa_magra: response[0].percentualeMassaGrassa,
-          altezza_cm: response[0].altezzaCm
-        });
+        this.patchValue(response[0]);
       },
       error: (error) => {
         this.handleErrorMessages(error);
@@ -68,6 +89,17 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
   }
 
   //BOILERPLATE CODE
+
+  private patchValue(progressoResponse: ProgressoResponse){
+    this.progressoForm.patchValue({
+      peso: progressoResponse.pesoKg,
+      massa_grassa: progressoResponse.percentualeMassaGrassa,
+      massa_magra: progressoResponse.percentualeMassaMagra,
+      altezza_cm: progressoResponse.altezzaCm,
+      note: progressoResponse.note,
+      data_misurazione: progressoResponse.dataMisurazione
+    });
+  }
   private bindFormToRequest() {
     if (this.IsFormValid) {
       this.progressoRequest = {

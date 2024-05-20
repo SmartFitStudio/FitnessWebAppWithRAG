@@ -115,6 +115,11 @@ const routes: Routes = [
         component: ManageProgressComponent,
         canActivate: [authGuard]
       },
+      {
+        path: MANAGE_PROGRESS_PATH + '/:progress_id',
+        component: ManageProgressComponent,
+        canActivate: [authGuard]
+      },
     ]
   }
 ];

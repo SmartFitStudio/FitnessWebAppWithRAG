@@ -1,4 +1,6 @@
 <div class="card">
+    <app-feedback-info-point [messages]="primeMessages">
+      </app-feedback-info-point>
     <p-table
         [value]="lista_progressi"
         [paginator]="true"
@@ -18,7 +20,7 @@
                 <th style="width:12%">Altezza</th>
                 <th style="width:15%">M.grassa</th>
                 <th style="width:40%">Note</th>
-                <th style="width:8%">Dettagli</th>
+                <th style="width:8%"></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-progresso>
@@ -27,9 +29,19 @@
                 <td>{{ progresso.pesoKg }}</td>
                 <td>{{ progresso.altezzaCm }}</td>
                 <td>{{ progresso.percentualeMassaGrassa }}</td>
-                <td>{{ progresso.note?  progresso.note.substring(0,20) + "..." : 'Vuoto'}}</td>
-                <td><i class="fa-solid fa-eye"></i></td>
+                <td><p-inplace>
+                    <ng-template pTemplate="display">
+                        <span>{{ progresso.note?  progresso.note.substring(0,12) + " Vedi altro..." : 'Vuoto'}}</span>
+                    </ng-template>
+                    <ng-template pTemplate="content">
+                        <span>
+                            {{progresso.note}}
+                        </span>
+                    </ng-template>
+                </p-inplace></td>
+                <td> <i (click)="deleteProgress(progresso.id)" class="fa-solid fa-trash alert inline"></i> <i (click)="editProgress(progresso.id)" class="fa-solid fa-pen-to-square inline"></i></td>
             </tr>
         </ng-template>
     </p-table>
 </div>
+

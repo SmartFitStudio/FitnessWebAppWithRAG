@@ -1,6 +1,9 @@
-<div   class="alert "
+<div   class="card alert "
 [class.alert-danger]="level==='error'"
 [class.alert-success]="level==='success'"
-role="alert">
+role="alert" *ngIf="hasContent" >
     <ng-content></ng-content>
+</div>
+<div class="card" *ngIf="messages.length > 0">
+    <p-messages [(value)]="messages" [enableService]="false" />
 </div>
