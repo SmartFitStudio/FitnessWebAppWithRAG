@@ -3,13 +3,13 @@ package com.barutta02.FitnessApp.ragllm;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.barutta02.FitnessApp.allenamento.Allenamento;
 import com.barutta02.FitnessApp.allenamento.AllenamentoService;
+import com.barutta02.FitnessApp.allenamento.DTO.AllenamentoResponse;
 import com.barutta02.FitnessApp.allenamento_esercizio.AllenamentoEsercizioService;
 import com.barutta02.FitnessApp.allenamento_esercizio.DTO.AllenamentoEsercizioResponse;
 import com.barutta02.FitnessApp.config.UserExtractor;
-import com.barutta02.FitnessApp.exercise.Exercise;
 import com.barutta02.FitnessApp.exercise.ExerciseService;
+import com.barutta02.FitnessApp.exercise.DTO.ExerciseResponse;
 import com.barutta02.FitnessApp.periodo.PeriodoService;
 import com.barutta02.FitnessApp.periodo.DTO.PeriodoResponse;
 import com.barutta02.FitnessApp.periodo_allenamento.PeriodoAllenamentoService;
@@ -67,7 +67,7 @@ public class RagllmService {
                 numero_misurazione++;
             }
         }
-        PeriodoResponse periodoAttivo = periodoService.findByCreatorAndAttivoIsTrue(connectedUser);
+        PeriodoResponse periodoAttivo = periodoService.findAuthenticatedUserActivePeriodo(connectedUser);
         if(periodoAttivo == null) {
             user_data += "Al momento l'utente non ha alcun periodo attivo\n";
         } else {
@@ -79,28 +79,28 @@ public class RagllmService {
                          "Data inizio: " + periodoAttivo.getData_inizio() + "\n" +
                          "Data fine: " + (periodoAttivo.getData_fine()!=null?periodoAttivo.getData_fine():"non definita") + "\n" +
                          "Indice del giorno del periodo in cui ci si trova: " + (giorni_trascorsi_da_inizio_periodo>=0?giorni_trascorsi_da_inizio_periodo%periodoAttivo.getDurata_in_giorni():"Il periodo deve ancora iniziare") + "\n";
-            ArrayList<PeriodoAllenamentoResponse> allenamentiPeriodoAttivo = periodoAllenamentoService.findAllByPeriodoNoPagination(periodoAttivo.getName(), connectedUser);
+            ArrayList<PeriodoAllenamentoResponse> allenamentiPeriodoAttivo = periodoAllenamentoService.findAllAuthUserPeriodoAllenamentoByPeriodoId_noPagination(periodoAttivo.getId(), connectedUser);
             if(allenamentiPeriodoAttivo.isEmpty()) {
                 user_data += "Non ci sono allenamenti associati al periodo attivo dell'utente\n";
             } else {
                 user_data += "Allenamenti associati al periodo attivo:\n";
                 int numero_allenamento = 1;
                 for (PeriodoAllenamentoResponse allenamento : allenamentiPeriodoAttivo) {
-                    Allenamento allenamentoEntity = allenamentoService.findByIdAndCreator_Username(allenamento.getId_allenamento(), user.getUsername());
+                    AllenamentoResponse allenamentoEntity = allenamentoService.findByAuthUserAndAllenamentoId(allenamento.getId_allenamento(), connectedUser);
                     user_data += numero_allenamento + ")\n" +
                                  "Nome allenamento: " + allenamentoEntity.getName() + "\n" +
                                  "Descrizione: " + allenamentoEntity.getDescription() + "\n" +
                                  "Durata in ore: " + allenamentoEntity.getDurata_in_ore() + "\n";
                     user_data += "Indice del giorno del periodo in cui viene eseguito: " + allenamento.getGiorno_del_periodo() + "\n" +
                                  "Periodo della giornata in cui viene eseguito: " + allenamento.getPeriodo_giornata() + "\n";
-                    ArrayList<AllenamentoEsercizioResponse> eserciziAllenamento = allenamentoEsercizioService.findAllByAllenamentoNoPagination(allenamentoEntity.getName(), connectedUser);
+                    ArrayList<AllenamentoEsercizioResponse> eserciziAllenamento = allenamentoEsercizioService.findAllAuthUserAllenamentoEsercizioByAllenamentoId_noPagination(allenamento.getId_allenamento(), connectedUser);
                     if(eserciziAllenamento.isEmpty()) {
                         user_data += "Non ci sono esercizi associati all'allenamento\n";
                     } else {
                         user_data += "Esercizi associati all'allenamento:\n";
                         int numero_esercizio = 1;
                         for (AllenamentoEsercizioResponse esercizio : eserciziAllenamento) {
-                            Exercise esercizioEntity = exerciseService.findById(esercizio.getEsercizio_id(), user.getUsername());
+                            ExerciseResponse esercizioEntity = exerciseService.findAuthenticatedUserOrDefaultExerciseById(esercizio.getEsercizio_id(), connectedUser);
                             user_data += numero_allenamento + "." + numero_esercizio + ")\n" +
                                          "Nome esercizio: " + esercizioEntity.getName() + "\n" +
                                          "Descrizione: " + esercizioEntity.getDescription() + "\n" +
@@ -124,6 +124,7 @@ public class RagllmService {
 
     public Mono<RagllmResponse> answerQuestion(Question question, Authentication connectedUser) {
         RagllmRequest request = new RagllmRequest(question.question(), defineUserDataForRag(connectedUser));
+        System.out.println(defineUserDataForRag(connectedUser));
         return webClient.post()
                 .uri("/answer")
                 .contentType(MediaType.APPLICATION_JSON)
