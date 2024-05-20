@@ -43,9 +43,26 @@ def answer_user_question():
     user_data = jsonRequest.get("user_data")
     return jsonify({'response': answer.answer_question(question, user_data)}), 200
 
-@app.route('/json', methods=['GET'])
-def generate_json():
-    return answer.generate_json(), 200
+@app.route('/generateWorkout', methods=['POST'])
+def generate_workout():
+    try:
+        jsonRequest = request.get_json()
+    except:
+        return jsonify({'error': 'Formato della richiesta non valido'}), 400
+    if 'workout_data' not in jsonRequest:
+        return jsonify({'error': 'Nella richiesta non è presente il campo "workout_data" relativo ai dati base dell\'allenamento'}), 400
+    if 'user_data' not in jsonRequest:
+        return jsonify({'error': 'Nella richiesta non è presente il campo "user_data" relativo ai dati dell\'utente'}), 400
+    if 'available_exercises' not in jsonRequest:
+        return jsonify({'error': 'Nella richiesta non è presente il campo "available_exercises" relativo agli esericizi tra cui scegliere per la creazione dell\'allenamento'}), 400
+    workout_data = jsonRequest.get("workout_data")
+    user_data = jsonRequest.get("user_data")
+    available_exercises = jsonRequest.get("available_exercises")
+    is_successful, response = answer.generate_workout_json(workout_data, user_data, available_exercises)
+    if is_successful:
+        return response, 200
+    else:
+        return jsonify({'error': response}), 500
 
 if __name__ == "__main__":
     serve(app, host='0.0.0.0', port=5000)
