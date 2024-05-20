@@ -47,7 +47,7 @@ public class PeriodoController {
 
     @GetMapping("/is_there_an_active_period")
     public ResponseEntity<PeriodoResponse> isThereAnActivePeriod(Authentication connectedUser) {
-        return ResponseEntity.ok(service.existsByCreatorAndAttivoIsTrue(connectedUser));
+        return ResponseEntity.ok(service.findByCreatorAndAttivoIsTrue(connectedUser));
     }
 
     @PutMapping("disable_active_period")

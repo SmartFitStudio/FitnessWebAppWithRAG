@@ -67,7 +67,7 @@ public class PeriodoService {
                     .orElseThrow(() -> new EntityNotFoundException("Nessun periodo creato da te è stato trovato con id:: " + id_periodo));
         }
 
-        public PeriodoResponse existsByCreatorAndAttivoIsTrue(Authentication connectedUser) {
+        public PeriodoResponse findByCreatorAndAttivoIsTrue(Authentication connectedUser) {
             User creator = userExtractor.getUserFromAuthentication(connectedUser);
             return periodoRepository.findByCreatorAndAttivoIsTrue(creator)
                     .map(periodoMapper::toPeriodoResponse)
