@@ -32,9 +32,9 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
 })
 
 export class ManagePeriodComponent implements OnInit, OnDestroy {
-  nome_periodo_attivo: string = ""; //per mostrare il nome del periodo attivo
   errorMsg: Array<String> = [];
   level: 'success' | 'error' = 'success';
+  nome_periodo_attivo: string = ""; //per mostrare il nome del periodo attivo
   periodForm = this.formBuilder.group({
     nome_periodo: ['', Validators.required],
     obiettivo: [ObbiettivoPeriodo.NON_DEFINITO, Validators.required],
@@ -159,7 +159,7 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
   add_training_top_period($event: AllenamentoResponse) {
     this.errorMsg = [];
     if (this.periodForm.value.nome_periodo) {
-      this.updatePeriodInfo();
+      this.bindFormToRequest();
       if (this.lastPutRequestInfo && this.periodForm.value.nome_periodo && $event.name) {
         this._periodManager.addAllenamentoToPeriodo({
           giorno_del_periodo: this.lastPutRequestInfo.day,
@@ -181,7 +181,7 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.updatePeriodInfo();
+    this.bindFormToRequest();
     this.subs.push(this._periodManager.savePeriodo$().subscribe({
       complete: () => {
         this.router.navigate([sub_appRoutingModule.full_myPeriodsPath]);
@@ -196,7 +196,7 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
   }
 
   /*BOILERPLATE CODE */
-  private updatePeriodInfo() {
+  private bindFormToRequest() {
     if (this.periodForm.valid) {
       if (this.periodForm.value.nome_periodo)
         this._periodManager.periodoName = this.periodForm.value.nome_periodo;

@@ -1,0 +1,35 @@
+<div class="card">
+    <p-table
+        [value]="lista_progressi"
+        [paginator]="true"
+        [lazy]="true"
+        [rows]="5"
+        styleClass="p-datatable-gridlines" 
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        (onLazyLoad)="findProgress($event)"
+        [totalRecords]='totalPages? totalPages*size : 0'
+        [tableStyle]="{ 'background-color': 'red' }"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:17%">Data</th>
+                <th style="width:8%">Peso</th>
+                <th style="width:12%">Altezza</th>
+                <th style="width:15%">M.grassa</th>
+                <th style="width:40%">Note</th>
+                <th style="width:8%">Dettagli</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-progresso>
+            <tr>
+                <td>{{ progresso.dataMisurazione }}</td>
+                <td>{{ progresso.pesoKg }}</td>
+                <td>{{ progresso.altezzaCm }}</td>
+                <td>{{ progresso.percentualeMassaGrassa }}</td>
+                <td>{{ progresso.note?  progresso.note.substring(0,20) + "..." : 'Vuoto'}}</td>
+                <td><i class="fa-solid fa-eye"></i></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

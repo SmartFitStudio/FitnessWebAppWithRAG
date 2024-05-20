@@ -2,26 +2,22 @@ import { Component, Input } from '@angular/core';
 import { AgChartsAngular } from 'ag-charts-angular';
 import { AgChartOptions } from 'ag-charts-community';
 @Component({
-  selector: 'app-multi-line-graph',
+  selector: 'app-mono-line-graph',
   standalone: true,
   imports: [AgChartsAngular],
-  templateUrl: './multi-line-graph.component.html',
-  styleUrl: './multi-line-graph.component.scss'
+  templateUrl: './mono-line-graph.component.html',
+  styleUrl: './mono-line-graph.component.scss'
 })
-export class MultiLineGraphComponent {
+export class MonoLineGraphComponent {
   public chartOptions!: AgChartOptions;
 
-  @Input() x1Name!: string;
-  @Input() y1Name!: string;
-
-  @Input() x2Name!: string;
-  @Input() y2Name!: string;
+  @Input() xName!: string;
+  @Input() yName!: string;
 
   @Input()
   set graphData(value: {
     xAxesValue: Date,
-    FirstYAxesValue: number,
-    SecondYAxesValue?: number,
+    YAxesValue: number,
   }[]) {
     this.chartOptions = {
       title: {
@@ -47,21 +43,9 @@ export class MultiLineGraphComponent {
         {
           type: "line",
           xKey: 'xAxesValue',
-          yKey: 'FirstYAxesValue',
-          xName: this.x1Name,  // Nome assegnato alla serie x
-          yName: this.y1Name,  // Nome assegnato alla prima serie y
-          marker: {
-            stroke: '#fd6384',
-            fillOpacity: 0.9,
-            fill: '#fd6384',
-        },
-        },
-        {
-          type: "line",
-          xKey: 'xAxesValue',
-          yKey: 'SecondYAxesValue',
-          xName: this.x2Name,  // Nome assegnato alla serie x
-          yName: this.y2Name,  // Nome assegnato alla seconda serie y
+          yKey: 'YAxesValue',
+          xName: this.xName,  // Nome assegnato alla serie x
+          yName: this.yName,  // Nome assegnato alla seconda serie y
           marker: {
             stroke: '#ffcb62',
             fillOpacity: 0.5,

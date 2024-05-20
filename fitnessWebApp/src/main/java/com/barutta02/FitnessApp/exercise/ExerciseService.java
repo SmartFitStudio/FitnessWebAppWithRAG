@@ -112,8 +112,6 @@ public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseReq
         return exerciseMapper.toExerciseResponse(exerciseRepository.save(newExercise));
     }
 
-
-
     public PageResponse<ExerciseResponse> findExerciseFromStore(int page, int size, Authentication connectedUser) {
         Page<Exercise> exercises = exerciseRepository.findByCreatorNotAndShareableIsTrue(
                 PageRequest.of(page, size, Sort.by("createdDate").descending()), (User) connectedUser.getPrincipal());

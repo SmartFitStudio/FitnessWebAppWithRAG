@@ -1,6 +1,6 @@
 <!--Inserisci prima tutte le info di contesto-->
-<app-feedback-info-point [level]="level" *ngIf="errorMsg.length > 0">
-    <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{msg}}</p>
+<app-feedback-info-point [level]="level" *ngIf="messages.length > 0">
+    <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
 </app-feedback-info-point>
 <form class="row row-cols-lg-auto g-3 align-items-center" [formGroup]="trainingForm">
     <div class="tab initial_info" [ngClass]="{'hidden': openedTab != 0}">

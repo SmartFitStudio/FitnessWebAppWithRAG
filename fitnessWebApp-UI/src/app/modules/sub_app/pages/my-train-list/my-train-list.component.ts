@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AllenamentoResponse, PageResponseAllenamentoResponse } from '../../../../services/models';
 import { TrainService } from '../../../../services//services';
@@ -8,6 +8,7 @@ import { TrainCardComponent } from '../../components/train-card/train-card.compo
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
+import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 
 @Component({
   selector: 'app-my-train-list',
@@ -16,10 +17,8 @@ import { ErrorHandlerService } from '../../../../services/myServices/error-handl
   standalone: true,
   imports: [NgIf, RouterLink, NgFor, TrainCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
-export class MyTrainListComponent implements OnInit {
+export class MyTrainListComponent extends MessageHandler implements OnInit {
   trainingsResponse$!: Observable<PageResponseAllenamentoResponse>;
-  messages: Array<string> = [];
-  level: 'success' | 'error' = 'success';
 
   private totalPages? = 0;
   private _page = 0;
@@ -30,8 +29,9 @@ export class MyTrainListComponent implements OnInit {
   constructor(
     private trainService: TrainService,
     private router: Router,
-    private handleError: ErrorHandlerService
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
+    super(handleError);
   }
 
   ngOnInit(): void {
@@ -56,10 +56,7 @@ export class MyTrainListComponent implements OnInit {
         return response;
       }),
       catchError((error) => {
-        this.level = 'error';
-        this.handleError.handleError(error).forEach((value) => {
-          this.messages.push(value.message);
-        });
+        this.handleErrorMessages(error);
         return EMPTY;
       })
     );
@@ -69,14 +66,12 @@ export class MyTrainListComponent implements OnInit {
     this.trainService.deleteAllenamento({ 'allenamento-id': trainResponse.id as number })
       .subscribe({
         next: () => {
-          this.messages = ['Allenamento eliminato'];
-          this.level = 'success';
+          this._messages = ['Allenamento eliminato'];
+          this._level = 'success';
           this.findAllMyTrain();
         },
         error: (error) => {
-          this.handleError.handleError(error).forEach((value) => {
-            this.messages.push(value.message);
-          });
+         this.handleErrorMessages(error);
           this.level = 'error';
         }
       });

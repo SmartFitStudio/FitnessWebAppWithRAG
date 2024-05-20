@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AllenamentoEsercizioResponse, ExerciseResponse, PageResponseAllenamentoEsercizioResponse } from '../../../../services//models';
 import { ExerciseService, TrainExerciseService, TrainService } from '../../../../services/services';
@@ -10,6 +10,7 @@ import { TrainExerciseCardComponent } from '../../components/train-exercise-card
 import { NgFor, NgIf } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
+import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 
 @Component({
   selector: 'app-training-details',
@@ -18,9 +19,7 @@ import { ErrorHandlerService } from '../../../../services/myServices/error-handl
   standalone: true,
   imports: [NgFor, NgIf, TrainExerciseCardComponent, FeedbackInfoPointComponent]
 })
-export class TrainingDetailsComponent implements OnInit, OnDestroy {
-  messages: Array<string> = [];
-  level: 'success' | 'error' = 'success';
+export class TrainingDetailsComponent extends MessageHandler implements OnInit, OnDestroy {
 
   public stopwatch!: StopWatch;
   private subscriptions: Subscription = new Subscription(); //Iscrizioni dell observer
@@ -29,8 +28,9 @@ export class TrainingDetailsComponent implements OnInit, OnDestroy {
     private trainingManagerService: TrainingManagerService,
     private timerService: StopWatchService,
     private activatedRoute: ActivatedRoute,
-    private handleError: ErrorHandlerService
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
+    super(handleError);
     this.subscriptions.add(
       this.timerService.stopWatch$.subscribe( //Iscrizione all'observable del cronometro e mappo il valore in stopwatch
         (val: StopWatch) => (this.stopwatch = val)
@@ -47,9 +47,7 @@ export class TrainingDetailsComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.level = 'error';
-          this.handleError.handleError(error).forEach((value) => {
-            this.messages.push(value.message);
-          });
+          this.handleErrorMessages(error);
         }
       });
     }

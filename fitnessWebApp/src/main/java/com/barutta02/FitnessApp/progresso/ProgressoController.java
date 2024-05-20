@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.barutta02.FitnessApp.allenamento.DTO.AllenamentoResponse;
+import com.barutta02.FitnessApp.common.PageResponse;
 import com.barutta02.FitnessApp.progresso.DTO.ProgressoRequest;
 import com.barutta02.FitnessApp.progresso.DTO.ProgressoResponse;
 
@@ -71,6 +72,14 @@ public class ProgressoController {
     public ResponseEntity<ArrayList<ProgressoResponse>> getAllProgressi(
             Authentication connectedUser) {
         return ResponseEntity.ok(service.getAllProgressi(connectedUser));
+    }
+
+    @GetMapping("/all/paginated")
+    public ResponseEntity<PageResponse<ProgressoResponse>> getAllProgressi_paginated(
+        @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+        @RequestParam(name = "size", defaultValue = "10", required = false) int size,
+            Authentication connectedUser) {
+        return ResponseEntity.ok(service.getAllProgressiPaginated(page, size, connectedUser));
     }
 
     @DeleteMapping("/{progresso-id}")

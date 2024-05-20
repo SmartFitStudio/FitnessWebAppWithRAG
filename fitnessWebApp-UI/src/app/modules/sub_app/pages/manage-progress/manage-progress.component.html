@@ -1,0 +1,58 @@
+<app-feedback-info-point [level]="level" *ngIf="messages.length > 0">
+    <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
+</app-feedback-info-point>
+<section>
+    <h2>Nuovo progresso</h2>
+    <div>
+        <form [formGroup]="progressoForm">
+            <div class="form-group">
+                <label for="formGroupExampleInput">Peso attuale in Kg</label>
+                <input formControlName="peso" type="text" class="form-control" id="peso" placeholder="Peso attuale">
+                <small class="text-danger" *ngIf="!IsPesoInputValid">
+                    Il peso è un campo obbligatorio e deve essere maggiore di zero.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">Percentuale massa grassa</label>
+                <input formControlName="massa_grassa" type="number" class="form-control" id="massaMagra" placeholder="">
+                <small class="text-danger" *ngIf="!IsMassaGrassaInputValid">
+                   La massa grassa è un campo obbligatorio e deve essere maggiore di zero e minore di 100.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">Percentuale massa magra</label>
+                <input formControlName="massa_magra" type="number" class="form-control" id="massaGrassa" placeholder="">
+                <small class="text-danger" *ngIf="!IsMassaMagraInputValid">
+                    La massa magra è un campo obbligatorio e deve essere maggiore di zero e minore di 100.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">Altezza attuale</label>
+                <input formControlName="altezza_cm" type="number" class="form-control" id="altezza" placeholder="">
+                <small class="text-danger" *ngIf="!IsAltezzaInputValid">
+                    L'altezza è un campo obbligatorio e deve essere maggiore di zero.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">Data misurazione</label>
+                <input formControlName="data_misurazione" type="date" class="form-control" id="data" placeholder="">
+                <small class="text-danger" *ngIf="!IsDataMisurazioneInputValid">
+                    La data è un campo obbligatorio e deve essere presente o passata.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">Note</label>
+                <textarea formControlName="note" class="form-control" id="note" placeholder=""></textarea>
+                <small class="text-danger" *ngIf="!IsNoteInputValid">
+                   Le note non possono superare i 500 caratteri.
+                </small>
+            </div>
+            <div class="buttons">
+                <button class="def_button left inline"><i class="fa-solid fa-x"></i> Chiudi</button>
+
+                <button type="submit" class="def_button right inline" (click)="submitForm()"><i
+                        class="fa-solid fa-floppy-disk"></i> Salva</button>
+            </div>
+        </form>
+    </div>
+</section>

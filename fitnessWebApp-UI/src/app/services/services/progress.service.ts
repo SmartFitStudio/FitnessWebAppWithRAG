@@ -15,10 +15,13 @@ import { deleteProgresso } from '../fn/progress/delete-progresso';
 import { DeleteProgresso$Params } from '../fn/progress/delete-progresso';
 import { getAllProgressi } from '../fn/progress/get-all-progressi';
 import { GetAllProgressi$Params } from '../fn/progress/get-all-progressi';
+import { getAllProgressiPaginated } from '../fn/progress/get-all-progressi-paginated';
+import { GetAllProgressiPaginated$Params } from '../fn/progress/get-all-progressi-paginated';
 import { getLastNProgressi } from '../fn/progress/get-last-n-progressi';
 import { GetLastNProgressi$Params } from '../fn/progress/get-last-n-progressi';
 import { getProgresso } from '../fn/progress/get-progresso';
 import { GetProgresso$Params } from '../fn/progress/get-progresso';
+import { PageResponseProgressoResponse } from '../models/page-response-progresso-response';
 import { ProgressoResponse } from '../models/progresso-response';
 import { updateProgresso } from '../fn/progress/update-progresso';
 import { UpdateProgresso$Params } from '../fn/progress/update-progresso';
@@ -184,6 +187,31 @@ export class ProgressService extends BaseService {
   getAllProgressi(params?: GetAllProgressi$Params, context?: HttpContext): Observable<Array<ProgressoResponse>> {
     return this.getAllProgressi$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<ProgressoResponse>>): Array<ProgressoResponse> => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllProgressiPaginated()` */
+  static readonly GetAllProgressiPaginatedPath = '/progress/all/paginated';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllProgressiPaginated()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllProgressiPaginated$Response(params?: GetAllProgressiPaginated$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseProgressoResponse>> {
+    return getAllProgressiPaginated(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllProgressiPaginated$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllProgressiPaginated(params?: GetAllProgressiPaginated$Params, context?: HttpContext): Observable<PageResponseProgressoResponse> {
+    return this.getAllProgressiPaginated$Response(params, context).pipe(
+      map((r: StrictHttpResponse<PageResponseProgressoResponse>): PageResponseProgressoResponse => r.body)
     );
   }
 
