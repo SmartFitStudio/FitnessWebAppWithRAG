@@ -2,7 +2,7 @@ import { Component, TemplateRef } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { ChatbotService } from '../../services/chatbot-service/chatbot.service';
+import { RagllmService } from '../../../../services/services/ragllm.service';
 import { ConversationMessage } from '../../services/models/conversationMessage';
 import * as Showdown from 'showdown';
 
@@ -18,7 +18,7 @@ export class ChatbotComponent {
   converter!: Showdown.Converter;
   promptForm!: FormGroup;
 
-  constructor(private chatbotService: ChatbotService,
+  constructor(private ragllmService: RagllmService,
      private offcanvasService: NgbOffcanvas) { }
 
   ngOnInit() {
@@ -39,21 +39,26 @@ export class ChatbotComponent {
     if(promptValue) {
       this.promptForm.disable();
       this.messages.push({userPrompt: promptValue.trim(), chatbotResponse: ''});
-      const subscription$ = this.chatbotService.getAnswer(promptValue.trim()).subscribe({
-          next: answer => {
-              this.promptForm.enable();
-              this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml(answer.toString());
-            },
-          complete: () => {subscription$.unsubscribe();}
-        }
-      );
-    }
+      const subscription$ = this.ragllmService.answerQuestion({body: {question: promptValue.trim()}}).subscribe({
+          next: ragllmResponse => {
+              this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml(ragllmResponse.response.toString());
+          },
+          error: error => {
+            this.promptForm.enable();
+            this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml('Qualcosa è andato storto: '+error.message + 'TODO: gestire errori in modo più elegante');
+          },
+          complete: () => {
+            this.promptForm.enable();
+            subscription$.unsubscribe();}
+          }
+        );
+      }
     this.promptForm.reset();
   }
 
 
   //BOILERPLATE CODE
-  
+
   get userPrompt() {
     return this.promptForm.get('userPrompt');
   }

@@ -124,7 +124,6 @@ public class RagllmService {
 
     public Mono<RagllmResponse> answerQuestion(Question question, Authentication connectedUser) {
         RagllmRequest request = new RagllmRequest(question.question(), defineUserDataForRag(connectedUser));
-        System.out.println(defineUserDataForRag(connectedUser));
         return webClient.post()
                 .uri("/answer")
                 .contentType(MediaType.APPLICATION_JSON)

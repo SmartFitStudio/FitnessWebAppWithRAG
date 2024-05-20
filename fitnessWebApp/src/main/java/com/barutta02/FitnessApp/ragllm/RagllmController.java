@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.barutta02.FitnessApp.ragllm.DTO.Question;
 import com.barutta02.FitnessApp.ragllm.DTO.RagllmResponse;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import reactor.core.publisher.Mono;
 
@@ -16,6 +18,7 @@ import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping(path = "ragllm")
+@Tag(name = "Ragllm")
 public class RagllmController {
 
     private final RagllmService ragllmService;
