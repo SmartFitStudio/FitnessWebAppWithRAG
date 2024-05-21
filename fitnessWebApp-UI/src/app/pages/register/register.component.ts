@@ -56,7 +56,7 @@ export class RegisterComponent extends MessageHandler {
           }
         });
     } else {
-      this.messages = ["Compilare tutti i campi correttamente"];
+      this.addMessage('warn', 'Compilare tutti i campi correttamente');
     }
 
   }

@@ -29,7 +29,6 @@ export class NotificationListComponent extends MessageHandler implements OnInit 
         this.lista_notifiche = notifiche;
       },
       error: error => {
-        this.level = 'error';
         this.handleErrorMessages(error);
       }
     })

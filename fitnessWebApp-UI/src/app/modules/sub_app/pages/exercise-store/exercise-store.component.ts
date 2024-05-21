@@ -63,13 +63,12 @@ export class ExerciseStoreComponent extends MessageHandler {
     console.log($event);
     this.exerciseService.importExercise({ 'exercise-id': $event }).subscribe({
       next: () => {
-        this._messages = ['Exercise imported'];
-        this._level = 'success';
+        this.addMessage('success', 'Exercise imported');
+
         this.findAllStoreExercise();
       },
       error: () => {
-        this._messages = ['Error importing exercise'];
-        this._level = 'error';
+        this.addMessage('error', 'Error importing exercise');
       }
     });
   }

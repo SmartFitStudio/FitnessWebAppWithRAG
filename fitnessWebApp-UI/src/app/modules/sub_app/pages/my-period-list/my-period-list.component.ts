@@ -66,8 +66,7 @@ export class MyPeriodListComponent extends MessageHandler implements OnInit {
     this.periodsService.deletePeriodo({ 'periodo-id': periodResponse.id })
       .subscribe({
         next: () => {
-          this._messages = ['Periodo eliminato'];
-          this._level = 'success';
+          this.addMessage('success', 'Period deleted');
           this.findAllMyPeriods();
         },
         error: (error) => {

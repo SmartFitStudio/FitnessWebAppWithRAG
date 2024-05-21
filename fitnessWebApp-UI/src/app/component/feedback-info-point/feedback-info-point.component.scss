@@ -1,12 +1,8 @@
-.alert{
-    color: #fff;
-}
-.alert-danger{
-    background: rgba(255, 137, 137, 0.4);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 137, 137, 0.3);
+.messageContainer{
+max-width: 400px;
+margin: auto;    
 }
 
+.p-message-wrapper {
+    padding: .5em;
+}

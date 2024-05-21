@@ -72,8 +72,7 @@ export class MyExerciseListComponent extends MessageHandler implements OnInit {
     this.exerciseService.deleteExercise({ 'exercise-id': exerciseResponse.id as number})
       .subscribe({
         next: () => {
-          this._messages = ['Esercizio eliminato con successo'];
-          this._level = 'success';
+          this.addMessage('success', 'Esercizio eliminato con successo');
           this.findAllMyExercise();
         },
         error: (error) => {

@@ -60,8 +60,7 @@ export class ProgressTableComponent extends PaginatedComponent implements OnInit
       'progresso-id': id_progresso
     }).subscribe({
       next: () => {
-        this._level = 'success';
-        this.addMessage('Progresso eliminato con successo');
+        this.addMessage('success','Progresso eliminato con successo');
         this.getData();
       },
       error: (error) => {

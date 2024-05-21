@@ -46,7 +46,6 @@ export class TrainingDetailsComponent extends MessageHandler implements OnInit, 
           trainingInfoSubscription.unsubscribe();
         },
         error: (error) => {
-          this.level = 'error';
           this.handleErrorMessages(error);
         }
       });

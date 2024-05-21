@@ -9,7 +9,6 @@ import { MyExerciseListComponent } from '../my-exercise-list/my-exercise-list.co
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
-import { extend } from '@syncfusion/ej2-base';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 
 @Component({
@@ -75,8 +74,7 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
 
   submitTrain() {
     if (!this.trainingForm.valid) {
-      this.level = 'error';
-      this._messages.push("Compila correttamente i campi obbligatori");
+      this.addMessage('warn', 'Compila correttamente i campi obbligatori');
       return;
     }
     this.update_training_data();
@@ -86,7 +84,6 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
         observer$.unsubscribe(); //in realta rxjs gestisce il completamento e la disiscrizione
       },
       error: (error) => {
-        this.level = 'error';
         this.handleErrorMessages(error);
       }
     });
@@ -113,8 +110,7 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
   next() {
     this.clearMessages();
     if (!this.trainingForm.valid) {
-      this._level = 'error';
-      this._messages.push("Compila correttamente i campi obbligatori");
+      this.addMessage('warn', 'Compila correttamente i campi obbligatori');
       return;
     }
     this._openedTab++;

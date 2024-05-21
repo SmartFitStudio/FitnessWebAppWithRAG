@@ -88,7 +88,7 @@ export class ManageExerciseComponent extends MessageHandler implements OnInit {
           }
         });
     } else {
-      this._messages.push("Compila correttamente i campi obbligatori");
+      this.addMessage('warn', 'Compila correttamente i campi obbligatori');
     }
   }
 

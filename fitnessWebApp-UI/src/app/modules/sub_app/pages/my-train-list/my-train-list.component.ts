@@ -66,13 +66,11 @@ export class MyTrainListComponent extends MessageHandler implements OnInit {
     this.trainService.deleteAllenamento({ 'allenamento-id': trainResponse.id as number })
       .subscribe({
         next: () => {
-          this._messages = ['Allenamento eliminato'];
-          this._level = 'success';
+          this.addMessage('success', 'Allenamento eliminato');
           this.findAllMyTrain();
         },
         error: (error) => {
          this.handleErrorMessages(error);
-          this.level = 'error';
         }
       });
 

@@ -50,7 +50,7 @@ export class LoginComponent extends MessageHandler{
         }
       });
     } else {
-      this._messages = ["Compilare tutti i campi correttamente"];
+      this.addMessage('warn', 'Compilare tutti i campi correttamente');
     }
   }
 
