@@ -71,7 +71,7 @@ export class MultiLineGraphComponent {
         
       ],
       background: {
-        fill: '#f5f5f3',
+        fill: '#fff',
       },
     };
   }

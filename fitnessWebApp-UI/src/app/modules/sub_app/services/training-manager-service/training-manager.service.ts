@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, catchError, flatMap, forkJoin, map, mergeMap, of } from 'rxjs';
+import { EMPTY, Observable, catchError, flatMap, forkJoin, map, mergeMap, of } from 'rxjs';
 import { AllenamentoEsercizioRequest, AllenamentoEsercizioResponse, AllenamentoRequest, ExerciseResponse } from "../../../../services/models";
 import { ExerciseService, TrainExerciseService, TrainService } from "../../../../services/services";
 
@@ -20,7 +20,6 @@ export class TrainingManagerService {
     };
     /* 
         per far funzionare l'ordinamento (go up e do down) l'indice degli esercizi (ovvero oggetti) deve rispecchiare l'ordine dell'array
-        Non piace neanche a me ma serve per mantenere coerenza e facilitare lo scambio e la gestione degli esercizi
     */
     private _trainingExerciseRequests: Array<AllenamentoEsercizioRequest> = [];
     /*
@@ -119,21 +118,28 @@ export class TrainingManagerService {
                 mergeMap((esercizi) => {
                     this._trainingExercisesResponse = esercizi;
                     this.mapTrainingExerciseResponseToRequest();
-                    this.orderArrayByExercisesIndex();//ordino gli esercizi in base all'indice, in modo da avere un array ordinato
-
-                    const exerciseRequests = [];
-                    for (const exercise of this._trainingExerciseRequests) {
-                        exerciseRequests.push(this.exerciseService.findAuthenticatedUserOrDefaultExerciseById({ 'exercise-id': exercise.id_esercizio }));
-                    }
-                    return forkJoin(exerciseRequests);//iene utilizzato forkJoin per eseguire tutte queste richieste in parallelo. forkJoin restituisce un osservabile che emetterà un array con i risultati di tutte le richieste quando saranno complete.
+                    this.orderArrayByExercisesIndex(); // Ordino gli esercizi in base all'indice, in modo da avere un array ordinato
+                    return this.retrieveExercises$();
                 }),
                 mergeMap((exercises) => {
                     this._exercisesResponse = exercises;
-                    return of(exercises);
-                }),
-                catchError((error) => { throw (error) })
+                    return EMPTY;
+                })
             );
     }
+    
+    /**
+     * Observable che mi permette di recuperare gli esercizi in base agli id degli esercizi dentro _trainingExerciseRequests
+     * @returns 
+     */
+    private retrieveExercises$(): Observable<any[]> {
+        const exerciseRequests = [];
+        for (const exercise of this._trainingExerciseRequests) {
+            exerciseRequests.push(this.exerciseService.findAuthenticatedUserOrDefaultExerciseById({ 'exercise-id': exercise.id_esercizio }));
+        }
+        return forkJoin(exerciseRequests); // Utilizzo forkJoin per eseguire tutte queste richieste in parallelo. forkJoin restituisce un osservabile che emetterà un array con i risultati di tutte le richieste quando saranno complete.
+    }
+
     private mapTrainingExerciseResponseToRequest() {
         if (this._trainingExercisesResponse) {
             for (const trainingExercise of this._trainingExercisesResponse) {

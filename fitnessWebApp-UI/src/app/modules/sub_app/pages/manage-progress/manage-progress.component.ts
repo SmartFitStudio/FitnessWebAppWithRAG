@@ -69,6 +69,7 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
       N: 1
     }).subscribe({
       next: (response) => {
+        response[0].dataMisurazione = this.formatDate(new Date());
         this.patchValue(response[0]);
       },
       error: (error) => {
@@ -111,6 +112,12 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
   }
 
   //BOILERPLATE CODE
+  private formatDate(date: Date): string {
+      return date.getFullYear() + '-' + 
+             (date.getMonth() + 1 < 10 ? '0' : '') + (date.getMonth() + 1) + '-' +
+             (date.getDate() < 10 ? '0' : '') + date.getDate();
+  }
+
   private patchValue(progressoResponse: ProgressoResponse) {
     this.progressoForm.patchValue({
       peso: progressoResponse.pesoKg,
