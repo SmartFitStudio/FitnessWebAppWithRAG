@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/services/authentication.service';
 import { RegistrationRequest } from '../../services/models/registration-request';
@@ -7,6 +7,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { NgIf, NgFor } from '@angular/common';
 import { ErrorHandlerService } from '../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../component/feedback-info-point/feedback-info-point.component';
+import { MessageHandler } from '../../services/myServices/error-handler/MessageHandler';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -14,9 +15,8 @@ import { FeedbackInfoPointComponent } from '../../component/feedback-info-point/
   standalone: true,
   imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, FeedbackInfoPointComponent]
 })
-export class RegisterComponent {
+export class RegisterComponent extends MessageHandler {
   registerRequest: RegistrationRequest = { email: '', firstname: '', lastname: '', password: '', username: '', dateOfBirth: '' };
-  messages: Array<string> = [];
   registerForm = new FormGroup({
     firstname: new FormControl<string | null>(null, Validators.required),
     lastname: new FormControl<string | null>(null, Validators.required),
@@ -29,10 +29,11 @@ export class RegisterComponent {
   constructor(
     private router: Router,
     private authService: AuthenticationService,
-    private handleError: ErrorHandlerService
-
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
+    super(handleError);
   }
+
 
   login() {
     this.router.navigate(['login']);
@@ -41,7 +42,7 @@ export class RegisterComponent {
   register() {
     if (this.registerForm.valid) {
       localStorage.clear(); // NOTE: controlla che sia corretto farlo
-      this.messages = [];
+      this.clearMessages();
       this.bindFormWith_RegisterRequest();
       this.authService.register({
         body: this.registerRequest
@@ -51,13 +52,11 @@ export class RegisterComponent {
             this.router.navigate([AppRoutingModule.activateAccountPath]);
           },
           error: (error) => {
-            this.handleError.handleError(error).forEach((value) => {
-              this.messages.push(value.message);
-            });
+            this.handleErrorMessages(error);
           }
         });
     } else {
-      this.messages = ["Compilare tutti i campi correttamente"];
+      this.addMessage('warn', 'Compilare tutti i campi correttamente');
     }
 
   }

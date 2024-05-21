@@ -14,6 +14,7 @@ export { PageResponseAllenamentoResponse } from './models/page-response-allename
 export { PageResponseExerciseResponse } from './models/page-response-exercise-response';
 export { PageResponsePeriodoAllenamentoResponse } from './models/page-response-periodo-allenamento-response';
 export { PageResponsePeriodoResponse } from './models/page-response-periodo-response';
+export { PageResponseProgressoResponse } from './models/page-response-progresso-response';
 export { PeriodoAllenamentoRequest } from './models/periodo-allenamento-request';
 export { PeriodoAllenamentoResponse } from './models/periodo-allenamento-response';
 export { PeriodoRequest } from './models/periodo-request';

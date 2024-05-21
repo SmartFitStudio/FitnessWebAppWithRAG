@@ -13,6 +13,7 @@ import { ManagePeriodComponent } from './pages/manage-period/manage-period.compo
 import { PeriodDetailsComponent } from './pages/period-details/period-details.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ExerciseStoreComponent } from './pages/exercise-store/exercise-store.component';
+import { ManageProgressComponent } from './pages/manage-progress/manage-progress.component';
 
 
 const HOME_PATH = 'home';
@@ -20,6 +21,7 @@ const HOME_PATH = 'home';
 const MANAGE_EXERCISE_PATH = 'manage-training';
 const MANAGE_TRAINING_PATH = 'manage-exercise';
 const MANAGE_PERIOD_PATH = 'manage-period';
+const MANAGE_PROGRESS_PATH = 'manage-progress';
 
 const MY_EXERCISES_PATH = 'my-exercises';
 const MY_TRAINS_PATH = 'my-trains';
@@ -107,7 +109,17 @@ const routes: Routes = [
         path: MANAGE_TRAINING_PATH + '/:training_id',
         component: ManageTrainingComponent,
         canActivate: [authGuard]
-      }
+      },
+      {
+        path: MANAGE_PROGRESS_PATH,
+        component: ManageProgressComponent,
+        canActivate: [authGuard]
+      },
+      {
+        path: MANAGE_PROGRESS_PATH + '/:progress_id',
+        component: ManageProgressComponent,
+        canActivate: [authGuard]
+      },
     ]
   }
 ];
@@ -154,6 +166,9 @@ export class sub_appRoutingModule {
   }
   static get full_managePeriodPath(): string {
     return "/" + AppRoutingModule.personalAreaPath + "/" + MANAGE_PERIOD_PATH;
+  }
+  static get full_manageProgressPath(): string {
+    return "/" + AppRoutingModule.personalAreaPath + "/" + MANAGE_PROGRESS_PATH;
   }
 
 

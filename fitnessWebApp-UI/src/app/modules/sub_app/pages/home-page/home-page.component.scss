@@ -8,7 +8,10 @@ h3{
     padding: var(--default_padding);
     padding-bottom: 5em;
     border-radius: 20px;
-    height: 300px;
     background-color: var(--card_secondary_background);
     margin-bottom:1em;
+}
+
+#addProgress{
+    margin-top: 0;
 }

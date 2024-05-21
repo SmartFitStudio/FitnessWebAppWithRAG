@@ -864,6 +864,48 @@
         }
       }
     },
+    "/progress/all/paginated": {
+      "get": {
+        "tags": [
+          "Progress"
+        ],
+        "operationId": "getAllProgressi_paginated",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseProgressoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/periods/{periodo-id}": {
       "get": {
         "tags": [
@@ -2052,6 +2094,39 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AllenamentoEsercizioResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageResponseProgressoResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProgressoResponse"
             }
           },
           "number": {

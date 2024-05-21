@@ -2,6 +2,20 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+@layer primeng;
+@layer bootstrap-reboot;
+
+/* Import Bootstrap Reboot into its layer */
+@import "bootstrap/dist/css/bootstrap-reboot.css" layer(bootstrap-reboot);
+
+/* Import PrimeNG into its layer */
+@import "primeng/resources/themes/saga-blue/theme.css" layer(primeng);
+@import "primeng/resources/primeng.min.css" layer(primeng);
+
+/* Import custom styles into a custom layer */
 //GLOBAL VARIABLE
 :root {
   --card_background: #4a4a48; // or any global you wish to share with components
@@ -20,6 +34,7 @@
   margin: 0;
   padding: 0;
 }
+
 
 
 html {
@@ -103,19 +118,26 @@ body {
   left: 0;
   z-index: -1;
 }
+.left{
+  float: left;
+}
 .right{
   float: right;
+}
+.inline{
+  display: inline;
 }
 
 small.text-danger{
   padding: .3em;
-  color: #fff!important;
+  color: #b22a27!important;
   font-size: .9em!important;
-  background-color: #f88282;
+  background-color: #fed0ce;
   display: -webkit-inline-box;
   border-radius: 10px;
   margin-bottom: .3em;
   margin-top: .1em;
+   font-weight: bold;
 }
 .text-danger::before {
   content: "\f06a"; 

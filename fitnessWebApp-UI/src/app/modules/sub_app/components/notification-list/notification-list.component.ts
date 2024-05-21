@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
 import { NotificaService } from '../../../../services/services';
 import { NotificaResponse } from '../../../../services/models';
@@ -6,6 +6,7 @@ import { NotificationCardComponent } from '../notification-card/notification-car
 import { NgIf, NgFor } from '@angular/common';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
+import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 @Component({
   selector: 'app-notification-list',
   templateUrl: './notification-list.component.html',
@@ -13,15 +14,14 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
   standalone: true,
   imports: [NgIf, NgFor, NotificationCardComponent, FeedbackInfoPointComponent]
 })
-export class NotificationListComponent implements OnInit {
-  messages: string[] = [];
-  level: 'success' | 'error' = 'success';
+export class NotificationListComponent extends MessageHandler implements OnInit {
   seeAll: boolean = false;
 
   private lista_notifiche: NotificaResponse[] = [];
   constructor(private notificationService: NotificaService,
-    private handleError: ErrorHandlerService
-  ) { }
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService) {
+    super(handleError);
+     }
 
   ngOnInit(): void {
     this.notificationService.getTodayNotification().subscribe({
@@ -29,10 +29,7 @@ export class NotificationListComponent implements OnInit {
         this.lista_notifiche = notifiche;
       },
       error: error => {
-        this.level = 'error';
-        this.handleError.handleError(error).forEach((value) => {
-          this.messages.push(value.message);
-        });
+        this.handleErrorMessages(error);
       }
     })
   }
@@ -44,10 +41,7 @@ export class NotificationListComponent implements OnInit {
   markAsRead($event: number) {
     this.notificationService.signNotificationAsRead({ id: $event }).subscribe({
       error: error => {
-        this.level = 'error';
-        this.handleError.handleError(error).forEach((value) => {
-          this.messages.push(value.message);
-        });
+        this.handleErrorMessages(error);
       }
     }
     );

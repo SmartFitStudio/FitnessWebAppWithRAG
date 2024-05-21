@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/services/authentication.service';
 import { AuthenticationRequest } from '../../services/models/authentication-request';
@@ -9,6 +9,7 @@ import { NgIf, NgFor } from '@angular/common';
 
 import { ErrorHandlerService } from '../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../component/feedback-info-point/feedback-info-point.component';
+import { MessageHandler } from '../../services/myServices/error-handler/MessageHandler';
 
 @Component({
   selector: 'app-login',
@@ -17,9 +18,8 @@ import { FeedbackInfoPointComponent } from '../../component/feedback-info-point/
   standalone: true,
   imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, FeedbackInfoPointComponent]
 })
-export class LoginComponent {
+export class LoginComponent extends MessageHandler{
   authRequest: AuthenticationRequest = { username: '', password: '' };
-  messages: Array<string> = [];
   loginForm = new FormGroup({
     username: new FormControl<string | null>(null, Validators.required),
     password: new FormControl<string | null>(null, Validators.required),
@@ -29,14 +29,14 @@ export class LoginComponent {
     private router: Router,
     private authService: AuthenticationService,
     private tokenService: TokenService,
-    private handleError: ErrorHandlerService
-  ) {
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService  ) {
+    super(handleError);
   }
 
   login() {
     if (this.loginForm.valid) {
       localStorage.clear();
-      this.messages = [];
+      this.clearMessages();
       this.bindFormWith_AuthRequest();
       this.authService.authenticate({
         body: this.authRequest
@@ -46,14 +46,11 @@ export class LoginComponent {
           this.router.navigate([AppRoutingModule.personalAreaPath]);
         },
         error: (error) => {
-          this.handleError.handleError(error).forEach((value) => {
-            this.messages.push(value.message);
-            console.log(value.message);
-          });
+         this.handleErrorMessages(error);
         }
       });
     } else {
-      this.messages = ["Compilare tutti i campi correttamente"];
+      this.addMessage('warn', 'Compilare tutti i campi correttamente');
     }
   }
 

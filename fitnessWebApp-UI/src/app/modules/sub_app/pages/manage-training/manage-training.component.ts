@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { TrainingManagerService } from '../../services/training-manager-service/training-manager.service';
@@ -9,6 +9,7 @@ import { MyExerciseListComponent } from '../my-exercise-list/my-exercise-list.co
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
+import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 
 @Component({
   selector: 'app-manage-training',
@@ -18,9 +19,8 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
   standalone: true,
   imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, NgClass, MyExerciseListComponent, TrainExerciseHandlerComponent, FeedbackInfoPointComponent]
 })
-export class ManageTrainingComponent implements OnInit {
-  errorMsg: Array<string> = [];
-  level: 'success' | 'error' = 'success';
+export class ManageTrainingComponent extends MessageHandler  implements OnInit {
+
   trainingForm = this.formBuilder.group({
     nome_allenamento: ['', Validators.required],
     descrizione_allenamento: [''],
@@ -34,8 +34,10 @@ export class ManageTrainingComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private _trainManager: TrainingManagerService,
     private formBuilder: FormBuilder,
-    private handleError: ErrorHandlerService
-  ) { }
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService
+  ) { 
+    super(handleError);
+  }
 
   ngOnInit(): void {
     const allenamento_id = this.activatedRoute.snapshot.params['training_id'];
@@ -50,10 +52,7 @@ export class ManageTrainingComponent implements OnInit {
           observer$.unsubscribe();
         },
         error: (error) => {
-          this.level = 'error';
-          this.handleError.handleError(error).forEach((value) => {
-            this.errorMsg.push(value.message);
-          });
+          this.handleErrorMessages(error);
         }
       });
     }
@@ -75,8 +74,7 @@ export class ManageTrainingComponent implements OnInit {
 
   submitTrain() {
     if (!this.trainingForm.valid) {
-      this.level = 'error';
-      this.errorMsg.push("Compila correttamente i campi obbligatori");
+      this.addMessage('warn', 'Compila correttamente i campi obbligatori');
       return;
     }
     this.update_training_data();
@@ -86,13 +84,7 @@ export class ManageTrainingComponent implements OnInit {
         observer$.unsubscribe(); //in realta rxjs gestisce il completamento e la disiscrizione
       },
       error: (error) => {
-        this.level = 'error';
-        this.handleError.handleError(error).forEach((value) => {
-          this.errorMsg.push(value.message);
-          if (value.code === 409) {
-            this.errorMsg.push("Stai creando un allenamento con lo stesso nome di un altro allenamento già esistente. Cambia il nome dell'allenamento e riprova.");
-          }
-        });
+        this.handleErrorMessages(error);
       }
     });
   }
@@ -116,10 +108,9 @@ export class ManageTrainingComponent implements OnInit {
   }
   //Passa al prossimo tab
   next() {
-    this.errorMsg = [];
+    this.clearMessages();
     if (!this.trainingForm.valid) {
-      this.level = 'error';
-      this.errorMsg.push("Compila correttamente i campi obbligatori");
+      this.addMessage('warn', 'Compila correttamente i campi obbligatori');
       return;
     }
     this._openedTab++;

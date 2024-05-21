@@ -16,6 +16,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 
 bootstrapApplication(AppComponent, {
+    
     providers: [
         importProvidersFrom(BrowserModule, AppRoutingModule, FormsModule, CodeInputModule),
         HttpClient,

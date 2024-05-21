@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ExerciseRequest } from '../../../../services/models';
 import { ExerciseService } from '../../../../services/services';
@@ -8,6 +8,7 @@ import { ExerciseCategory, getExerciseCategoryValues } from '../../../../service
 import { NgIf, NgFor } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
+import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 @Component({
   selector: 'app-manage-exercise',
   templateUrl: './manage-exercise.component.html',
@@ -16,8 +17,7 @@ import { ErrorHandlerService } from '../../../../services/myServices/error-handl
   imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, RouterLink, FeedbackInfoPointComponent]
 })
 
-export class ManageExerciseComponent implements OnInit {
-  errorMsg: Array<string> = [];
+export class ManageExerciseComponent extends MessageHandler implements OnInit {
   exerciseForm = new FormGroup({
     exerciseName: new FormControl<string | null>(null, Validators.required),
     exerciseDescription: new FormControl<string | null>(null, Validators.required),
@@ -40,7 +40,9 @@ export class ManageExerciseComponent implements OnInit {
     private exerciseService: ExerciseService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private handleError: ErrorHandlerService) {
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService
+  ) {
+    super(handleError);
   }
 
   ngOnInit(): void {
@@ -63,16 +65,14 @@ export class ManageExerciseComponent implements OnInit {
           this.bind_ExerciseRequestWithForm(this._exerciseRequest);
         },
         error: (error) => {
-          this.handleError.handleError(error).forEach((value) => {
-            this.errorMsg.push(value.message);
-          });
+          this.handleErrorMessages(error);
         }
       });
     }
   }
 
   saveExercise() {
-    this.errorMsg = [];
+    this.clearMessages();
     if (this.exerciseForm.valid) {
       this.bindFormWith_ExerciseRequest();
       this.exerciseService.saveExercise({ body: this._exerciseRequest })
@@ -84,13 +84,11 @@ export class ManageExerciseComponent implements OnInit {
             this.router.navigate([sub_appRoutingModule.full_myExercisesPath]);
           },
           error: (error) => {
-            this.handleError.handleError(error).forEach((value) => {
-              this.errorMsg.push(value.message);
-            });
+            this.handleErrorMessages(error);
           }
         });
     } else {
-      this.errorMsg.push("Compila correttamente i campi obbligatori");
+      this.addMessage('warn', 'Compila correttamente i campi obbligatori');
     }
   }
 
@@ -103,9 +101,7 @@ export class ManageExerciseComponent implements OnInit {
     })
       .subscribe({
         error: (error) => {
-          this.handleError.handleError(error).forEach((value) => {
-            this.errorMsg.push(value.message);
-          });
+         this.handleErrorMessages(error);
         }
       });
   }

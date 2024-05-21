@@ -1,5 +1,4 @@
-<app-feedback-info-point [level]="level" *ngIf="errorMsg.length > 0">
-    <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{msg}}</p>
+<app-feedback-info-point [messages]="messages">
 </app-feedback-info-point>
 <!--POP UP per inserire l'allenamento-->
 <div class="popUp" *ngIf="isPopUpOpen">

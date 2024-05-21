@@ -1,7 +1,6 @@
 <div class="container-fluid card login-container">
   <h3 class="text-center">Create an account</h3>
-  <app-feedback-info-point [level]="'error'" *ngIf="messages.length > 0">
-    <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
+  <app-feedback-info-point [messages]="messages">
   </app-feedback-info-point>
   <form [formGroup]="registerForm">
     <div class="mb-3">

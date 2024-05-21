@@ -1,0 +1,39 @@
+.graphContainer{
+    height: 300px;
+    width: 100%;
+}
+
+#stepperContainer{
+    margin-top: 3.5em;
+}
+
+.def_pie_graph{
+padding-top: .5em;
+}
+
+.pieGraphGroup{
+    width: 100%;
+   display: flex;
+   gap: 5px;
+   align-items: center;
+   padding-top: 1em;
+}
+
+#firstPie{
+    flex: 1;
+    max-width: 250px;
+}
+
+#tableProgress{
+    flex: 2;
+}
+
+@media (max-width: 768px){
+    .pieGraphGroup{
+        flex-direction: column;
+    }
+
+    #firstPie, #tableProgress{
+        flex:1;
+    }
+}

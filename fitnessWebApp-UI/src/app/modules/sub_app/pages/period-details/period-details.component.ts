@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PeriodoAllenamentoResponse } from '../../../../services//models';
 import { PeriodManagerService } from '../../services/period-manager-service/period-manager.service';
@@ -9,6 +9,7 @@ import { CalendarComponent } from '../../components/calendar/calendar.component'
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { NgFor, NgIf } from '@angular/common';
+import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 
 @Component({
   selector: 'app-period-details',
@@ -19,16 +20,16 @@ import { NgFor, NgIf } from '@angular/common';
   standalone: true,
   imports: [NgFor,NgIf, CalendarComponent, ObiettivoPeriodoPipePipe, FeedbackInfoPointComponent]
 })
-export class PeriodDetailsComponent implements OnInit {
-  messages: Array<string> = [];
-  level: 'success' | 'error' = 'success';
+export class PeriodDetailsComponent extends MessageHandler implements OnInit {
 
   private _eventSetting: EventSettingsModel = {};
   private infoTaken: boolean = false;
 
   constructor(private periodManagerService: PeriodManagerService,
     private activatedRoute: ActivatedRoute,
-    private handleError: ErrorHandlerService) {
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService
+  ) {
+    super(handleError);
     this._eventSetting.allowAdding = false;
     this._eventSetting.allowDeleting = false;
     this._eventSetting.allowEditing = false;
@@ -44,10 +45,7 @@ export class PeriodDetailsComponent implements OnInit {
           this.infoTaken = true;
           periodInfoSubscription$.unsubscribe();
         }, error: (error) => {
-          this.level = 'error';
-          this.handleError.handleError(error).forEach((value) => {
-            this.messages.push(value.message);
-          });
+          this.handleErrorMessages(error);
         }
       });
     }

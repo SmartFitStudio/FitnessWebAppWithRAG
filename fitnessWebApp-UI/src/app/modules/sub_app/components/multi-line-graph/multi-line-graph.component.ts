@@ -21,7 +21,7 @@ export class MultiLineGraphComponent {
   set graphData(value: {
     xAxesValue: Date,
     FirstYAxesValue: number,
-    SecondYAxesValue: number,
+    SecondYAxesValue?: number,
   }[]) {
     this.chartOptions = {
       title: {

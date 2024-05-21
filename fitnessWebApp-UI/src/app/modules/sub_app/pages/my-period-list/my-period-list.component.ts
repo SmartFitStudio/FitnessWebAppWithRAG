@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { PageResponsePeriodoResponse, PeriodoResponse } from '../../../../services/models';
 import { PeriodsService } from '../../../../services/services';
@@ -8,6 +8,7 @@ import { PeriodCardComponent } from '../../components/period-card/period-card.co
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
+import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 
 @Component({
   selector: 'app-my-period-list',
@@ -16,10 +17,8 @@ import { ErrorHandlerService } from '../../../../services/myServices/error-handl
   standalone: true,
   imports: [NgIf, RouterLink, NgFor, PeriodCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
-export class MyPeriodListComponent implements OnInit {
+export class MyPeriodListComponent extends MessageHandler implements OnInit {
   periodsResponse$!: Observable<PageResponsePeriodoResponse>;
-  messages: Array<string> = [];
-  level: 'success' | 'error' = 'success';
 
   private totalPages? = 0;
   private _page = 0;
@@ -30,8 +29,9 @@ export class MyPeriodListComponent implements OnInit {
   constructor(
     private periodsService: PeriodsService,
     private router: Router,
-    private handleError: ErrorHandlerService
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
+    super(handleError);
   }
 
   ngOnInit(): void {
@@ -56,10 +56,8 @@ export class MyPeriodListComponent implements OnInit {
         return response;
       }),
       catchError((error) => {
-        this.level = 'error';
-        this.handleError.handleError(error).forEach((value) => {
-          this.messages.push(value.message);
-        }); return EMPTY;
+       this.handleErrorMessages(error);
+        return EMPTY;
       })
     );
   }
@@ -68,15 +66,11 @@ export class MyPeriodListComponent implements OnInit {
     this.periodsService.deletePeriodo({ 'periodo-id': periodResponse.id })
       .subscribe({
         next: () => {
-          this.messages = ['Periodo eliminato'];
-          this.level = 'success';
+          this.addMessage('success', 'Period deleted');
           this.findAllMyPeriods();
         },
         error: (error) => {
-          this.handleError.handleError(error).forEach((value) => {
-            this.messages.push(value.message);
-          });
-          this.level = 'error';
+          this.handleErrorMessages(error);
         }
       });
 

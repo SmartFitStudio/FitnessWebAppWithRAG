@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import {  AllenamentoEsercizioRequest, ExerciseResponse, PageResponseExerciseResponse } from '../../../../services/models';
 import { ExerciseService } from '../../../../services/services';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
@@ -8,6 +8,7 @@ import { ExerciseCardComponent } from '../../components/exercise-card/exercise-c
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
+import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 
 @Component({
     selector: 'app-my-exercise-list',
@@ -16,10 +17,8 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
     standalone: true,
     imports: [NgIf, RouterLink, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
-export class MyExerciseListComponent implements OnInit {
+export class MyExerciseListComponent extends MessageHandler implements OnInit {
   exerciseResponse$?: Observable<PageResponseExerciseResponse>;
-  messages: Array<string>= [];
-  level: 'success' |'error' = 'success';
 
   private totalPages? = 0;
   private _page = 0;
@@ -31,8 +30,9 @@ export class MyExerciseListComponent implements OnInit {
   constructor(
     private exerciseService: ExerciseService,
     private router: Router,
-    private handleError: ErrorHandlerService
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
+    super(handleError);
   }
 
   @Input()
@@ -62,10 +62,7 @@ export class MyExerciseListComponent implements OnInit {
         return response;
       }),
       catchError((error) => {
-        this.handleError.handleError(error).forEach((value) => {
-          this.messages.push(value.message);
-        });
-        this.level = 'error';
+       this.handleErrorMessages(error);
         return EMPTY;
       }
     ));
@@ -75,15 +72,11 @@ export class MyExerciseListComponent implements OnInit {
     this.exerciseService.deleteExercise({ 'exercise-id': exerciseResponse.id as number})
       .subscribe({
         next: () => {
-          this.messages = ['Esercizio eliminato con successo'];
-          this.level = 'success';
+          this.addMessage('success', 'Esercizio eliminato con successo');
           this.findAllMyExercise();
         },
         error: (error) => {
-          this.handleError.handleError(error).forEach((value) => {
-            this.messages.push(value.message);
-          });
-          this.level = 'error';
+          this.handleErrorMessages(error);
         }
       });
   }

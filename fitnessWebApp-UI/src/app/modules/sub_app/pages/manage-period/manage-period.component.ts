@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ObbiettivoPeriodo, getObbiettivoPeriodoValues } from '../../../../services/myModels/obbiettivoPeriodo';
 import { FormBuilder, Validators, FormsModule, ReactiveFormsModule, FormControl, ValidationErrors } from '@angular/forms';
 import { PeriodManagerService } from '../../services/period-manager-service/period-manager.service';
@@ -20,6 +20,7 @@ import {
 } from '@angular/material/dialog';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
+import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 
 @Component({
   selector: 'app-manage-period',
@@ -31,10 +32,8 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
   imports: [MatDialogModule, NgIf, NgFor, MyTrainingListNoPaginationComponent, MatStepperModule, NgClass, FormsModule, ReactiveFormsModule, MatButtonModule, PeriodDayCardComponent, TrainingPeriodCardComponent, FeedbackInfoPointComponent]
 })
 
-export class ManagePeriodComponent implements OnInit, OnDestroy {
+export class ManagePeriodComponent extends MessageHandler implements OnInit, OnDestroy {
   nome_periodo_attivo: string = ""; //per mostrare il nome del periodo attivo
-  errorMsg: Array<String> = [];
-  level: 'success' | 'error' = 'success';
   periodForm = this.formBuilder.group({
     nome_periodo: ['', Validators.required],
     obiettivo: [ObbiettivoPeriodo.NON_DEFINITO, Validators.required],
@@ -54,9 +53,11 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
     private _periodManager: PeriodManagerService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private handleError: ErrorHandlerService,
     public dialog: MatDialog,
-  ) { }
+    @Inject(ErrorHandlerService) handleError: ErrorHandlerService
+  ) {
+    super(handleError);
+  }
 
   ngOnDestroy(): void {
     this.subs.forEach(sub => {
@@ -77,14 +78,10 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
             data_fine: this._periodManager.periodoDataFine,
             is_attivo: this._periodManager.periodoAttivo
           });
-          this.level = 'success';
-          this.errorMsg = ['Informazioni caricate correttamente'];
+          this.addMessage('success', 'Informazioni caricate correttamente')
         },
         error: (error) => {
-          this.level = 'error';
-          this.handleError.handleError(error).forEach((value) => {
-            this.errorMsg.push(value.message);
-          });
+          this.handleErrorMessages(error);
         }
       }));
     }
@@ -99,10 +96,7 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
     this.subs.push(this._periodManager.getActivePeriod$().subscribe(
       {
         error: (error) => {
-          this.level = 'error';
-          this.handleError.handleError(error).forEach((value) => {
-            this.errorMsg.push(value.message);
-          });
+          this.handleErrorMessages(error);
         }
       }
     ));
@@ -134,21 +128,18 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
         this.nome_periodo_attivo = "";
       },
       error: (error) => {
-        this.level = 'error';
-        this.handleError.handleError(error).forEach((value) => {
-          this.errorMsg.push(value.message);
-        });
+        this.handleErrorMessages(error);
       }
     });
   }
 
   addNewTraining($event: { day: number, periodo: PeriodoGiornata }) {
-    this.errorMsg = [];
+    this.clearMessages();
     if (this.periodForm.value.nome_periodo) {
       this.lastPutRequestInfo = $event;
       this._isPopUpOpen = true;
     } else {
-      this.errorMsg.push("Inserire prima un nome per il periodo");
+      this.addMessage('warn', 'Inserire prima un nome per il periodo');
     }
   }
 
@@ -157,9 +148,9 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
   }
 
   add_training_top_period($event: AllenamentoResponse) {
-    this.errorMsg = [];
+    this.clearMessages();
     if (this.periodForm.value.nome_periodo) {
-      this.updatePeriodInfo();
+      this.bindFormToRequest();
       if (this.lastPutRequestInfo && this.periodForm.value.nome_periodo && $event.name) {
         this._periodManager.addAllenamentoToPeriodo({
           giorno_del_periodo: this.lastPutRequestInfo.day,
@@ -170,33 +161,31 @@ export class ManagePeriodComponent implements OnInit, OnDestroy {
       }
       this.closeDialog();
     } else {
-      this.errorMsg.push("Inserire prima un nome per il periodo");
+      this.addMessage('warn', 'Inserire prima un nome per il periodo');
     }
   }
 
   submitPeriod() {
-    this.errorMsg = [];
+    this.clearMessages();
     if (!this.periodForm.valid) {
-      this.errorMsg.push("Compila correttamente i campi obbligatori");
+      this.addMessage('warn', 'Compila correttamente i campi obbligatori');
       return;
     }
 
-    this.updatePeriodInfo();
+    this.bindFormToRequest();
     this.subs.push(this._periodManager.savePeriodo$().subscribe({
       complete: () => {
         this.router.navigate([sub_appRoutingModule.full_myPeriodsPath]);
       },
       error: (error) => {
-        this.level = 'error';
-        this.handleError.handleError(error).forEach((value) => {
-          this.errorMsg.push(value.message);
-        }); this.errorMsg.push("Errore nel salvataggio del periodo");
+        this.handleErrorMessages(error);
+        this.addMessage('error', 'Errore durante il salvataggio del periodo');
       }
     }));
   }
 
   /*BOILERPLATE CODE */
-  private updatePeriodInfo() {
+  private bindFormToRequest() {
     if (this.periodForm.valid) {
       if (this.periodForm.value.nome_periodo)
         this._periodManager.periodoName = this.periodForm.value.nome_periodo;

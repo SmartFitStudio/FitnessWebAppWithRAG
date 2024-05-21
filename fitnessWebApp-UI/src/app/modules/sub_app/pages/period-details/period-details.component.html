@@ -1,7 +1,6 @@
 
 <section>
-    <app-feedback-info-point [level]="level" *ngIf="messages.length > 0">
-        <p class="p-0 m-0" *ngFor="let msg of messages">{{msg}}</p>
+    <app-feedback-info-point [messages]="messages">
     </app-feedback-info-point>
     <h2 class="inline">{{period_name}}</h2>
     <h3 class="inline point_before second_color">{{period_obiettivo | obiettivoPeriodoPipe}}</h3>

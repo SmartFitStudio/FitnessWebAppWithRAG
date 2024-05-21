@@ -1,6 +1,28 @@
-<app-multi-line-graph [graphData]="data"
-[x1Name]="'time'"
-[x2Name]="'time'"
-[y1Name]="'Peso'"
-[y2Name]="'Peso ideale'"
-></app-multi-line-graph>
+<div id="stepperContainer">
+    <mat-tab-group>
+        <mat-tab label="First">
+            <div class="graphContainer">
+                <app-multi-line-graph [graphData]="dataPeso" [x1Name]="'time'" [x2Name]="'time'" [y1Name]="'Peso'"
+                    [y2Name]="'Peso ideale'">
+                </app-multi-line-graph>
+            </div>
+        </mat-tab>
+        <mat-tab label="Second">
+            <div class="graphContainer">
+                <app-mono-line-graph [graphData]="dataMassaGrassa" [xName]="'time'"
+                    [yName]="'Massa magra'">
+                </app-mono-line-graph>
+            </div>
+        </mat-tab>
+        <mat-tab label="Third"> Content 3 </mat-tab>
+    </mat-tab-group>
+    <div class="pieGraphGroup">
+        <div class="left def_pie_graph" id="firstPie">
+            <p-chart type="pie" [data]="data" [options]="options" />
+        </div>
+        <div id="tableProgress">
+            <app-progress-table></app-progress-table>
+        </div>
+    </div>
+    
+</div>
