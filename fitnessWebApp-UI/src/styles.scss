@@ -140,7 +140,12 @@ small.text-danger{
    font-weight: bold;
 }
 .text-danger::before {
-  content: "\f06a"; 
-  font-family: FontAwesome; 
+  content: "\f06a";
+  font-family: FontAwesome;
   font-style: normal;
+}
+
+[app-disabled] {
+  opacity: 0.9;
+  pointer-events: none;
 }

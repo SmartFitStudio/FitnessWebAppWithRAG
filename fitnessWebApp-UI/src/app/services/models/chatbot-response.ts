@@ -1,5 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface RagllmResponse {
+export interface ChatbotResponse {
   response: string;
 }

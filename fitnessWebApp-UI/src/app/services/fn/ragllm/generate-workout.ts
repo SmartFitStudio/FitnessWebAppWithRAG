@@ -6,15 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ChatbotResponse } from '../../models/chatbot-response';
-import { Question } from '../../models/question';
+import { WorkoutBase } from '../../models/workout-base';
+import { WorkoutResponse } from '../../models/workout-response';
 
-export interface AnswerQuestion$Params {
-      body: Question
+export interface GenerateWorkout$Params {
+      body: WorkoutBase
 }
 
-export function answerQuestion(http: HttpClient, rootUrl: string, params: AnswerQuestion$Params, context?: HttpContext): Observable<StrictHttpResponse<ChatbotResponse>> {
-  const rb = new RequestBuilder(rootUrl, answerQuestion.PATH, 'post');
+export function generateWorkout(http: HttpClient, rootUrl: string, params: GenerateWorkout$Params, context?: HttpContext): Observable<StrictHttpResponse<WorkoutResponse>> {
+  const rb = new RequestBuilder(rootUrl, generateWorkout.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -24,9 +24,9 @@ export function answerQuestion(http: HttpClient, rootUrl: string, params: Answer
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<ChatbotResponse>;
+      return r as StrictHttpResponse<WorkoutResponse>;
     })
   );
 }
 
-answerQuestion.PATH = '/ragllm/answer';
+generateWorkout.PATH = '/ragllm/generateWorkout';

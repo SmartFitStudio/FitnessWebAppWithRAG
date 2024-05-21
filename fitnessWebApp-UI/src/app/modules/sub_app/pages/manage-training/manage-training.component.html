@@ -1,7 +1,7 @@
 <!--Inserisci prima tutte le info di contesto-->
 <app-feedback-info-point [messages]="messages">
 </app-feedback-info-point>
-<form class="row row-cols-lg-auto g-3 align-items-center" [formGroup]="trainingForm">
+<form class="row row-cols-lg-auto g-3 align-items-center" [formGroup]="trainingForm" [appDisable]="isDisabled">
     <div class="tab initial_info" [ngClass]="{'hidden': openedTab != 0}">
         <label for="nome_allenamento" class="form-label">Nome</label>
         <input formControlName="nome_allenamento" type="text" id="nome_allenamento"
@@ -11,7 +11,7 @@
               </small>
         <div id="nome_allenamento_helper" class="form-text">
             Inserisci qui il nome dell'allenamento cosi da poterlo identificare facilmente.
-            Scegli con attenzione, il nome non potrà essere modificato in seguito e dovrà essere univoco tra i tuoi allenamenti.
+            Scegli con attenzione, il nome dovrà essere univoco tra i tuoi allenamenti.
         </div>
 
         <label for="descrizione_allenamento" class="form-label">Descrizione</label>
@@ -19,7 +19,7 @@
             id="descrizione_allenamento" class="form-control" aria-describedby="descrizione_allenamento_helper"
             name="descrizione_allenamento">
         <div id="descrizione_allenamento_helper" class="form-text">
-            Inserisci qui una descrizione dell'allenamento per ricordare meglio il suo scopo.
+            Inserisci qui una descrizione dell'allenamento per chiarire meglio il suo scopo.
         </div>
 
         <label for="durata_allenamento" class="form-label">Durata in ore</label>
@@ -27,14 +27,18 @@
             id="durata_allenamento" class="form-control" aria-describedby="durata_allenamento_helper"
             name="durata_allenamento">
             <small class="text-danger" *ngIf="!IsDurataAllenamentoInputValid">
-                La durata dell'allenamento deve essere maggiore di 0.
+                La durata dell'allenamento deve essere maggiore o uguale a 0.
             </small>
         <div id="durata_allenamento_helper" class="form-text">
-            Inserisci qui la durata approssimativa dell'allenamento in ore. Se non la inserisci verrà calcolata dal
-            sistema.
+            Inserisci qui la durata approssimativa dell'allenamento in ore.
         </div>
-        <div class="col-12">
-            <button class="def_button nextButton" (click)="next()"> <i class="fa-solid fa-forward"></i> Next</button>
+        <div class="row justify-content-between">
+          <div class="col">
+            <button class="def_button" (click)="generateWorkout()"> <i class="fa-solid fa-robot"></i> Genera con l'IA</button>
+          </div>
+          <div class="col">
+            <button class="def_button nextButton" (click)="next()"> <i class="fa-solid fa-forward"></i> Avanti</button>
+          </div>
         </div>
     </div>
     <div class="tab exercise_info" [ngClass]="{'hidden': openedTab != 1}">
