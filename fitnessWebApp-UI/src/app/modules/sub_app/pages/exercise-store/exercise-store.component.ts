@@ -8,17 +8,22 @@ import { ExerciseCardComponent } from '../../components/exercise-card/exercise-c
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
-import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 import { PaginatedComponent } from '../../../../services/common/PaginatedComponent';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ExerciseCategory, getExerciseCategories } from '../../../../services/myModels/exerciseCategory';
+import { FormsModule } from '@angular/forms';
+import { FilterSelector } from '../../../../services/myModels/filterSelector';
 
 @Component({
   selector: 'app-exercise-store',
   templateUrl: './exercise-store.component.html',
   styleUrls: ['./exercise-store.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent]
+  imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent, MultiSelectModule,FormsModule]
 })
 export class ExerciseStoreComponent  extends PaginatedComponent implements OnInit {
+  categories!: FilterSelector[];
+  selectedCategories!: FilterSelector[];
   exerciseResponse$?: Observable<PageResponseExerciseResponse>;
 
   constructor(
@@ -27,6 +32,7 @@ export class ExerciseStoreComponent  extends PaginatedComponent implements OnIni
     @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
     super(handleError);
+    this.categories = getExerciseCategories();
   }
 
   ngOnInit(): void {
@@ -67,6 +73,20 @@ export class ExerciseStoreComponent  extends PaginatedComponent implements OnIni
         this.addMessage('error', 'Error importing exercise');
       }
     });
+  }
+
+  searchByFilterOptions() {
+    this.exerciseResponse$ = this.exerciseService.findExercisesByCategories({
+      page: this._page,
+      size: this._size,
+      categories: this.selectedCategories.map((category) => category.name as ExerciseCategory)
+    }).pipe(
+      catchError((error) => {
+        this.handleErrorMessages(error);
+        return EMPTY;
+      }
+    )
+    );
   }
 
   /*BOILERPLATE CODE */

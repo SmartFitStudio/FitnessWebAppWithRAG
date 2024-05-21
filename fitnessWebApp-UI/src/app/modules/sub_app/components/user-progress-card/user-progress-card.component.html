@@ -10,12 +10,13 @@
         <mat-tab label="Second">
             <div class="graphContainer">
                 <app-mono-line-graph [graphData]="dataMassaGrassa" [xName]="'time'"
-                    [yName]="'Massa magra'">
+                    [yName]="'Massa grassa'">
                 </app-mono-line-graph>
             </div>
         </mat-tab>
         <mat-tab label="Third"> Content 3 </mat-tab>
     </mat-tab-group>
+    <hr>
     <div class="pieGraphGroup">
         <div class="left def_pie_graph" id="firstPie">
             <p-chart type="pie" [data]="data" [options]="options" />

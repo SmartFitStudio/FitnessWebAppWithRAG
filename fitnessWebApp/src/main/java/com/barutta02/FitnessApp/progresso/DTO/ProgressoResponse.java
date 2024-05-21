@@ -26,6 +26,6 @@ public class ProgressoResponse {
     @NotNull(message = "La percentuale di massa grassa è necessaria")
     private float percentualeMassaGrassa;
     @NotNull(message = "La percentuale di massa magra è necessaria")
-    private float percentualeMassaMagra;
+    private float percentualeMassaMuscolare;
     private String note;
 }

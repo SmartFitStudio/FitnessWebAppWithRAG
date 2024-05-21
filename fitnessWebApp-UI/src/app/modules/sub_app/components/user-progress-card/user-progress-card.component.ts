@@ -26,7 +26,7 @@ export class UserProgressCardComponent extends MessageHandler implements OnInit 
   private documentStyle = getComputedStyle(document.documentElement);
   private textColor = this.documentStyle.getPropertyValue('--text-color');
   private MAX_PROGRESS_TO_RETRIEVE = 10;
-  private lastMassaMagraValue: number | null = null;
+  private lastMassaGrassaValue: number | null = null;
 
   constructor(private progressService: ProgressService,
     @Inject(ErrorHandlerService) handleError: ErrorHandlerService
@@ -45,13 +45,13 @@ export class UserProgressCardComponent extends MessageHandler implements OnInit 
         this.handleErrorMessages(error);
       },
       complete: () => {
-        this.lastMassaMagraValue = this.progressData[0].percentualeMassaMagra;
-        if (this.lastMassaMagraValue) {
+        this.lastMassaGrassaValue = this.progressData[0].percentualeMassaGrassa;
+        if (this.lastMassaGrassaValue) {
           this.data = {
-            labels: ['Massa magra', 'Massa grassa'],
+            labels: ['Massa grassa', 'Massa magra'],
             datasets: [
                 {
-                    data: [this.lastMassaMagraValue, 100 - this.lastMassaMagraValue],
+                    data: [this.lastMassaGrassaValue, 100 - this.lastMassaGrassaValue],
                     backgroundColor: [this.documentStyle.getPropertyValue('--blue-500'), this.documentStyle.getPropertyValue('--yellow-500'), this.documentStyle.getPropertyValue('--green-500')],
                     hoverBackgroundColor: [this.documentStyle.getPropertyValue('--blue-400'), this.documentStyle.getPropertyValue('--yellow-400'), this.documentStyle.getPropertyValue('--green-400')]
                 }

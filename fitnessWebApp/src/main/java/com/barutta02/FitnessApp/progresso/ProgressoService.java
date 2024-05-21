@@ -99,7 +99,7 @@ public class ProgressoService implements Service_CRUD<Progresso, Long, Progresso
         progresso.setPesoKg(request.pesoKg());
         progresso.setAltezzaCm(request.altezzaCm());
         progresso.setPercentualeMassaGrassa(request.percentualeMassaGrassa());
-        progresso.setPercentualeMassaMagra(request.percentualeMassaMagra());
+        progresso.setPercentualeMassaMuscolare(request.percentualeMassaMuscolare());
         progresso.setNote(request.note());
     }
 

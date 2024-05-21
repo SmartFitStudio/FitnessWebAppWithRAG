@@ -23,7 +23,7 @@ public record ProgressoRequest(
     float percentualeMassaGrassa,
     @NotNull(message = "La percentuale di massa magra è necessaria")
     @Positive(message = "La percentuale di massa magra deve essere maggiore di 0")
-    float percentualeMassaMagra,
+    float percentualeMassaMuscolare,
     @Length(max = 500, message = "Le note non possono superare i 500 caratteri")
     String note
 ){}

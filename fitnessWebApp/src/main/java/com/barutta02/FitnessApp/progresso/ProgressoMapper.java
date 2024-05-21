@@ -16,7 +16,7 @@ public class ProgressoMapper {
             .pesoKg(progresso.getPesoKg())
             .altezzaCm(progresso.getAltezzaCm())
             .percentualeMassaGrassa(progresso.getPercentualeMassaGrassa())
-            .percentualeMassaMagra(progresso.getPercentualeMassaMagra())
+            .percentualeMassaMuscolare(progresso.getPercentualeMassaMuscolare())
             .note(progresso.getNote()!=null?progresso.getNote():"")
             .build();
     }
@@ -27,7 +27,7 @@ public class ProgressoMapper {
             .pesoKg(progressoRequest.pesoKg())
             .altezzaCm(progressoRequest.altezzaCm())
             .percentualeMassaGrassa(progressoRequest.percentualeMassaGrassa())
-            .percentualeMassaMagra(progressoRequest.percentualeMassaMagra())
+            .percentualeMassaMuscolare(progressoRequest.percentualeMassaMuscolare())
             .note(progressoRequest.note())
             .creator(creator)
             .build();

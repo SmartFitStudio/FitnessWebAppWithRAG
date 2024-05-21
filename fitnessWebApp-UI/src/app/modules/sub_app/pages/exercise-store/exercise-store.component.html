@@ -1,11 +1,30 @@
 <app-feedback-info-point [messages]="messages">
 </app-feedback-info-point>
+
+<!-- FILTRI-->
+<div class="filtering">
+  <div class="card flex justify-content-center filterCategory inline">
+    <p-multiSelect 
+        [options]="categories" 
+        [(ngModel)]="selectedCategories" 
+        placeholder="Seleziona le categorie" 
+        optionLabel="name" 
+        display="chip" 
+        [showClear]="true" />
+</div>
+<button type="submit" (click)="searchByFilterOptions()" class="def_button inline"><i class="fa-solid fa-magnifying-glass"></i> Cerca</button>
+</div>
+
+
+<!--ELEMENTI-->
 <div class="d-flex justify-content-start gap-2 flex-wrap lista_esercizi"
   *ngIf="(exerciseResponse$ | async) as exerciseResponse">
   <app-exercise-card *ngFor="let exercise of exerciseResponse.content; trackBy: trackByExerciseResponse"
     [exercise]="exercise" [storeView]="true" (import)="importExercise($event)"></app-exercise-card>
 </div>
 
+
+<!-- PAGINAZIONE-->
 <div class="d-flex justify-content-center mt-3">
   <nav aria-label="Page navigation example">
     <ul class="pagination">

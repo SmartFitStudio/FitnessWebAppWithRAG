@@ -6,6 +6,6 @@ export interface ProgressoResponse {
   id: number;
   note?: string;
   percentualeMassaGrassa: number;
-  percentualeMassaMagra: number;
+  percentualeMassaMuscolare: number;
   pesoKg: number;
 }

@@ -49,7 +49,7 @@ public class Progresso extends BaseEntity{
 
     private float percentualeMassaGrassa;
 
-    private float percentualeMassaMagra;
+    private float percentualeMassaMuscolare;
 
     @Column(length = 500)
     private String note;
