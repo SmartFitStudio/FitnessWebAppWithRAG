@@ -1,12 +1,12 @@
 <div class="card">
     <app-feedback-info-point [messages]="messages">
       </app-feedback-info-point>
-    <p-table
+    <p-table 
         [value]="lista_progressi"
         [paginator]="true"
         [lazy]="true"
         [rows]="5"
-        styleClass="p-datatable-gridlines" 
+        styleClass="p-datatable-gridlines p-datatable" 
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         (onLazyLoad)="findProgress($event)"

@@ -9,6 +9,7 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
+import { PaginatedComponent } from '../../../../services/common/PaginatedComponent';
 
 @Component({
   selector: 'app-my-train-list',
@@ -17,13 +18,9 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
   standalone: true,
   imports: [NgIf, RouterLink, NgFor, TrainCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
-export class MyTrainListComponent extends MessageHandler implements OnInit {
+export class MyTrainListComponent extends PaginatedComponent implements OnInit {
   trainingsResponse$!: Observable<PageResponseAllenamentoResponse>;
 
-  private totalPages? = 0;
-  private _page = 0;
-  private _size = 5;
-  private _pages: any = [];
   private _is_adding_permitted = true;
 
   constructor(
@@ -35,7 +32,7 @@ export class MyTrainListComponent extends MessageHandler implements OnInit {
   }
 
   ngOnInit(): void {
-    this.findAllMyTrain();
+    this.getData();
   }
 
   @Input()
@@ -43,7 +40,7 @@ export class MyTrainListComponent extends MessageHandler implements OnInit {
     this._is_adding_permitted = value;
   }
 
-  private findAllMyTrain() {
+  protected override getData() {
     this.trainingsResponse$ = this.trainService.findAllAllenamentoByAuthenticatedUser({
       page: this._page,
       size: this._size
@@ -67,7 +64,7 @@ export class MyTrainListComponent extends MessageHandler implements OnInit {
       .subscribe({
         next: () => {
           this.addMessage('success', 'Allenamento eliminato');
-          this.findAllMyTrain();
+          this.getData();
         },
         error: (error) => {
          this.handleErrorMessages(error);
@@ -85,43 +82,11 @@ export class MyTrainListComponent extends MessageHandler implements OnInit {
   }
 
   /*BOILERPLATE CODE*/
-  gotToPage(page: number) {
-    this._page = page;
-    this.findAllMyTrain();
-  }
-  goToFirstPage() {
-    this._page = 0;
-    this.findAllMyTrain();
-  }
-  goToPreviousPage() {
-    this._page--;
-    this.findAllMyTrain();
-  }
-  goToLastPage() {
-    this._page = this.totalPages as number - 1;
-    this.findAllMyTrain();
-  }
-  goToNextPage() {
-    this._page++;
-    this.findAllMyTrain();
-  }
-  get isLastPage() {
-    return this._page === this.totalPages as number - 1;
-  }
   get isAddingPermitted() {
     return this._is_adding_permitted;
   }
   get newTrainLink(): string {
     return sub_appRoutingModule.full_manageTrainingPath;
-  }
-  get page(): number {
-    return this._page;
-  }
-  get size(): number {
-    return this._size;
-  }
-  get pages() {
-    return this._pages;
   }
   /*
   Funzione di trackby utilizzata per evitare che angular ricarichi tutti i componenti della lista nell' ngfor

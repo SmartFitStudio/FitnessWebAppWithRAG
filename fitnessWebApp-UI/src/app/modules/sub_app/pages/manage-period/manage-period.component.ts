@@ -67,7 +67,7 @@ export class ManagePeriodComponent extends MessageHandler implements OnInit, OnD
 
   ngOnInit(): void {
     const periodo_id = this.activatedRoute.snapshot.params['period_id'];
-    if (periodo_id) {
+    if (periodo_id!=null && periodo_id!=undefined) {
       this.subs.push(this._periodManager.setInfoByPeriodName$(periodo_id).subscribe({
         complete: () => {
           this.periodForm.patchValue({

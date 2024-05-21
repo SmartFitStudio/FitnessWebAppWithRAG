@@ -24,11 +24,12 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
     massa_grassa: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
     massa_magra: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
     altezza_cm: [0, [Validators.required, Validators.min(0)]],
-    note : ['', [Validators.maxLength(500)]],
+    note: ['', [Validators.maxLength(500)]],
     data_misurazione: [new Date().toLocaleDateString('en-GB'), [Validators.required]],
   });
 
   private progressoRequest!: ProgressoRequest;
+  private progressoId?: number;
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
@@ -40,17 +41,17 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
   }
 
   ngOnInit(): void {
-    const progresso_id = this.activatedRoute.snapshot.params['progresso_id'];
-    if(progresso_id){
-      this.getProgressoById(progresso_id)
+    this.progressoId = this.activatedRoute.snapshot.params['progresso_id'];
+    if (this.isProgressoIdSet() && this.progressoId != null) {
+      this.getProgressoById(this.progressoId)
     }
-    else{
+    else {
       this.getLastProgresso();
     }
-    
+
   }
 
-  private getProgressoById(id: number){
+  private getProgressoById(id: number) {
     this.progressoService.getProgresso({
       'progresso-id': id
     }).subscribe({
@@ -63,7 +64,7 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
     });
   }
 
-  private getLastProgresso(){
+  private getLastProgresso() {
     this.progressoService.getLastNProgressi({
       N: 1
     }).subscribe({
@@ -78,6 +79,14 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
 
   submitForm() {
     this.bindFormToRequest();
+    if (this.isProgressoIdSet()) {
+      this.updateProgresso();
+    } else {
+      this.saveNewProgresso();
+    }
+  }
+
+  private saveNewProgresso() {
     this.progressoService.addProgresso({ body: this.progressoRequest }).subscribe({
       next: (response) => {
         this.router.navigate([sub_appRoutingModule.full_homePath]);
@@ -88,9 +97,21 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
     });
   }
 
-  //BOILERPLATE CODE
+  private updateProgresso() {
+    if (this.isProgressoIdSet() && this.progressoId != null) {
+      this.progressoService.updateProgresso({ 'progresso-id': this.progressoId, body: this.progressoRequest }).subscribe({
+        next: (response) => {
+          this.router.navigate([sub_appRoutingModule.full_homePath]);
+        },
+        error: (error) => {
+          this.handleErrorMessages(error);
+        }
+      });
+    }
+  }
 
-  private patchValue(progressoResponse: ProgressoResponse){
+  //BOILERPLATE CODE
+  private patchValue(progressoResponse: ProgressoResponse) {
     this.progressoForm.patchValue({
       peso: progressoResponse.pesoKg,
       massa_grassa: progressoResponse.percentualeMassaGrassa,
@@ -99,6 +120,9 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
       note: progressoResponse.note,
       data_misurazione: progressoResponse.dataMisurazione
     });
+  }
+  private isProgressoIdSet(): boolean {
+    return this.progressoId != undefined && this.progressoId != null;
   }
   private bindFormToRequest() {
     if (this.IsFormValid) {

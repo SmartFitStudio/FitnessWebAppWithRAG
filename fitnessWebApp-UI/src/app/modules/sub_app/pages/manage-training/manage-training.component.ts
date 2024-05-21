@@ -41,7 +41,7 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
 
   ngOnInit(): void {
     const allenamento_id = this.activatedRoute.snapshot.params['training_id'];
-    if (allenamento_id) {
+    if (allenamento_id != null && allenamento_id != undefined) {
       let observer$ = this._trainManager.setInfoByTrainingId$(allenamento_id).subscribe({
         complete: () => {
           this.trainingForm.patchValue({

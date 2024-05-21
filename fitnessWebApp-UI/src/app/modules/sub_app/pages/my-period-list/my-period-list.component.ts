@@ -9,6 +9,7 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
+import { PaginatedComponent } from '../../../../services/common/PaginatedComponent';
 
 @Component({
   selector: 'app-my-period-list',
@@ -17,13 +18,9 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
   standalone: true,
   imports: [NgIf, RouterLink, NgFor, PeriodCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
-export class MyPeriodListComponent extends MessageHandler implements OnInit {
+export class MyPeriodListComponent extends PaginatedComponent implements OnInit {
   periodsResponse$!: Observable<PageResponsePeriodoResponse>;
 
-  private totalPages? = 0;
-  private _page = 0;
-  private _size = 5;
-  private _pages: any = [];
   private _is_adding_permitted = true;
 
   constructor(
@@ -35,7 +32,7 @@ export class MyPeriodListComponent extends MessageHandler implements OnInit {
   }
 
   ngOnInit(): void {
-    this.findAllMyPeriods();
+    this.getData();
   }
 
   @Input()
@@ -43,7 +40,7 @@ export class MyPeriodListComponent extends MessageHandler implements OnInit {
     this._is_adding_permitted = value;
   }
 
-  private findAllMyPeriods() {
+  protected override getData() {
     this.periodsResponse$ = this.periodsService.findAllAuthenticatedUserPeriodoPaginated({
       page: this._page,
       size: this._size
@@ -67,7 +64,7 @@ export class MyPeriodListComponent extends MessageHandler implements OnInit {
       .subscribe({
         next: () => {
           this.addMessage('success', 'Period deleted');
-          this.findAllMyPeriods();
+          this.getData();
         },
         error: (error) => {
           this.handleErrorMessages(error);
@@ -85,48 +82,11 @@ export class MyPeriodListComponent extends MessageHandler implements OnInit {
   }
 
   /*BOILERPLATE CODE */
-  gotToPage(page: number) {
-    this._page = page;
-    this.findAllMyPeriods();
-  }
-
-  goToFirstPage() {
-    this._page = 0;
-    this.findAllMyPeriods();
-  }
-
-  goToPreviousPage() {
-    this._page--;
-    this.findAllMyPeriods();
-  }
-
-  goToLastPage() {
-    this._page = this.totalPages as number - 1;
-    this.findAllMyPeriods();
-  }
-
-  goToNextPage() {
-    this._page++;
-    this.findAllMyPeriods();
-  }
-
-  get isLastPage() {
-    return this._page === this.totalPages as number - 1;
-  }
   get newPeriodsLink(): string {
     return sub_appRoutingModule.full_managePeriodPath;
   }
   get isAddingPermitted() {
     return this._is_adding_permitted;
-  }
-  get page() {
-    return this._page;
-  }
-  get size() {
-    return this._size;
-  }
-  get pages() {
-    return this._pages;
   }
   /*
 Funzione di trackby utilizzata per evitare che angular ricarichi tutti i componenti della lista nell' ngfor

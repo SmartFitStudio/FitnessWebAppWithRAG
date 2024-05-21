@@ -1,7 +1,7 @@
-import { Component, ErrorHandler, Inject } from '@angular/core';
+import { Component, ErrorHandler, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EMPTY, Observable, catchError, map } from 'rxjs';
-import { PageResponseExerciseResponse, ExerciseResponse, AllenamentoEsercizioRequest } from '../../../../services/models';
+import { PageResponseExerciseResponse, ExerciseResponse } from '../../../../services/models';
 import { ExerciseService } from '../../../../services/services';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { ExerciseCardComponent } from '../../components/exercise-card/exercise-card.component';
@@ -9,6 +9,7 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
+import { PaginatedComponent } from '../../../../services/common/PaginatedComponent';
 
 @Component({
   selector: 'app-exercise-store',
@@ -17,13 +18,8 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
   standalone: true,
   imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
-export class ExerciseStoreComponent extends MessageHandler {
+export class ExerciseStoreComponent  extends PaginatedComponent implements OnInit {
   exerciseResponse$?: Observable<PageResponseExerciseResponse>;
-
-  private totalPages? = 0;
-  private _page = 0;
-  private _size = 5;
-  private _pages: any = [];
 
   constructor(
     private exerciseService: ExerciseService,
@@ -34,13 +30,13 @@ export class ExerciseStoreComponent extends MessageHandler {
   }
 
   ngOnInit(): void {
-    this.findAllStoreExercise();
+    this.getData();
   }
 
   /**
    * GESTIONE TRAMITE NON SOTTOSCRIZIONE per provare la renderizzazione tramite async pipe
    */
-  private findAllStoreExercise() {
+  protected override getData() {
     this.exerciseResponse$ = this.exerciseService.getExercisesFromPublicStore({
       page: this._page,
       size: this._size
@@ -65,7 +61,7 @@ export class ExerciseStoreComponent extends MessageHandler {
       next: () => {
         this.addMessage('success', 'Exercise imported');
 
-        this.findAllStoreExercise();
+        this.getData();
       },
       error: () => {
         this.addMessage('error', 'Error importing exercise');
@@ -74,47 +70,9 @@ export class ExerciseStoreComponent extends MessageHandler {
   }
 
   /*BOILERPLATE CODE */
-  gotToPage(page: number) {
-    this._page = page;
-    this.findAllStoreExercise();
-  }
-
-  goToFirstPage() {
-    this._page = 0;
-    this.findAllStoreExercise();
-  }
-
-  goToPreviousPage() {
-    this._page--;
-    this.findAllStoreExercise();
-  }
-
-  goToLastPage() {
-    this._page = this.totalPages as number - 1;
-    this.findAllStoreExercise();
-  }
-
-  goToNextPage() {
-    this._page++;
-    this.findAllStoreExercise();
-  }
-
-  isLastPage() {
-    return this._page === this.totalPages as number - 1;
-  }
 
   get newExerciseLink(): string {
     return sub_appRoutingModule.full_manageExercisePath;
-  }
-
-  get page(): number {
-    return this._page;
-  }
-  get size(): number {
-    return this._size;
-  }
-  get pages(): any {
-    return this._pages;
   }
   /*
   Funzione di trackby utilizzata per evitare che angular ricarichi tutti i componenti della lista nell' ngfor

@@ -40,7 +40,7 @@ export class TrainingDetailsComponent extends MessageHandler implements OnInit, 
 
   ngOnInit(): void {
     const allenamento_id = this.activatedRoute.snapshot.params['training_id'];
-    if (allenamento_id) {
+    if (allenamento_id!=null && allenamento_id!=undefined) {
       let trainingInfoSubscription = this.trainingManagerService.setInfoByTrainingId$(allenamento_id).subscribe({
         complete: () => {
           trainingInfoSubscription.unsubscribe();
