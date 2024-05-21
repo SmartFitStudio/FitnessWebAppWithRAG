@@ -14,8 +14,10 @@ padding-top: .5em;
 .pieGraphGroup{
     width: 100%;
    display: flex;
+   flex-wrap: wrap;
    gap: 5px;
    align-items: center;
+   justify-content: center;
    padding-top: 1em;
 }
 

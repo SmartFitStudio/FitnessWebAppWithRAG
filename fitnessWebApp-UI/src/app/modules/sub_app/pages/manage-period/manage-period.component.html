@@ -16,59 +16,59 @@
             <form [formGroup]="periodForm">
                 <label for="nome_periodo" class="form-label">Nome</label>
                 <input formControlName="nome_periodo" type="text" id="nome_periodo" class="form-control"
-                    aria-describedby="nome_periodo_helper" name="nome_periodo" >
-                    <small class="text-danger" *ngIf="!IsNomePeriodoInputValid">
-                        Il nome del periodo è obbligatorio
-                      </small>
-                <div id="nome_periodo_helper" class="form-text">
-                    Inserisci qui il nome del periodo cosi da poterlo identificare facilmente.
+                    aria-describedby="nome_periodo_helper" name="nome_periodo">
+                <small class="text-danger" *ngIf="!IsNomePeriodoInputValid">
+                    Il nome del periodo è obbligatorio
+                </small>
+                <div>
+                    <label for="obiettivo" class="form-label">Obiettivo</label>
+                    <select class="form-select" aria-label="Seleziona l'obiettivo del periodo di allenamento"
+                        formControlName="obiettivo" id="obiettivo">
+                        <option *ngFor="let c of obbiettivi">{{ c }}</option>
+                    </select>
+                    <small class="text-danger" *ngIf="!IsObiettivoInputValid">
+                        L'obiettivo del periodo è obbligatorio
+                    </small>
                 </div>
 
-                <select class="form-select" aria-label="Seleziona l'obiettivo del periodo di allenamento"
-                    formControlName="obiettivo" >
-                    <option *ngFor="let c of obbiettivi">{{ c }}</option>
-                </select>
-                <small class="text-danger" *ngIf="!IsObiettivoInputValid">
-                    L'obiettivo del periodo è obbligatorio
-                </small>
+                <div>
 
-                <label for="durata_in_giorni" class="form-label">Durata in giorni del ciclo</label>
-                <input formControlName="durata_in_giorni" type="number" id="durata_in_giorni" class="form-control"
-                    aria-describedby="durata_in_giorni_helper" name="durata_in_giorni" min="0" max="30" >
+                    <label for="durata_in_giorni" class="form-label">Durata in giorni del ciclo</label>
+                    <input formControlName="durata_in_giorni" type="number" id="durata_in_giorni" class="form-control"
+                        aria-describedby="durata_in_giorni_helper" name="durata_in_giorni" min="0" max="30">
                     <small class="text-danger" *ngIf="!IsDurataInputValid">
                         La durata del ciclo è obbligatoria e deve essere maggiore di 0
                     </small>
-                <div id="durata_in_giorni_helper" class="form-text">
-                    Inserisci qui la durata del ciclo del periodo in giorni.
                 </div>
 
-                <label for="data_inizio" class="form-label">Data inzio</label>
-                <input formControlName="data_inizio" type="date" id="data_inizio" class="form-control"
-                    aria-describedby="data_inizio_helper" name="durata_in_giorni">
-                    <small class="text-danger" *ngIf="!IsDataInizioInputValid">
+                <div>
+
+                    <label for="data_inizio" class="form-label">Data inizio</label><br>
+                    <p-calendar formControlName="data_inizio" [inputStyle]="{maxHeight: '30px'}" />
+                    <small class="text-danger block" *ngIf="!IsDataInizioInputValid">
                         La data di inizio è obbligatoria.
                     </small>
-                <div id="data_inizio_helper" class="form-text">
-                    Inserisci qui la data di inizio del periodo.
                 </div>
 
-                <label for="data_fine" class="form-label">Data inzio</label>
-                <input formControlName="data_fine" type="date" id="data_fine" class="form-control"
-                    aria-describedby="data_fine_helper" name="data_fine">
-                <div id="data_fine_helper" class="form-text">
-                    Inserisci qui la data di fine del periodo.
+                <div>
+                    <label for="data_fine" class="form-label">Data fine</label><br>
+                    <p-calendar formControlName="data_fine" [inputStyle]="{maxHeight: '30px', display: 'block'}" />
                 </div>
+
 
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
                         formControlName="is_attivo">
                     <label class="form-check-label" for="flexSwitchCheckDefault">Attiva periodo</label>
                     <div *ngIf="nome_periodo_attivo!=''" class="warning">
-                        <p class="warning" >Hai gia un periodo attivo nominato <span class="bold">{{nome_periodo_attivo}}</span>, non puoi averne più di uno attivo contemporaneamente.</p>
+                        <p class="warning">Hai gia un periodo attivo nominato <span
+                                class="bold">{{nome_periodo_attivo}}</span>, non puoi averne più di uno attivo
+                            contemporaneamente.</p>
                         <p>Se vuoi attivare questo, devi prima disattivare quello attuale.</p>
-                        <button class="def_button disable" (click)="disable_active_period()"><i class="fa-solid fa-skull"></i> Disattivalo</button>
+                        <button class="def_button disable" (click)="disable_active_period()"><i
+                                class="fa-solid fa-skull"></i> Disattivalo</button>
                     </div>
-                    
+
                 </div>
             </form>
         </section>
@@ -125,4 +125,3 @@
         </div>
     </mat-step>
 </mat-horizontal-stepper>
-

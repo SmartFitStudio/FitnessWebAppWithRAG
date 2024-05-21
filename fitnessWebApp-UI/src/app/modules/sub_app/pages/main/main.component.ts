@@ -6,6 +6,7 @@ import { RouterOutlet } from '@angular/router';
 import { NotificationListComponent } from '../../components/notification-list/notification-list.component';
 import { MenuComponent } from '../../components/menu/menu.component';
 import { ChatbotComponent } from '../../components/chatbot/chatbot.component';
+import { ToggleButtonsComponent } from '../../components/toggle-buttons/toggle-buttons.component';
 
 @Component({
     selector: 'app-main',
@@ -16,8 +17,7 @@ import { ChatbotComponent } from '../../components/chatbot/chatbot.component';
         MenuComponent,
         NotificationListComponent,
         RouterOutlet,
-        ChatbotComponent
-    ],
+        ChatbotComponent    ],
 })
 
 export class MainComponent {

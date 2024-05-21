@@ -19,9 +19,9 @@ import { FilterSelector } from '../../../../services/myModels/filterSelector';
   templateUrl: './exercise-store.component.html',
   styleUrls: ['./exercise-store.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent, MultiSelectModule,FormsModule]
+  imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent, MultiSelectModule, FormsModule]
 })
-export class ExerciseStoreComponent  extends PaginatedComponent implements OnInit {
+export class ExerciseStoreComponent extends PaginatedComponent implements OnInit {
   categories!: FilterSelector[];
   selectedCategories!: FilterSelector[];
   exerciseResponse$?: Observable<PageResponseExerciseResponse>;
@@ -43,22 +43,11 @@ export class ExerciseStoreComponent  extends PaginatedComponent implements OnIni
    * GESTIONE TRAMITE NON SOTTOSCRIZIONE per provare la renderizzazione tramite async pipe
    */
   protected override getData() {
-    this.exerciseResponse$ = this.exerciseService.getExercisesFromPublicStore({
-      page: this._page,
-      size: this._size
-    }).pipe(
-      map((response: PageResponseExerciseResponse) => {
-        this.totalPages = response.totalPages;
-        this._pages = Array(response.totalPages)
-          .fill(0)
-          .map((x, i) => i);
-        return response;
-      }),
-      catchError((error) => {
-        this.handleErrorMessages(error);
-        return EMPTY;
-      })
-    );
+    if (this.selectedCategories && this.selectedCategories.length > 0) {
+      this.searchByFilterOptions();
+    } else {
+      this.getAllPublicExercises();
+    }
   }
 
   importExercise($event: number) {
@@ -75,7 +64,11 @@ export class ExerciseStoreComponent  extends PaginatedComponent implements OnIni
     });
   }
 
-  searchByFilterOptions() {
+  searchData() {
+    this.getData();
+  }
+
+  private searchByFilterOptions() {
     this.exerciseResponse$ = this.exerciseService.findExercisesByCategories({
       page: this._page,
       size: this._size,
@@ -85,7 +78,26 @@ export class ExerciseStoreComponent  extends PaginatedComponent implements OnIni
         this.handleErrorMessages(error);
         return EMPTY;
       }
-    )
+      )
+    );
+  }
+
+  private getAllPublicExercises() {
+    this.exerciseResponse$ = this.exerciseService.getExercisesFromPublicStore({
+      page: this._page,
+      size: this._size
+    }).pipe(
+      map((response: PageResponseExerciseResponse) => {
+        this.totalPages = response.totalPages;
+        this._pages = Array(response.totalPages)
+          .fill(0)
+          .map((x, i) => i);
+        return response;
+      }),
+      catchError((error) => {
+        this.handleErrorMessages(error);
+        return EMPTY;
+      })
     );
   }
 
