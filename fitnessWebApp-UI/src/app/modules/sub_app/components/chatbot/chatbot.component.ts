@@ -45,11 +45,12 @@ export class ChatbotComponent {
           },
           error: error => {
             this.promptForm.enable();
-            this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml('Qualcosa è andato storto: '+error.message + 'TODO: gestire errori in modo più elegante');
+            this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml(error.error.error);
           },
           complete: () => {
             this.promptForm.enable();
-            subscription$.unsubscribe();}
+            subscription$.unsubscribe();
+          }
           }
         );
       }

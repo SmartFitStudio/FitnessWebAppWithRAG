@@ -17,10 +17,12 @@ export class ErrorHandlerService implements ErrorHandler {
     if (error.error.businessErrorCode >= 300) {
       info.push({code:error.error.businessErrorCode, message:error.error.businessErrorDescription});
     }
-    
+    if (error.error.error) {
+      info.push({code:error.status, message:error.error.error});
+    }
     if (info.length === 0) {
       info.push({code:500, message:"Errore sconosciuto"});
-    } 
+    }
     return info;
   }
 }

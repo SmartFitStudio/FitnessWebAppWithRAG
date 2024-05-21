@@ -122,6 +122,8 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
           this._openedTab++;
         },
         error: (error) => {
+          this.clearMessages();
+          this.isDisabled = false;
           this.handleErrorMessages(error);
         }
     });
