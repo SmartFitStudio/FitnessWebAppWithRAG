@@ -44,7 +44,7 @@
                 <div>
 
                     <label for="data_inizio" class="form-label">Data inizio</label><br>
-                    <p-calendar formControlName="data_inizio" [inputStyle]="{maxHeight: '30px'}" />
+                    <p-calendar id="data_inizio" formControlName="data_inizio" [inputStyle]="{maxHeight: '30px'}" dateFormat="dd/mm/yy"/>
                     <small class="text-danger block" *ngIf="!IsDataInizioInputValid">
                         La data di inizio è obbligatoria.
                     </small>
@@ -52,7 +52,7 @@
 
                 <div>
                     <label for="data_fine" class="form-label">Data fine</label><br>
-                    <p-calendar formControlName="data_fine" [inputStyle]="{maxHeight: '30px', display: 'block'}" />
+                    <p-calendar formControlName="data_fine" [inputStyle]="{maxHeight: '30px', display: 'block'}"  dateFormat="dd/mm/yy"/>
                 </div>
 
 

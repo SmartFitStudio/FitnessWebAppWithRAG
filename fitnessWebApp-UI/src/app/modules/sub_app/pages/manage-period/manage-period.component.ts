@@ -39,8 +39,8 @@ export class ManagePeriodComponent extends MessageHandler implements OnInit, OnD
     nome_periodo: ['', Validators.required],
     obiettivo: [ObbiettivoPeriodo.NON_DEFINITO, Validators.required],
     durata_in_giorni: [7, [Validators.required, Validators.min(1)]],
-    data_inizio: ['', Validators.required],
-    data_fine: [''],
+    data_inizio: [new Date, Validators.required],
+    data_fine: [new Date],
     is_attivo: [false, Validators.required]
   });
 
@@ -75,8 +75,8 @@ export class ManagePeriodComponent extends MessageHandler implements OnInit, OnD
             nome_periodo: this._periodManager.periodoName,
             obiettivo: this._periodManager.periodoObiettivo,
             durata_in_giorni: this._periodManager.periodoDurataInGiorni,
-            data_inizio: this._periodManager.periodoDataInizio,
-            data_fine: this._periodManager.periodoDataFine,
+            data_inizio: new Date(this._periodManager.periodoDataInizio),
+            data_fine: this._periodManager.periodoDataFine? new Date(this._periodManager.periodoDataFine ) : null,
             is_attivo: this._periodManager.periodoAttivo
           });
           this.addMessage('success', 'Informazioni caricate correttamente')
@@ -195,9 +195,9 @@ export class ManagePeriodComponent extends MessageHandler implements OnInit, OnD
       if (this.periodForm.value.durata_in_giorni)
         this._periodManager.periodoDurataInGiorni = this.periodForm.value.durata_in_giorni;
       if (this.periodForm.value.data_inizio)
-        this._periodManager.periodoDataInizio = this.periodForm.value.data_inizio;
+        this._periodManager.periodoDataInizio = this.periodForm.value.data_inizio.toISOString();
       if (this.periodForm.value.data_fine)
-        this._periodManager.periodoDataFine = this.periodForm.value.data_fine;
+        this._periodManager.periodoDataFine = this.periodForm.value.data_fine.toISOString();
       this._periodManager.periodoAttivo = this.periodForm.value.is_attivo as boolean;
     }
   }
