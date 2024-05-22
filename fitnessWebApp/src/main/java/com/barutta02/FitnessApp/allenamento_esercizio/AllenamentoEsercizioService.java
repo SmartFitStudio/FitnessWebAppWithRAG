@@ -45,6 +45,7 @@ public class AllenamentoEsercizioService implements Service_CRUD<AllenamentoEser
                 Exercise exercise = exerciseService.findByIdAndCreatorOrDefault_creator(request.id_esercizio(), user);
                 AllenamentoEsercizio allenamentoEsercizio = allenamentoEsercizioMapper.toAllenamentoEsercizio(request,allenamento,exercise,
                                 user);
+                                log.info("AllenamentoEsercizio: {}",allenamentoEsercizio.getId());
                 AllenamentoEsercizio saved = allenamentoEsercizioRepository.save(allenamentoEsercizio);
                 return allenamentoEsercizioMapper.toAllenamentoEsercizioResponse(saved);
         }

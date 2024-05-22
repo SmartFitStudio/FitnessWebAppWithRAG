@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { EMPTY, Observable, Subscription, catchError, forkJoin, map, merge, mergeMap } from 'rxjs';
+import { EMPTY, Observable, Subscription, catchError, concat, concatMap, forkJoin, map, merge, mergeMap } from 'rxjs';
 import { AllenamentoResponse, PeriodoAllenamentoRequest, PeriodoAllenamentoResponse, PeriodoRequest, PeriodoResponse } from '../../../../services/models';
 import { ObbiettivoPeriodo } from '../../../../services//myModels/obbiettivoPeriodo';
 import { PeriodoGiornata } from '../../../../services//myModels/periodoGiornata';
@@ -15,8 +15,8 @@ export class PeriodManagerService implements OnDestroy {
   private allenamento_list: AllenamentoResponse[] = []; //Lista degli allenamenti associati al periodo
   private active_periodo: PeriodoResponse | undefined | null = undefined; //Se nullo non ho ancora recuperato i dati
   private subscription_active_period?: Subscription;
-  
-  private periodoRequest: PeriodoRequest={
+
+  private periodoRequest: PeriodoRequest = {
     id: undefined,
     name: "",
     obiettivo: ObbiettivoPeriodo.NON_DEFINITO,
@@ -46,7 +46,7 @@ export class PeriodManagerService implements OnDestroy {
           }
         }
       );
-    }else{
+    } else {
       if (value === false || this.activePeriod === null) { //altrimenti guardo se il valore è false, va sempre bene, altrimenti controllo se c'è un periodo attivo
         this.periodoRequest.attivo = value;
       }
@@ -80,7 +80,7 @@ export class PeriodManagerService implements OnDestroy {
       .pipe(
         mergeMap((response) => {
           this.periodoAllenamentoRequest_list = response.map((value) => this.mapPeriodoAllenamentoResponseToPeriodoAllenamentoRequest(value));
-          this.initial_periodoAllenamentoRequest_list = this.periodoAllenamentoRequest_list; //mi serve per poter eliminare solo quelli tolti.
+          this.initial_periodoAllenamentoRequest_list = this.periodoAllenamentoRequest_list.map((training) => ({ ...training })); //mi serve per poter eliminare solo quelli tolti.
           return this.getTraining$();
         })
       );
@@ -103,13 +103,13 @@ export class PeriodManagerService implements OnDestroy {
     return this.periodoService.findAuthenticatedUserActivePeriodo()
       .pipe(
         map((response) => {
-          if(!response){ //Se non c'è un periodo attivo
+          if (!response) { //Se non c'è un periodo attivo
             this.active_periodo = null;
             return response;
-          }else{
-            if(!this.periodoRequest.id || response.id != this.periodoRequest.id){
+          } else {
+            if (!this.periodoRequest.id || response.id != this.periodoRequest.id) {
               this.active_periodo = response;
-            }else{
+            } else {
               this.active_periodo = null;
             }
           }
@@ -152,16 +152,20 @@ export class PeriodManagerService implements OnDestroy {
     const events: ScheduleEvent[] = [];
     let id = 0;
     let iteration_counter = 0;
-    for (let j = 0; iteration_counter < max_iteration_scheduling; j++) {
-    for (let i = 0; i < this.periodoAllenamentoRequest_list.length; i++) {
-        let dataInizio = new Date(this.periodoRequest.data_inizio);
+    const today = new Date();
+    let dataInizio = new Date(this.periodoRequest.data_inizio);
+
+    for (let j = 0; j < max_iteration_scheduling; j++) {
+      for (let i = 0; i < this.periodoAllenamentoRequest_list.length; i++) {
+        dataInizio = new Date(this.periodoRequest.data_inizio);
+
         // Impostare il fuso orario a UTC+1 (Roma)
         dataInizio.setTime(dataInizio.getTime() + (1 * 60 * 60 * 1000));
         // Ottenere la data senza l'orario
         dataInizio.setDate(dataInizio.getDate() + (this.periodoAllenamentoRequest_list[i].giorno_del_periodo + this.periodoRequest.durata_in_giorni * j));
         dataInizio.setHours(this.gerOrarioInizio(this.periodoAllenamentoRequest_list[i].periodo_giornata));
 
-        if(this.periodoRequest.data_fine && dataInizio > new Date(this.periodoRequest.data_fine)){
+        if (this.periodoRequest.data_fine && dataInizio > new Date(this.periodoRequest.data_fine)) {
           j = max_iteration_scheduling; //Esci dal ciclo
           break;
         }
@@ -183,12 +187,15 @@ export class PeriodManagerService implements OnDestroy {
       quindi se la data di inizio è minore della data di oggi, decremento j
        per ottenere N cicli a partire dalla data di oggi.
       */
-      if(i == this.periodoAllenamentoRequest_list.length -1 &&  dataInizio >= new Date()){
-        console.log(dataInizio + " < " + new Date() );
-        iteration_counter++;
       }
+     /* if (dataInizio >= today) {
+        iteration_counter = iteration_counter + 1;
       }
+      if (this.periodoRequest.data_fine && dataInizio <= new Date(this.periodoRequest.data_fine)) {
+        break;
+      }*/
     }
+    console.log("finitoooooooo");
     return events;
   }
 
@@ -228,9 +235,10 @@ export class PeriodManagerService implements OnDestroy {
     this.allenamento_list.push(allenamento);
   }
 
-  private updatePeriodId(id: number = this.periodoRequest.id as number) {
+  private updatePeriodId(id: number) {
+    this.periodoRequest.id = id;
     for (let i = 0; i < this.periodoAllenamentoRequest_list.length; i++) {
-      this.periodoAllenamentoRequest_list[i].id_periodo = this.periodoRequest.id as number;
+      this.periodoAllenamentoRequest_list[i].id_periodo = id;
     }
   }
 
@@ -254,53 +262,52 @@ export class PeriodManagerService implements OnDestroy {
   */
   public savePeriodo$(): Observable<any> {
     this.fillEmptyData();
-    return this.periodoService.savePeriodo({ body: this.periodoRequest })
-      .pipe(
-        mergeMap((response) => {
-          this.periodoRequest.id = response.id;
-          this.updatePeriodId(response.id);
-          const toSaveTraining = this.periodoAllenamentoRequest_list.filter(
-            (training) => training.giorno_del_periodo <= this.periodoRequest.durata_in_giorni
-          );
-          //EMPTY. This is an observable that immediately completes without emitting any values, signaling the saving process is finished (no training periods to save).
-          return toSaveTraining.length === 0 ? EMPTY : forkJoin(
-            toSaveTraining.map((training) => this.periodoAllenamentoService.savePeriodoAllenamento({ body: training }))
-          );
-        }),
-        mergeMap(() => {
-          const toDeleteTraining = this.getTrainingPeriod_Ids_to_delete();
-          return toDeleteTraining.length === 0 ? EMPTY : forkJoin(
-            toDeleteTraining.map((id) => this.periodoAllenamentoService.deletePeriodoAllenamento({ 'periodo-allenamento-id': id }))
-          );
-        })
-      );
+    const toSaveTraining = this.periodoAllenamentoRequest_list.filter(
+      (training) => training.giorno_del_periodo <= this.periodoRequest.durata_in_giorni
+    );
+
+    let obs2$ = this.periodoService.savePeriodo({ body: this.periodoRequest }).pipe(map((response) => { this.updatePeriodId(response.id) }));
+
+    let obs1$ = this.delete_allenamentoPeriodo$(this.getTrainingPeriod_Ids_to_delete());
+    let obs3$ = toSaveTraining.length === 0 ? EMPTY : forkJoin(
+      toSaveTraining.map((training) => this.periodoAllenamentoService.savePeriodoAllenamento({ body: training })));
+
+    return concat(obs1$, obs2$, obs3$);
+
   }
 
 
-/*
-La funzione filtra gli oggetti che sono presenti nella lista iniziale ma non nella lista aggiornata. Poi, estrae gli ID degli oggetti filtrati.
-*/
+  /*
+  La funzione filtra gli oggetti che sono presenti nella lista iniziale ma non nella lista aggiornata. Poi, estrae gli ID degli oggetti filtrati.
+  */
   private getTrainingPeriod_Ids_to_delete(): number[] {
     return this.initial_periodoAllenamentoRequest_list
-      .filter((value) => !this.periodoAllenamentoRequest_list.includes(value))
+      .filter((value) => !this.periodoAllenamentoRequest_list.find((value2) => value.id === value2.id))
       .map((value) => value.id as number);
   }
 
+  private delete_allenamentoPeriodo$(ids: number[]): Observable<any> {
+    if (ids.length === 0) {
+      return EMPTY;
+    }
+    const requests = ids.map((id) => this.periodoAllenamentoService.deletePeriodoAllenamento({ 'periodo-allenamento-id': id }));
+    return forkJoin(requests);
+  }
   public disableActivePeriodo$(): Observable<any> {
-    if(this.active_periodo){
+    if (this.active_periodo) {
       this.active_periodo.attivo = false;
       return this.periodoService.disableAuthenticatedUserActivePeriodo()
-      .pipe(
-        map(() => {
-          this.active_periodo = undefined;
-          return;
-        })
-      );
-    }else{
+        .pipe(
+          map(() => {
+            this.active_periodo = undefined;
+            return;
+          })
+        );
+    } else {
       return EMPTY;
     }
   }
-  
+
 
   //BOILERPLATE CODE
 
@@ -375,10 +382,10 @@ La funzione filtra gli oggetti che sono presenti nella lista iniziale ma non nel
   get periodoAttivo(): boolean {
     return this.periodoRequest.attivo;
   }
-  get activePeriod(): PeriodoResponse | undefined | null{ //Se non ho ancora recuperato i dati ritorno undefined
+  get activePeriod(): PeriodoResponse | undefined | null { //Se non ho ancora recuperato i dati ritorno undefined
     return this.active_periodo;
   }
   public is_there_active_period(): boolean {
-    return this.active_periodo? true : false;
+    return this.active_periodo ? true : false;
   }
 }

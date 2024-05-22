@@ -36,12 +36,11 @@ html {
 body {
   background: var(--background_color);
   color: var(--txtColor);
+  padding: var(--default_padding);
   margin: auto;
   max-width: 1024px;
   height: 100vh;
   background-attachment: fixed;
-  /*edit*/
-
 }
 
 .login-container {

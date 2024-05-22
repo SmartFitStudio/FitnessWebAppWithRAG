@@ -2,7 +2,6 @@ package com.barutta02.FitnessApp.allenamento_esercizio;
 import java.io.Serializable;
 
 import com.barutta02.FitnessApp.allenamento.Allenamento;
-import com.barutta02.FitnessApp.user.User;
 
 import javax.persistence.*;
 
