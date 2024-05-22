@@ -1,8 +1,18 @@
-.messageContainer{
-max-width: 400px;
-margin: auto;    
+.messageContainer {
+    max-width: 400px;
+    margin: auto;
+    margin-top: var(--default_padding);
+    margin-bottom: var(--default_padding);
 }
 
-.p-message-wrapper {
-    padding: .5em;
+
+:host {
+    ::ng-deep .p-message {
+        padding: 0;
+        margin: 0;
+        .p-message-wrapper {
+            padding: .5em .5em;
+            gap: 1em;
+        }
+    }    
 }

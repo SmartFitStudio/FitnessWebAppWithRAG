@@ -37,7 +37,7 @@ export class PeriodDetailsComponent extends MessageHandler implements OnInit {
 
   ngOnInit(): void {
     const period_id = this.activatedRoute.snapshot.params['period_id'];
-    if (period_id) {
+    if (period_id!=null && period_id!=undefined) {
       let periodInfoSubscription$ = this.periodManagerService.setInfoByPeriodName$(period_id).subscribe({
         complete: () => {
           periodInfoSubscription$.unsubscribe();

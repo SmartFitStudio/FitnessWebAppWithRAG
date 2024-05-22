@@ -24,8 +24,11 @@
       <input formControlName="username" type="text" class="form-control" id="username" placeholder="Nome utente">
     </div>
     <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input formControlName="password" type="password" class="form-control" id="password" placeholder="Password">
+      <label for="password" class="form-label">Password</label><br>
+      <p-password formControlName="password" [toggleMask]="true" promptLabel="Scegli una password"
+      weakLabel="Troppo facile" 
+      mediumLabel="Puoi fare di meglio" 
+      strongLabel="Sei sicuro di ricordarla?" />
     </div>
   </form>
   <div class="d-flex justify-content-between mb-3">

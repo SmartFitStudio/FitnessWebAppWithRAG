@@ -1,0 +1,31 @@
+:host ::ng-deep {
+    .speeddial-circle-demo {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        height: auto;
+        width: auto;
+        .p-speeddial-quarter-circle {
+            padding-bottom: .5em;
+            &.p-speeddial-direction-up-left {
+                right: 0;
+                bottom: 0;
+            }
+        }
+
+        a{
+            background-color: var(--card_secondary_background);
+            padding: 0;
+            height: 40px;
+            width: 40px;
+            z-index: 1000;
+        }
+        button{
+            border-radius: 50%;
+            height: 40px;
+            width: 40px;
+            z-index: 1000;
+        }
+       
+    }
+}

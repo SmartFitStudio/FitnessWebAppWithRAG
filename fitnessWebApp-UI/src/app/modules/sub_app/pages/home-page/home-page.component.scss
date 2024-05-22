@@ -1,17 +1,21 @@
 h3{
-    font-weight: 500;
+    font-weight: bold;
     font-size: 1.5em;
 }
 
-.personalInfo{
+.infoSection{
     color: var(--txtColorDark);
     padding: var(--default_padding);
     padding-bottom: 5em;
     border-radius: 20px;
-    background-color: var(--card_secondary_background);
+    background-color: #fff;
     margin-bottom:1em;
 }
 
 #addProgress{
     margin-top: 0;
+}
+
+.mainInfoContainer{
+    padding-top: 3em;
 }

@@ -20,7 +20,6 @@ export class TrainingManagerService {
     };
     /*
         per far funzionare l'ordinamento (go up e do down) l'indice degli esercizi (ovvero oggetti) deve rispecchiare l'ordine dell'array
-        Non piace neanche a me ma serve per mantenere coerenza e facilitare lo scambio e la gestione degli esercizi
     */
     private _trainingExerciseRequests: Array<AllenamentoEsercizioRequest> = [];
     /*
@@ -141,7 +140,10 @@ export class TrainingManagerService {
               })
           );
   }
-
+    /**
+     * Observable che mi permette di recuperare gli esercizi in base agli id degli esercizi dentro _trainingExerciseRequests
+     * @returns 
+     */
   private retrieveExercises$(): Observable<any[]> {
       const exerciseRequests = [];
       for (const exercise of this._trainingExerciseRequests) {

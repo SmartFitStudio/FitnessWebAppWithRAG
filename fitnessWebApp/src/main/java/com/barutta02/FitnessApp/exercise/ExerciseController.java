@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -99,6 +101,16 @@ public class ExerciseController {
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
             Authentication connectedUser) {
         return ResponseEntity.ok(service.findAllAuthenticatedUserExercises_paginated(page, size, connectedUser));
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<PageResponse<ExerciseResponse>> findExercisesByCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam List<CategoryExercise> categories,
+            Authentication connectedUser
+            ) {
+        return ResponseEntity.ok(service.findAllImportableExercisesByCategories(page, size, categories, connectedUser));
     }
 
     /**

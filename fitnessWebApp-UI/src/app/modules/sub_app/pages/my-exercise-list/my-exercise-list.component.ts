@@ -8,7 +8,7 @@ import { ExerciseCardComponent } from '../../components/exercise-card/exercise-c
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
-import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
+import { PaginatedComponent } from '../../../../services/common/PaginatedComponent';
 
 @Component({
     selector: 'app-my-exercise-list',
@@ -17,13 +17,9 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
     standalone: true,
     imports: [NgIf, RouterLink, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
-export class MyExerciseListComponent extends MessageHandler implements OnInit {
+export class MyExerciseListComponent extends PaginatedComponent implements OnInit {
   exerciseResponse$?: Observable<PageResponseExerciseResponse>;
 
-  private totalPages? = 0;
-  private _page = 0;
-  private _size = 5;
-  private _pages: any = [];
   private _isListForInput = false; // La lista è per la selezione di un esercizio da aggiungere ad un allenamento? Viene passato dal padre
   private _is_adding_permitted = true; // Do la possibilità all'utente di andare sulla schermata per creare un nuovo esericizio? di default si, ma viene passato dal padre
 
@@ -46,10 +42,10 @@ export class MyExerciseListComponent extends MessageHandler implements OnInit {
   }
 
   ngOnInit(): void {
-    this.findAllMyExercise();
+    this.getData();
   }
 
-  private findAllMyExercise() {
+  protected override getData() {
     this.exerciseResponse$ = this.exerciseService.findAllAuthenticatedUserExercisesPaginated({
       page: this._page,
       size: this._size
@@ -73,7 +69,7 @@ export class MyExerciseListComponent extends MessageHandler implements OnInit {
       .subscribe({
         next: () => {
           this.addMessage('success', 'Esercizio eliminato con successo');
-          this.findAllMyExercise();
+          this.getData();
         },
         error: (error) => {
           this.handleErrorMessages(error);
@@ -91,38 +87,6 @@ export class MyExerciseListComponent extends MessageHandler implements OnInit {
   }
 
   /*BOILERPLATE CODE */
-  gotToPage(page: number) {
-    this._page = page;
-    this.findAllMyExercise();
-  }
-  goToFirstPage() {
-    this._page = 0;
-    this.findAllMyExercise();
-  }
-  goToPreviousPage() {
-    this._page --;
-    this.findAllMyExercise();
-  }
-  goToLastPage() {
-    this._page = this.totalPages as number - 1;
-    this.findAllMyExercise();
-  }
-  goToNextPage() {
-    this._page++;
-    this.findAllMyExercise();
-  }
-  isLastPage() {
-    return this._page === this.totalPages as number - 1;
-  }
-  get page(): number {
-    return this._page;
-  }
-  get size(): number {
-    return this._size;
-  }
-  get pages(): any {
-    return this._pages;
-  }
   get isListForInput() {
     return this._isListForInput;
   }

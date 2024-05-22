@@ -1,19 +1,24 @@
 <div class="card">
+ 
     <app-feedback-info-point [messages]="messages">
       </app-feedback-info-point>
-    <p-table
+    <p-table 
+    responsiveLayout="stack" [breakpoint]="'960px'" [tableStyle]="{'min-width': '50rem'}"
         [value]="lista_progressi"
         [paginator]="true"
         [lazy]="true"
         [rows]="5"
-        styleClass="p-datatable-gridlines" 
+        styleClass="p-datatable tableStyle" 
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         (onLazyLoad)="findProgress($event)"
         [totalRecords]='totalPages? totalPages*size : 0'
         [tableStyle]="{ 'background-color': 'red' }"
     >
-        <ng-template pTemplate="header">
+    <ng-template pTemplate="caption">
+        Tabella progressi
+    </ng-template>
+        <ng-template pTemplate="header" let-columns>
             <tr>
                 <th style="width:17%">Data</th>
                 <th style="width:8%">Peso</th>
@@ -23,13 +28,13 @@
                 <th style="width:8%"></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-progresso>
+        <ng-template pTemplate="body" let-progresso let-columns="columns">
             <tr>
-                <td>{{ progresso.dataMisurazione }}</td>
-                <td>{{ progresso.pesoKg }}</td>
-                <td>{{ progresso.altezzaCm }}</td>
-                <td>{{ progresso.percentualeMassaGrassa }}</td>
-                <td><p-inplace>
+                <td><span class="p-column-title">Data</span>{{ progresso.dataMisurazione }}</td>
+                <td><span class="p-column-title">Peso</span>{{ progresso.pesoKg }}</td>
+                <td><span class="p-column-title">Altezza</span>{{ progresso.altezzaCm }}</td>
+                <td><span class="p-column-title">M.Grassa</span>{{ progresso.percentualeMassaGrassa }}</td>
+                <td><span class="p-column-title">Note</span><p-inplace>
                     <ng-template pTemplate="display">
                         <span>{{ progresso.note?  progresso.note.substring(0,12) + " Vedi altro..." : 'Vuoto'}}</span>
                     </ng-template>
@@ -43,5 +48,6 @@
             </tr>
         </ng-template>
     </p-table>
+
 </div>
 

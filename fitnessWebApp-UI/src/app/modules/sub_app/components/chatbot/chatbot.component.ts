@@ -5,6 +5,7 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { RagllmService } from '../../../../services/services/ragllm.service';
 import { ConversationMessage } from '../../services/models/conversationMessage';
 import * as Showdown from 'showdown';
+import { ToggleButtonsComponent } from '../toggle-buttons/toggle-buttons.component';
 
 @Component({
   selector: 'app-chatbot',

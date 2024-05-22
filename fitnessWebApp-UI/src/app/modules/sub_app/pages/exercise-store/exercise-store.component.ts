@@ -1,29 +1,30 @@
-import { Component, ErrorHandler, Inject } from '@angular/core';
+import { Component, ErrorHandler, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EMPTY, Observable, catchError, map } from 'rxjs';
-import { PageResponseExerciseResponse, ExerciseResponse, AllenamentoEsercizioRequest } from '../../../../services/models';
+import { PageResponseExerciseResponse, ExerciseResponse } from '../../../../services/models';
 import { ExerciseService } from '../../../../services/services';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { ExerciseCardComponent } from '../../components/exercise-card/exercise-card.component';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
-import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
+import { PaginatedComponent } from '../../../../services/common/PaginatedComponent';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ExerciseCategory, getExerciseCategories } from '../../../../services/myModels/exerciseCategory';
+import { FormsModule } from '@angular/forms';
+import { FilterSelector } from '../../../../services/myModels/filterSelector';
 
 @Component({
   selector: 'app-exercise-store',
   templateUrl: './exercise-store.component.html',
   styleUrls: ['./exercise-store.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent]
+  imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent, MultiSelectModule, FormsModule]
 })
-export class ExerciseStoreComponent extends MessageHandler {
+export class ExerciseStoreComponent extends PaginatedComponent implements OnInit {
+  categories!: FilterSelector[];
+  selectedCategories!: FilterSelector[];
   exerciseResponse$?: Observable<PageResponseExerciseResponse>;
-
-  private totalPages? = 0;
-  private _page = 0;
-  private _size = 5;
-  private _pages: any = [];
 
   constructor(
     private exerciseService: ExerciseService,
@@ -31,16 +32,57 @@ export class ExerciseStoreComponent extends MessageHandler {
     @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
     super(handleError);
+    this.categories = getExerciseCategories();
   }
 
   ngOnInit(): void {
-    this.findAllStoreExercise();
+    this.getData();
   }
 
   /**
    * GESTIONE TRAMITE NON SOTTOSCRIZIONE per provare la renderizzazione tramite async pipe
    */
-  private findAllStoreExercise() {
+  protected override getData() {
+    if (this.selectedCategories && this.selectedCategories.length > 0) {
+      this.searchByFilterOptions();
+    } else {
+      this.getAllPublicExercises();
+    }
+  }
+
+  importExercise($event: number) {
+    console.log($event);
+    this.exerciseService.importExercise({ 'exercise-id': $event }).subscribe({
+      next: () => {
+        this.addMessage('success', 'Exercise imported');
+
+        this.getData();
+      },
+      error: () => {
+        this.addMessage('error', 'Error importing exercise');
+      }
+    });
+  }
+
+  searchData() {
+    this.getData();
+  }
+
+  private searchByFilterOptions() {
+    this.exerciseResponse$ = this.exerciseService.findExercisesByCategories({
+      page: this._page,
+      size: this._size,
+      categories: this.selectedCategories.map((category) => category.name as ExerciseCategory)
+    }).pipe(
+      catchError((error) => {
+        this.handleErrorMessages(error);
+        return EMPTY;
+      }
+      )
+    );
+  }
+
+  private getAllPublicExercises() {
     this.exerciseResponse$ = this.exerciseService.getExercisesFromPublicStore({
       page: this._page,
       size: this._size
@@ -59,62 +101,10 @@ export class ExerciseStoreComponent extends MessageHandler {
     );
   }
 
-  importExercise($event: number) {
-    console.log($event);
-    this.exerciseService.importExercise({ 'exercise-id': $event }).subscribe({
-      next: () => {
-        this.addMessage('success', 'Exercise imported');
-
-        this.findAllStoreExercise();
-      },
-      error: () => {
-        this.addMessage('error', 'Error importing exercise');
-      }
-    });
-  }
-
   /*BOILERPLATE CODE */
-  gotToPage(page: number) {
-    this._page = page;
-    this.findAllStoreExercise();
-  }
-
-  goToFirstPage() {
-    this._page = 0;
-    this.findAllStoreExercise();
-  }
-
-  goToPreviousPage() {
-    this._page--;
-    this.findAllStoreExercise();
-  }
-
-  goToLastPage() {
-    this._page = this.totalPages as number - 1;
-    this.findAllStoreExercise();
-  }
-
-  goToNextPage() {
-    this._page++;
-    this.findAllStoreExercise();
-  }
-
-  isLastPage() {
-    return this._page === this.totalPages as number - 1;
-  }
 
   get newExerciseLink(): string {
     return sub_appRoutingModule.full_manageExercisePath;
-  }
-
-  get page(): number {
-    return this._page;
-  }
-  get size(): number {
-    return this._size;
-  }
-  get pages(): any {
-    return this._pages;
   }
   /*
   Funzione di trackby utilizzata per evitare che angular ricarichi tutti i componenti della lista nell' ngfor

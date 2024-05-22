@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MyTrainingListNoPaginationComponent } from '../../components/my-training-list-no-pagination/my-training-list-no-pagination.component';
 import { NgIf, NgFor, NgClass } from '@angular/common';
+import { CalendarModule } from 'primeng/calendar';
 
 import {
   MatDialogModule,
@@ -29,7 +30,7 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
   providers: [PeriodManagerService] // Fornisce il servizio a livello di componente
   ,
   standalone: true,
-  imports: [MatDialogModule, NgIf, NgFor, MyTrainingListNoPaginationComponent, MatStepperModule, NgClass, FormsModule, ReactiveFormsModule, MatButtonModule, PeriodDayCardComponent, TrainingPeriodCardComponent, FeedbackInfoPointComponent]
+  imports: [MatDialogModule, NgIf, NgFor,CalendarModule, MyTrainingListNoPaginationComponent, MatStepperModule, NgClass, FormsModule, ReactiveFormsModule, MatButtonModule, PeriodDayCardComponent, TrainingPeriodCardComponent, FeedbackInfoPointComponent]
 })
 
 export class ManagePeriodComponent extends MessageHandler implements OnInit, OnDestroy {
@@ -67,7 +68,7 @@ export class ManagePeriodComponent extends MessageHandler implements OnInit, OnD
 
   ngOnInit(): void {
     const periodo_id = this.activatedRoute.snapshot.params['period_id'];
-    if (periodo_id) {
+    if (periodo_id!=null && periodo_id!=undefined) {
       this.subs.push(this._periodManager.setInfoByPeriodName$(periodo_id).subscribe({
         complete: () => {
           this.periodForm.patchValue({

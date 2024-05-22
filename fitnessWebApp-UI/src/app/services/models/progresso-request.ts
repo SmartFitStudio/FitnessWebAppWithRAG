@@ -5,6 +5,6 @@ export interface ProgressoRequest {
   dataMisurazione: string;
   note?: string;
   percentualeMassaGrassa: number;
-  percentualeMassaMagra: number;
+  percentualeMassaMuscolare: number;
   pesoKg: number;
 }

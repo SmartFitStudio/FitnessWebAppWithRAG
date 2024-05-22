@@ -1333,6 +1333,86 @@
         }
       }
     },
+    "/exercises/categories": {
+      "get": {
+        "tags": [
+          "Exercise"
+        ],
+        "operationId": "findExercisesByCategories",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "categories",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ABS",
+                  "ARMS",
+                  "BACK",
+                  "CALVES",
+                  "CHEST",
+                  "LEGS",
+                  "CORE",
+                  "SHOULDERS",
+                  "CARDIO",
+                  "FULL_BODY",
+                  "STRETCHING",
+                  "YOGA",
+                  "PILATES",
+                  "CROSSFIT",
+                  "FUNCTIONAL",
+                  "POWERLIFTING",
+                  "OLYMPIC_LIFTING",
+                  "STRONGMAN",
+                  "BODYBUILDING",
+                  "AEROBICS",
+                  "ZUMBA",
+                  "DANCE",
+                  "MARTIAL_ARTS",
+                  "NON_DEFINITO",
+                  "OTHER"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseExerciseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/activate-account": {
       "get": {
         "tags": [
@@ -1452,7 +1532,7 @@
           "altezzaCm",
           "dataMisurazione",
           "percentualeMassaGrassa",
-          "percentualeMassaMagra",
+          "percentualeMassaMuscolare",
           "pesoKg"
         ],
         "type": "object",
@@ -1473,7 +1553,7 @@
             "type": "number",
             "format": "float"
           },
-          "percentualeMassaMagra": {
+          "percentualeMassaMuscolare": {
             "type": "number",
             "format": "float"
           },
@@ -1784,7 +1864,7 @@
           "dataMisurazione",
           "id",
           "percentualeMassaGrassa",
-          "percentualeMassaMagra",
+          "percentualeMassaMuscolare",
           "pesoKg"
         ],
         "type": "object",
@@ -1809,7 +1889,7 @@
             "type": "number",
             "format": "float"
           },
-          "percentualeMassaMagra": {
+          "percentualeMassaMuscolare": {
             "type": "number",
             "format": "float"
           },

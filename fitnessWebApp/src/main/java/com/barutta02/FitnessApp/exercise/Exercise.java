@@ -43,7 +43,7 @@ public class Exercise extends BaseEntity{
     private String name;
     
     @Size(min=1)
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     private CategoryExercise[] category;
 

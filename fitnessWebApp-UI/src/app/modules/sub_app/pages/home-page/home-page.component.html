@@ -1,11 +1,13 @@
 
-<section class="personalInfo">
-    <h3 class="inline left">About you</h3>
+<section class="infoSection">
+    <h3 class="inline left">Il tuo andamento</h3>
     <a [routerLink]="newProgressoLink" class="def_button inline right" id="addProgress" ><i class="fa-solid fa-bars-progress"></i> Nuovo progresso</a>
     <app-user-progress-card></app-user-progress-card>
 </section>
 
-<section>
-    <h3>Agenda</h3>
-    <app-calendar [eventSettings]="eventSettings" [viewMode]="viewMode"></app-calendar>
+<section class="infoSection">
+    <h3 class="inline left">Agenda</h3>
+    <div class="mainInfoContainer">
+        <app-calendar [eventSettings]="eventSettings" [viewMode]="viewMode"></app-calendar>
+    </div>
 </section>

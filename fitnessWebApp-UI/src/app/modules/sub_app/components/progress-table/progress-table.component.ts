@@ -9,11 +9,12 @@ import { InplaceModule } from 'primeng/inplace';
 import { Router } from '@angular/router';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 @Component({
   selector: 'app-progress-table',
   standalone: true,
-  imports: [TableModule, CommonModule,InplaceModule, FeedbackInfoPointComponent],
+  imports: [TableModule, CommonModule,InplaceModule, FeedbackInfoPointComponent, ScrollPanelModule],
   templateUrl: './progress-table.component.html',
   styleUrl: './progress-table.component.scss'
 })

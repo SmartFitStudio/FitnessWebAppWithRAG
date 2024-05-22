@@ -91,8 +91,8 @@ public class FitnessApplication {
 									.shareable(false)
 									.category(new CategoryExercise[]{CategoryExercise.BACK, CategoryExercise.STRONGMAN})
 									.build());
-			}
-			
+									
+			}			
 		};
 	}
 }

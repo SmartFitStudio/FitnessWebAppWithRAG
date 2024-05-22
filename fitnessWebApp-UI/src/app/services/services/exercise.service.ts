@@ -16,6 +16,8 @@ import { findAllAuthenticatedUserExercisesPaginated } from '../fn/exercise/find-
 import { FindAllAuthenticatedUserExercisesPaginated$Params } from '../fn/exercise/find-all-authenticated-user-exercises-paginated';
 import { findAuthenticatedUserOrDefaultExerciseById } from '../fn/exercise/find-authenticated-user-or-default-exercise-by-id';
 import { FindAuthenticatedUserOrDefaultExerciseById$Params } from '../fn/exercise/find-authenticated-user-or-default-exercise-by-id';
+import { findExercisesByCategories } from '../fn/exercise/find-exercises-by-categories';
+import { FindExercisesByCategories$Params } from '../fn/exercise/find-exercises-by-categories';
 import { getExerciseCategories } from '../fn/exercise/get-exercise-categories';
 import { GetExerciseCategories$Params } from '../fn/exercise/get-exercise-categories';
 import { getExercisesFromPublicStore } from '../fn/exercise/get-exercises-from-public-store';
@@ -238,6 +240,31 @@ export class ExerciseService extends BaseService {
    */
   findAllAuthenticatedUserExercisesPaginated(params?: FindAllAuthenticatedUserExercisesPaginated$Params, context?: HttpContext): Observable<PageResponseExerciseResponse> {
     return this.findAllAuthenticatedUserExercisesPaginated$Response(params, context).pipe(
+      map((r: StrictHttpResponse<PageResponseExerciseResponse>): PageResponseExerciseResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `findExercisesByCategories()` */
+  static readonly FindExercisesByCategoriesPath = '/exercises/categories';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findExercisesByCategories()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findExercisesByCategories$Response(params: FindExercisesByCategories$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseExerciseResponse>> {
+    return findExercisesByCategories(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `findExercisesByCategories$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findExercisesByCategories(params: FindExercisesByCategories$Params, context?: HttpContext): Observable<PageResponseExerciseResponse> {
+    return this.findExercisesByCategories$Response(params, context).pipe(
       map((r: StrictHttpResponse<PageResponseExerciseResponse>): PageResponseExerciseResponse => r.body)
     );
   }

@@ -18,8 +18,8 @@ import { ManageProgressComponent } from './pages/manage-progress/manage-progress
 
 const HOME_PATH = 'home';
 
-const MANAGE_EXERCISE_PATH = 'manage-training';
-const MANAGE_TRAINING_PATH = 'manage-exercise';
+const MANAGE_EXERCISE_PATH = 'manage-exercise';
+const MANAGE_TRAINING_PATH = 'manage-training';
 const MANAGE_PERIOD_PATH = 'manage-period';
 const MANAGE_PROGRESS_PATH = 'manage-progress';
 
@@ -116,7 +116,7 @@ const routes: Routes = [
         canActivate: [authGuard]
       },
       {
-        path: MANAGE_PROGRESS_PATH + '/:progress_id',
+        path: MANAGE_PROGRESS_PATH + '/:progresso_id',
         component: ManageProgressComponent,
         canActivate: [authGuard]
       },

@@ -55,7 +55,7 @@ export class MonoLineGraphComponent {
         
       ],
       background: {
-        fill: '#f5f5f3',
+        fill: '#fff',
       },
     };
   }
