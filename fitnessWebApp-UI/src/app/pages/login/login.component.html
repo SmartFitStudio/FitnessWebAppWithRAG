@@ -1,27 +1,36 @@
-<div class="container-fluid card login-container">
+<section class="homeSection">
+  <div class="homePicture">
+    <img src="../../assets/images/home/homePhoto.png" class="fullCover">
+  </div>
+  <div class="homeInfo">
+    <div class="container-fluid card login-container">
 
-  <h3 class="text-center">Login</h3>
-  <app-feedback-info-point [messages]="messages">
-  </app-feedback-info-point>
-  <form [formGroup]="loginForm">
-    <div class="mb-3">
-      <label for="login" class="form-label">Nome utente</label>
-      <input  formControlName="username"  type="text" class="form-control" id="login" placeholder="Nome utente">
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input formControlName="password" type="password" class="form-control" id="password" placeholder="Password">
-    </div>
-  </form>
-  <div class="d-flex justify-content-between mb-3">
-    <button (click)="login()" type="button" class="btn btn-primary">
-      <em class="fas fa-sign-in-alt">&nbsp;Accedi</em>
-    </button>
-    <div>
-      Non possiedi un account?&nbsp;
-      <button (click)="register()" type="button" class="btn btn-link">
-        Registrati
-      </button>
+      <h3 class="display-5">Login</h3>
+      <app-feedback-info-point [messages]="messages">
+      </app-feedback-info-point>
+      <form [formGroup]="loginForm">
+        <p-floatLabel>
+          <input pInputText id="username" formControlName="username" [style]="{'width': '250px'}" />
+          <label for="username">Username</label>
+        </p-floatLabel>
+        <p-floatLabel>
+          <p-password formControlName="password" [feedback]="false" [style]="{'width': '250px'}" />
+          <label for="password">Password</label>
+        </p-floatLabel>
+      </form>
+        <div class="flex">
+          <div>
+            <button (click)="login()" type="button" class="def_button">
+              <em class="fas fa-sign-in-alt"> Accedi</em>
+            </button>
+          </div>
+          <div>
+            Non possiedi un account? 
+            <button (click)="register()" type="button" class="btn btn-link">
+              Registrati
+            </button>
+          </div>
+        </div>
     </div>
   </div>
-</div>
+</section>

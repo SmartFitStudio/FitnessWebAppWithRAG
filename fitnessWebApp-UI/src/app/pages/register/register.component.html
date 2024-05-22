@@ -1,45 +1,60 @@
-<div class="container-fluid card login-container">
-  <h3 class="text-center">Create an account</h3>
-  <app-feedback-info-point [messages]="messages">
-  </app-feedback-info-point>
-  <form [formGroup]="registerForm">
-    <div class="mb-3">
-      <label for="firstname" class="form-label">Nome</label>
-      <input formControlName="firstname" type="text" class="form-control" id="firstname" placeholder="Nome">
-    </div>
-    <div class="mb-3">
-      <label for="lastname" class="form-label">Cognome</label>
-      <input formControlName="lastname" type="text" class="form-control" id="lastname" placeholder="Cognome">
-    </div>
-    <div class="mb-3">
-      <label for="dateOfBirth" class="form-label">Data di nascita</label>
-      <input formControlName="dateOfBirth" type="date" class="form-control" id="dateOfBirth" placeholder="Data di nascita">
-    </div>
-    <div class="mb-3">
-      <label for="login" class="form-label">Email</label>
-      <input formControlName="email" type="email" class="form-control" id="login" placeholder="name@example.com">
-    </div>
-    <div class="mb-3">
-      <label for="username" class="form-label">Nome utente</label>
-      <input formControlName="username" type="text" class="form-control" id="username" placeholder="Nome utente">
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label><br>
-      <p-password formControlName="password" [toggleMask]="true" promptLabel="Scegli una password"
-      weakLabel="Troppo facile" 
-      mediumLabel="Puoi fare di meglio" 
-      strongLabel="Sei sicuro di ricordarla?" />
-    </div>
-  </form>
-  <div class="d-flex justify-content-between mb-3">
-    <button (click)="register()" type="button" class="btn btn-primary">
-      <em class="fas fa-sign-in-alt">&nbsp;Crea un account</em>
-    </button>
-    <div>
-      Possiedi già un account?&nbsp;
-      <button (click)="login()" type="button" class="btn btn-link">
-        Login
-      </button>
+<section class="homeSection">
+  <div class="homePicture">
+    <img src="../../assets/images/home/homePhoto.png" class="fullCover">
+  </div>
+  <div class="homeInfo">
+    <div class="container-fluid card register-container">
+      <h3 class="display-5">Crea il tuo account</h3>
+      <app-feedback-info-point [messages]="messages">
+      </app-feedback-info-point>
+      <form [formGroup]="registerForm">
+
+        <p-floatLabel>
+          <input pInputText id="nome" formControlName="firstname" [style]="{'width': '250px'}" />
+          <label for="nome">Nome</label>
+        </p-floatLabel>
+
+        <p-floatLabel>
+          <input pInputText id="cognome" formControlName="lastname" [style]="{'width': '250px'}" />
+          <label for="cognome">Cognome</label>
+        </p-floatLabel>
+
+        <p-floatLabel>
+          <p-calendar formControlName="dateOfBirth" inputId="birth_date" [style]="{'width': '250px'}" />
+          <label for="birth_date">Birth Date</label>
+        </p-floatLabel>
+
+
+        <p-floatLabel>
+          <input pInputText id="email" formControlName="email" [style]="{'width': '250px'}" type="email" />
+          <label for="email">Email</label>
+        </p-floatLabel>
+
+
+        <p-floatLabel>
+          <input pInputText id="username" formControlName="username" [style]="{'width': '250px'}" />
+          <label for="username">Username</label>
+        </p-floatLabel>
+
+        <p-floatLabel>
+          <p-password formControlName="password" [feedback]="false" />
+          <label for="password">Password</label>
+        </p-floatLabel>
+
+      </form>
+      <div class="flex">
+        <div>
+          <button (click)="register()" type="button" class="def_button">
+            <em class="fas fa-sign-in-alt">&nbsp;Registrati</em>
+          </button>
+        </div>
+        <div>
+          Possiedi già un account?&nbsp;
+          <button (click)="login()" type="button" class="btn btn-link">
+            Login
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>

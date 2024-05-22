@@ -35,63 +35,6 @@ export class PeriodManagerService implements OnDestroy {
       this.subscription_active_period.unsubscribe();
   }
 
-  get allenamentiPeriodo(): PeriodoAllenamentoRequest[] {
-    return this.periodoAllenamentoRequest_list.filter((value) => value.giorno_del_periodo <= this.periodoRequest.durata_in_giorni);
-  }
-
-  get periodoId(): number | undefined {
-    return this.periodoRequest.id;
-  }
-
-  get periodoName(): string {
-    return this.periodoRequest.name;
-  }
-
-  get periodoObiettivo(): ObbiettivoPeriodo {
-    return this.periodoRequest.obiettivo || ObbiettivoPeriodo.NON_DEFINITO;
-  }
-
-  get periodoDurataInGiorni(): number {
-    return this.periodoRequest.durata_in_giorni;
-  }
-
-  get periodoDataInizio(): string {
-    return this.periodoRequest.data_inizio;
-  }
-
-  get periodoDataFine(): string {
-    return this.periodoRequest.data_fine || "";
-  }
-  get allenamentoPeriodoResponseList(): PeriodoAllenamentoResponse[] {
-    return this.periodoAllenamentoRequest_list.map((value) => this.mapPeriodoAllenamentoRequestToPeriodoAllenamentoResponse(value));
-  }
-
-  set periodoName(value: string) {
-    this.periodoRequest.name = value;
-  }
-
-  set periodoObiettivo(value: ObbiettivoPeriodo) {
-    this.periodoRequest.obiettivo = value;
-  }
-
-  //Durata del ciclo!
-  set periodoDurataInGiorni(value: number) {
-    this.periodoRequest.durata_in_giorni = value;
-  }
-
-  set periodoDataInizio(value: string) {
-    this.periodoRequest.data_inizio = value;
-  }
-
-  set periodoDataFine(value: string) {
-    this.periodoRequest.data_fine = value;
-  }
-
-  get periodoAttivo(): boolean {
-    return this.periodoRequest.attivo;
-  }
-
-
   set periodoAttivo(value: boolean) {
     if (this.active_periodo === undefined) { // Se è nullo vuol dire che non lhò ancora recuperato
       this.subscription_active_period = this.getActivePeriod$().subscribe(
@@ -108,10 +51,6 @@ export class PeriodManagerService implements OnDestroy {
         this.periodoRequest.attivo = value;
       }
     }
-  }
-
-  get activePeriod(): PeriodoResponse | undefined | null{ //Se non ho ancora recuperato i dati ritorno undefined
-    return this.active_periodo;
   }
 
   public setInfoByPeriodName$(periodo_id: number): Observable<any> {
@@ -203,14 +142,17 @@ export class PeriodManagerService implements OnDestroy {
     };
   }
 
-  public is_there_active_period(): boolean {
-    return this.active_periodo? true : false;
-  }
-
+  /**
+   * Ottieni gli eventi da visualizzare nel calendario per il periodo di allenamento.
+   * 
+   * @param max_iteration_scheduling Indica il numero di cicli da fare per ottenere gli eventi a partire dalla data ATTUALE!
+   * @returns 
+   */
   public getScheduleEvents(max_iteration_scheduling: number): ScheduleEvent[] {
     const events: ScheduleEvent[] = [];
     let id = 0;
-    for (let j = 0; j < max_iteration_scheduling; j++) {
+    let iteration_counter = 0;
+    for (let j = 0; iteration_counter < max_iteration_scheduling; j++) {
     for (let i = 0; i < this.periodoAllenamentoRequest_list.length; i++) {
         let dataInizio = new Date(this.periodoRequest.data_inizio);
         // Impostare il fuso orario a UTC+1 (Roma)
@@ -236,25 +178,18 @@ export class PeriodManagerService implements OnDestroy {
           EndTime: datafine,
           IsAllDay: false,
         });
+        /*
+      Il comportamento che voglio è ottenere N cicli ma a partire dalla data di oggi, 
+      quindi se la data di inizio è minore della data di oggi, decremento j
+       per ottenere N cicli a partire dalla data di oggi.
+      */
+      if(i == this.periodoAllenamentoRequest_list.length -1 &&  dataInizio >= new Date()){
+        console.log(dataInizio + " < " + new Date() );
+        iteration_counter++;
+      }
       }
     }
     return events;
-  }
-
-  /*
-  La funzione restituisce l'orario di inizio dell'allenamento in base al periodo della giornata.
-  */
-  private gerOrarioInizio(periodo_giornata: PeriodoGiornata): number {
-    switch (periodo_giornata) {
-      case PeriodoGiornata.MATTINA:
-        return 8;
-      case PeriodoGiornata.POMERIGGIO:
-        return 14;
-      case PeriodoGiornata.SERA:
-        return 20;
-      default:
-        return 8;
-    }
   }
 
   public addAllenamentoToPeriodo(allenamento: PeriodoAllenamentoRequest) {
@@ -302,8 +237,6 @@ export class PeriodManagerService implements OnDestroy {
   public getAllenamentiPeriodoByDay(day: number): PeriodoAllenamentoRequest[] {
     return this.periodoAllenamentoRequest_list.filter((value) => value.giorno_del_periodo === day);
   }
-
-
 
   private fillEmptyData() {
     if (!this.periodoRequest.data_inizio) {
@@ -366,5 +299,86 @@ La funzione filtra gli oggetti che sono presenti nella lista iniziale ma non nel
     }else{
       return EMPTY;
     }
+  }
+  
+
+  //BOILERPLATE CODE
+
+  /*
+  La funzione restituisce l'orario di inizio dell'allenamento in base al periodo della giornata.
+  */
+  private gerOrarioInizio(periodo_giornata: PeriodoGiornata): number {
+    switch (periodo_giornata) {
+      case PeriodoGiornata.MATTINA:
+        return 8;
+      case PeriodoGiornata.POMERIGGIO:
+        return 14;
+      case PeriodoGiornata.SERA:
+        return 20;
+      default:
+        return 8;
+    }
+  }
+
+  get allenamentiPeriodo(): PeriodoAllenamentoRequest[] {
+    return this.periodoAllenamentoRequest_list.filter((value) => value.giorno_del_periodo <= this.periodoRequest.durata_in_giorni);
+  }
+
+  get periodoId(): number | undefined {
+    return this.periodoRequest.id;
+  }
+
+  get periodoName(): string {
+    return this.periodoRequest.name;
+  }
+
+  get periodoObiettivo(): ObbiettivoPeriodo {
+    return this.periodoRequest.obiettivo || ObbiettivoPeriodo.NON_DEFINITO;
+  }
+
+  get periodoDurataInGiorni(): number {
+    return this.periodoRequest.durata_in_giorni;
+  }
+
+  get periodoDataInizio(): string {
+    return this.periodoRequest.data_inizio;
+  }
+
+  get periodoDataFine(): string {
+    return this.periodoRequest.data_fine || "";
+  }
+  get allenamentoPeriodoResponseList(): PeriodoAllenamentoResponse[] {
+    return this.periodoAllenamentoRequest_list.map((value) => this.mapPeriodoAllenamentoRequestToPeriodoAllenamentoResponse(value));
+  }
+
+  set periodoName(value: string) {
+    this.periodoRequest.name = value;
+  }
+
+  set periodoObiettivo(value: ObbiettivoPeriodo) {
+    this.periodoRequest.obiettivo = value;
+  }
+
+  //Durata del ciclo!
+  set periodoDurataInGiorni(value: number) {
+    this.periodoRequest.durata_in_giorni = value;
+  }
+
+  set periodoDataInizio(value: string) {
+    this.periodoRequest.data_inizio = value;
+  }
+
+  set periodoDataFine(value: string) {
+    this.periodoRequest.data_fine = value;
+  }
+
+  get periodoAttivo(): boolean {
+    return this.periodoRequest.attivo;
+  }
+  get activePeriod(): PeriodoResponse | undefined | null{ //Se non ho ancora recuperato i dati ritorno undefined
+    return this.active_periodo;
+  }
+  public is_there_active_period(): boolean {
+    return this.active_periodo? true : false;
   }
 }
