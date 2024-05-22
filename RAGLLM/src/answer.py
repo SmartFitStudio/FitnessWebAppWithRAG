@@ -71,4 +71,4 @@ def generate_workout_json(workout_data, user_data, available_exercises):
             continue
         else:
             return True, parsed_answer
-    return False, "Impossibile generare l'allenamento richiesto. Riprova più tardi."
+    return False, "Non è stato possibile generare l'allenamento richiesto.\n Si prega di riprovare più tardi."

@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.barutta02.FitnessApp.exception.ActivationTokenException;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
@@ -176,6 +177,15 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .error("Il sistema di intelligenza artificiale al momento non è raggiungibile.\n Si prega di riprovare più tardi.")
                                 .build()
+                );
+    }
+
+    @ExceptionHandler(WebClientResponseException.class)
+    public ResponseEntity<ExceptionResponse> handleException(WebClientResponseException exp) {
+        return ResponseEntity
+                .status(exp.getStatusCode())
+                .body(
+                        exp.getResponseBodyAs(ExceptionResponse.class)
                 );
     }
 }
