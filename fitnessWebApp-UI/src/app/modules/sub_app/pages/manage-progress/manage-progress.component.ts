@@ -149,7 +149,7 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
   get IsMassaGrassaInputValid(): boolean {
     return this.progressoForm.controls['massa_grassa'].valid;
   }
-  get IsMassaMagraInputValid(): boolean {
+  get IsMassaMuscolareInputValid(): boolean {
     return this.progressoForm.controls['massa_muscolare'].valid;
   }
   get IsAltezzaInputValid(): boolean {

@@ -55,7 +55,7 @@ public class UserDataExtractor {
                              "Peso in kg: " + progresso.getPesoKg() + "\n" +
                              "Altezza in cm: " + progresso.getAltezzaCm() + "\n" +
                              "Percentuale massa grassa: " + progresso.getPercentualeMassaGrassa() + "\n" +
-                             "Percentuale massa magra: " + progresso.getPercentualeMassaMagra() + "\n" +
+                             "Percentuale massa muscolare: " + progresso.getPercentualeMassaMuscolare() + "\n" +
                              "Note: " + (progresso.getNote()!=null && !progresso.getNote().isEmpty()?progresso.getNote():"assenti") + "\n";
                 numero_misurazione++;
             }
