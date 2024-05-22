@@ -23,9 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -106,6 +104,17 @@ public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseReq
                                 exercises.isLast());
         }
 
+        public ArrayList<ExerciseResponse> findAllAuthenticatedUserExercises_noPagination(
+                        Authentication connectedUser) {
+                User user = userExtractor.getUserFromAuthentication(connectedUser);
+                ArrayList<Exercise> exercises = exerciseRepository.findByCreatorOrCreatorIsNull(user)
+                                .orElseThrow(() -> new EntityNotFoundException(
+                                                "Nessun esercizio associato a te è stato trovato"));
+                return exercises.stream()
+                                .map(exerciseMapper::toExerciseResponse)
+                                .collect(Collectors.toCollection(ArrayList::new));
+        }
+
         public PageResponse<ExerciseResponse> findAllImportableExercisesByCategories(int page, int size,
                         List<CategoryExercise> categories, Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
@@ -119,7 +128,7 @@ public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseReq
                                 .stream(); // Convert back to a Stream if needed for further processing
 
                 List<ExerciseResponse> exerciseResponseList = exerciseStream
-                                .map(exercise -> exerciseMapper.toExerciseResponse(exercise)) 
+                                .map(exercise -> exerciseMapper.toExerciseResponse(exercise))
                                 .collect(Collectors.toList());
                 Page<ExerciseResponse> exerciseResponsePage = new PageImpl<>(exerciseResponseList, pageable,
                                 exerciseResponseList.size());
@@ -135,11 +144,11 @@ public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseReq
 
         public ExerciseResponse importExercise(Long exerciseId, Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
-                log.info( "User: " + user.getId() + " is importing exercise: " + exerciseId);
+                log.info("User: " + user.getId() + " is importing exercise: " + exerciseId);
                 Exercise exercise = exerciseRepository.findById(exerciseId)
                                 .orElseThrow(() -> new EntityNotFoundException(
                                                 "No exercise found with ID:: " + exerciseId));
-                log.info(""+exercise.getCreator().getId());
+                log.info("" + exercise.getCreator().getId());
                 if (!exercise.isShareable()) {
                         throw new OperationNotPermittedException("You cannot import an exercise that is not shareable");
                 }

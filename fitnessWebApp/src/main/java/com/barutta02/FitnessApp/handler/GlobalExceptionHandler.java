@@ -10,6 +10,7 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import com.barutta02.FitnessApp.exception.ActivationTokenException;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
@@ -24,6 +25,7 @@ import static com.barutta02.FitnessApp.handler.BusinessErrorCodes.OPERATION_NOT_
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice // This annotation is used to handle exceptions globally in the application
@@ -162,6 +164,17 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .businessErrorDescription("Errore interno del server, riprova più tardi.")
                                 .error(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(WebClientRequestException.class)
+    public ResponseEntity<ExceptionResponse> handleException(WebClientRequestException exp) {
+        return ResponseEntity
+                .status(SERVICE_UNAVAILABLE)
+                .body(
+                        ExceptionResponse.builder()
+                                .error("Il sistema di intelligenza artificiale al momento non è raggiungibile.\n Si prega di riprovare più tardi.")
                                 .build()
                 );
     }

@@ -5,6 +5,8 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import JsonOutputParser
 
+MAX_RETRIES = 3
+
 def get_loaded_DB():
     return Chroma(client=common.chroma_client, embedding_function=common.embeddings_model)
 
@@ -15,39 +17,58 @@ def create_context(query):
     # generate an answer based on given user query and retrieved context information
     return "\n\n".join([doc.page_content for doc, _score in docs_chroma]) #context text
 
-def create_prompt_from_template(context_text, query):
+def create_prompt_from_template_to_answer(context_text, query, user_data):
     PROMPT_TEMPLATE = """
-    Rispondi alla domanda basandoti principalmente sul seguente contesto:
+    I dati dell'utente a cui stai rispondendo sono i seguenti:
+    {user_data}
+    Rispondi alla sua domanda basandoti principalmente sul seguente contesto:
     {context}
-    La domanda a cui rispondere basandosi sul contesto è la seguente: 
+    La domanda a cui devi rispondere basandoti sul contesto è la seguente: 
     {question}
     Fornisci una risposta dettagliata.
     Non giustificare la tua risposta.
-    Non fornire informazioni che non sono menzionate nel contesto.
     Rispondi in italiano.
     Evita frasi che citino il fatto che tu stia usando un contesto.
-    La risposta deve contenere solo testo.
     Non inserire note.
     """
     # load retrieved context and user query in the prompt template
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-    return prompt_template.format(context=context_text, question=query) #prompt
+    return prompt_template.format(context=context_text, question=query, user_data=user_data) #prompt
+
+def create_prompt_from_template_to_generate_json(context_text, user_data, workout_data, available_exercises, format_instructions):
+    PROMPT_TEMPLATE = """
+    I dati dell'utente a cui stai rispondendo sono i seguenti:
+    {user_data}
+    I dati base dell'allenamento che l'utente ha fornito sono i seguenti:
+    {workout_data}
+    Gli esercizi tra cui puoi scegliere sono i seguenti:
+    {available_exercises}
+    Basati sul seguente contesto:
+    {context}
+    Crea un allenamento che rispetti la seguente struttura:
+    {format_instructions}
+    """
+    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+    return prompt_template.format(user_data=user_data, workout_data=workout_data, available_exercises=available_exercises, context=context_text, format_instructions=format_instructions) #prompt
 
 def generate_answer(prompt):
     return common.chat_model.invoke(prompt).content #response text
 
-def answer_question(query):
+def answer_question(query, user_data):
     context_text = create_context(query)
-    prompt = create_prompt_from_template(context_text, query)
+    prompt = create_prompt_from_template_to_answer(context_text, query, user_data)
     return generate_answer(prompt)
 
-def generate_json():
-    PROMPT_TEMPLATE = """
-    Crea e popola con dei dati veri una stringa JSON che segua la seguente struttura:
-    {format_instructions}
-    """
+def generate_workout_json(workout_data, user_data, available_exercises):
+    context_text = create_context(workout_data)
     parser = JsonOutputParser(pydantic_object=classes.Allenamento)
-    prompt = ChatPromptTemplate.from_template(PROMPT_TEMPLATE).format(
-        format_instructions=parser.get_format_instructions()
-    )
-    return parser.parse(common.chat_model.invoke(prompt).content) #va gestita l'eccezione
+    prompt = create_prompt_from_template_to_generate_json(context_text, user_data, workout_data, available_exercises, parser.get_format_instructions())
+    for attempt in range(MAX_RETRIES):
+        try:
+            answer = generate_answer(prompt)
+            parsed_answer = parser.parse(answer)
+        except:
+            continue
+        else:
+            return True, parsed_answer
+    return False, "Impossibile generare l'allenamento richiesto. Riprova più tardi."

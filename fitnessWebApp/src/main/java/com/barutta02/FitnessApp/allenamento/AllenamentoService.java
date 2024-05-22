@@ -71,9 +71,9 @@ public class AllenamentoService implements Service_CRUD<Allenamento, Long, Allen
                                 .orElseThrow(() -> new EntityNotFoundException(
                                                 "Nessun allenamento creato da te è stato trovato"));
                 ;
-                return (ArrayList<AllenamentoResponse>) allenamenti.stream()
-                                .map(allenamentoMapper::toAllenamentoResponse)
-                                .collect(Collectors.toCollection(ArrayList::new));
+                return  allenamenti.stream()
+                        .map(allenamentoMapper::toAllenamentoResponse)
+                        .collect(Collectors.toCollection(ArrayList::new));
         }
 
         public PageResponse<AllenamentoResponse>  findAllAuthUserAllenamento_paginated(int page, int size,

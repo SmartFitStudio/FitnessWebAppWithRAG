@@ -10,6 +10,8 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
+import { RagllmService } from '../../../../services/services';
+import { DisableDirective } from '../../directives/disable.directive';
 
 @Component({
   selector: 'app-manage-training',
@@ -17,25 +19,27 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
   styleUrls: ['./manage-training.component.scss'],
   providers: [TrainingManagerService],
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, NgClass, MyExerciseListComponent, TrainExerciseHandlerComponent, FeedbackInfoPointComponent]
+  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, NgClass, MyExerciseListComponent, TrainExerciseHandlerComponent, FeedbackInfoPointComponent, DisableDirective]
 })
 export class ManageTrainingComponent extends MessageHandler  implements OnInit {
 
   trainingForm = this.formBuilder.group({
     nome_allenamento: ['', Validators.required],
     descrizione_allenamento: [''],
-    durata_in_ore_allenamento: [0, [Validators.min(0)]]
+    durata_in_ore_allenamento: [0, [Validators.min(0), Validators.required]]
   });
 
   private _openedTab = 0;
+  isDisabled = false;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private _trainManager: TrainingManagerService,
     private formBuilder: FormBuilder,
+    private ragllmService: RagllmService,
     @Inject(ErrorHandlerService) handleError: ErrorHandlerService
-  ) { 
+  ) {
     super(handleError);
   }
 
@@ -86,6 +90,42 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
       error: (error) => {
         this.handleErrorMessages(error);
       }
+    });
+  }
+
+  generateWorkout() {
+    this.clearMessages();
+    if (!this.trainingForm.valid) {
+      this.addMessage('warn', 'Compila correttamente i campi obbligatori');
+      return;
+    }
+    if (!this.trainingForm.value.descrizione_allenamento) {
+      this.addMessage('warn', 'Inserisci una descrizione per l\'allenamento se vuoi generare un nuovo allenamento attraverso l\'IA');
+      return;
+    }
+    if (this.training_exercises.length > 0) {
+      this.addMessage('warn', 'Per generare un nuovo allenamento devi prima eliminare gli esercizi attuali');
+      return;
+    }
+    this.isDisabled = true;
+    this.addMessage('info', 'Generazione allenamento in corso...');
+    let ragObserver$ = this.ragllmService.generateWorkout(
+      {body: {descrizione: this.trainingForm.value.descrizione_allenamento!, durata_in_ore: this.trainingForm.value.durata_in_ore_allenamento!, nome: this.trainingForm.value.nome_allenamento!}})
+      .subscribe({
+        next: workoutResponse => {
+          this._trainManager.setInfoFromWorkoutResponse(workoutResponse);
+        },
+        complete: () => {
+          this.clearMessages();
+          this.isDisabled = false;
+          ragObserver$.unsubscribe();
+          this._openedTab++;
+        },
+        error: (error) => {
+          this.clearMessages();
+          this.isDisabled = false;
+          this.handleErrorMessages(error);
+        }
     });
   }
 
