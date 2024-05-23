@@ -2,6 +2,7 @@ package com.barutta02.FitnessApp.handler;
 
 import jakarta.mail.MessagingException;
 
+import org.springframework.core.codec.DecodingException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -186,6 +187,17 @@ public class GlobalExceptionHandler {
                 .status(exp.getStatusCode())
                 .body(
                         exp.getResponseBodyAs(ExceptionResponse.class)
+                );
+    }
+
+    @ExceptionHandler(DecodingException.class)
+    public ResponseEntity<ExceptionResponse> handleException(DecodingException exp) {
+        return ResponseEntity
+                .status(INTERNAL_SERVER_ERROR)
+                .body(
+                        ExceptionResponse.builder()
+                                .error("Non è stato possibile generare l'allenamento richiesto.\n Si prega di riprovare più tardi.")
+                                .build()
                 );
     }
 }
