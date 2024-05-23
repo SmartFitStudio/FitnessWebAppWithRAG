@@ -28,3 +28,12 @@ jobs:
       run: mvn -B package --file fitnessWebApp/pom.xml
     - name: Test with Maven
       run: mvn test --file fitnessWebApp/pom.xml
+    - name: Generate Code Coverage Report
+      run: mvn jacoco:report --file fitnessWebApp/pom.xml
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./fitnessWebApp/target/site/jacoco/jacoco.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
