@@ -1,0 +1,61 @@
+.homeSection {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.homeInfo {
+    padding-top: 5em;
+    padding-left: 2em;
+    padding-right: .5em;
+    background: #f0efef;
+    color: #000;
+    flex: 1;
+}
+
+.homeInfo .links{
+padding-bottom: 3em;
+}
+
+.homeInfo .links a {
+    padding-right: 2em;
+    font-weight: bold;
+    font-size: 1em;
+    text-decoration: none;
+    color: #000;
+}
+
+.homeInfo .titles{
+
+}
+
+p.display-6{
+    font-size: 1.5rem;
+
+}
+
+.homeInfo h1 {
+font-weight: bold;
+}
+.homeInfo h2{
+    font-size: 2rem;
+}
+
+.homePicture {
+    flex: 1;
+    height: 100vh;
+    max-width: 600px;
+}
+
+.homePicture .fullCover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

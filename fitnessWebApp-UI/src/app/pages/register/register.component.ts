@@ -9,13 +9,16 @@ import { ErrorHandlerService } from '../../services/myServices/error-handler/err
 import { FeedbackInfoPointComponent } from '../../component/feedback-info-point/feedback-info-point.component';
 import { MessageHandler } from '../../services/myServices/error-handler/MessageHandler';
 import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, FeedbackInfoPointComponent, PasswordModule]
+  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, FeedbackInfoPointComponent, PasswordModule, CalendarModule, InputTextModule, FloatLabelModule]
 })
 export class RegisterComponent extends MessageHandler {
   registerRequest: RegistrationRequest = { email: '', firstname: '', lastname: '', password: '', username: '', dateOfBirth: '' };

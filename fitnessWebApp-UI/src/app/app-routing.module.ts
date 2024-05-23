@@ -5,7 +5,10 @@ import {RegisterComponent} from './pages/register/register.component';
 import {authGuard} from './services/guard/auth.guard';
 import {ActivateAccountComponent} from './pages/activate-account/activate-account.component';
 import { PagenotfoundComponent } from './pages/pagenotfound/pagenotfound.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
+
+const HOME_PATH = '';
 const PERSONAL_AREA_PATH = 'area-personale';
 const LOGIN_PATH = 'login';
 const REGISTER_PATH = 'register';
@@ -13,6 +16,10 @@ const ACTIVATE_ACCOUNT_PATH = 'activate-account';
 
 
 const routes: Routes = [
+  {
+    path: HOME_PATH,
+    component: HomePageComponent
+  },
   {
     path: LOGIN_PATH,
     component: LoginComponent
@@ -42,6 +49,11 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {
+
+  static get homePath(): string {
+    return HOME_PATH;
+  }
+  
   static get personalAreaPath(): string {
     return PERSONAL_AREA_PATH;
   }

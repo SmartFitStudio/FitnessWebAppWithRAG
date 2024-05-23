@@ -49,7 +49,7 @@ public class PeriodoService {
         }
         
         private void validatePeriodoRequest(PeriodoRequest request){
-            if (request.data_inizio().isAfter(request.data_fine())){
+            if (request.data_fine() != null && request.data_inizio().isAfter(request.data_fine())){
                 throw new IllegalArgumentException("La data di inizio non può essere successiva alla data di fine");
             }
         }

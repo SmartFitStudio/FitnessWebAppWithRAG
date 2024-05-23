@@ -6,17 +6,19 @@ import { TokenService } from '../../services/token/token.service';
 import { AppRoutingModule } from '../../app-routing.module';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
-
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { ErrorHandlerService } from '../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../component/feedback-info-point/feedback-info-point.component';
 import { MessageHandler } from '../../services/myServices/error-handler/MessageHandler';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, FeedbackInfoPointComponent]
+  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, FeedbackInfoPointComponent, InputTextModule, FloatLabelModule, PasswordModule]
 })
 export class LoginComponent extends MessageHandler{
   authRequest: AuthenticationRequest = { username: '', password: '' };

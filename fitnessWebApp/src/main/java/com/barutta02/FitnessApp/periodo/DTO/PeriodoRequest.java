@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record PeriodoRequest(
     Long id,
-    @NotNull(message = "Il nome del peroodo è necessario") 
+    @NotNull(message = "Il nome del periodo è necessario") 
     @NotEmpty(message = "Il nome del periodo è necessario")
     String name,
 

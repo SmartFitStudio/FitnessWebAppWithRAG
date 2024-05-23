@@ -2,11 +2,9 @@ package com.barutta02.FitnessApp.allenamento;
 
 import com.barutta02.FitnessApp.allenamento.DTO.AllenamentoRequest;
 import com.barutta02.FitnessApp.allenamento.DTO.AllenamentoResponse;
-import com.barutta02.FitnessApp.allenamento_esercizio.AllenamentoEsercizioRepository;
 import com.barutta02.FitnessApp.common.PageResponse;
 import com.barutta02.FitnessApp.common.Service_CRUD;
 import com.barutta02.FitnessApp.config.UserExtractor;
-import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
 
 import com.barutta02.FitnessApp.user.User;
 import jakarta.persistence.EntityNotFoundException;
@@ -41,18 +39,12 @@ import java.util.stream.Collectors;
 public class AllenamentoService implements Service_CRUD<Allenamento, Long, AllenamentoRequest, AllenamentoResponse>{
 
         private final AllenamentoRepository allenamentoRepository;
-        private final AllenamentoEsercizioRepository allenamentoEsercizioRepository;
         private final AllenamentoMapper allenamentoMapper;
         private final UserExtractor userExtractor;
 
         public AllenamentoResponse save(AllenamentoRequest request, Authentication connectedUser) {
                 User user = this.userExtractor.getUserFromAuthentication(connectedUser);
                 Allenamento allenamento = allenamentoMapper.toAllenamento(request, user);
-                if (request.id() != null) {
-                        allenamentoEsercizioRepository //TO DO, da rimuovere. Ricordati
-                                        .deleteByAllenamento_IdAndAllenamento_Creator(allenamento.getId(),
-                                                        user);
-                }
                 return allenamentoMapper.toAllenamentoResponse(allenamentoRepository.save(allenamento));
         }
 

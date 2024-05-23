@@ -37,7 +37,7 @@ export class HomePageComponent extends MessageHandler implements OnInit {
   ngOnInit(): void {
     this.periodoService.findAuthenticatedUserActivePeriodo().subscribe({
       next: (response) => {
-        if (response && response.id) {
+        if (response && response.id != null && response.id != undefined) {
           let periodInfoSubscription$ = this.periodManagerService.setInfoByPeriodName$(response.id).subscribe({
             complete: () => {
               periodInfoSubscription$.unsubscribe();
