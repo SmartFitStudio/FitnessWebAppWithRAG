@@ -18,20 +18,27 @@ export class NotificationListComponent extends MessageHandler implements OnInit 
   seeAll: boolean = false;
 
   private lista_notifiche: NotificaResponse[] = [];
+  private ALREADY_GET_NOTIFICATIONS: boolean = false;
+
   constructor(private notificationService: NotificaService,
     @Inject(ErrorHandlerService) handleError: ErrorHandlerService) {
     super(handleError);
      }
 
   ngOnInit(): void {
-    this.notificationService.getTodayNotification().subscribe({
-      next: notifiche => {
-        this.lista_notifiche = notifiche;
-      },
-      error: error => {
-        this.handleErrorMessages(error);
-      }
-    })
+    if(!this.ALREADY_GET_NOTIFICATIONS){
+      console.log("getTodayNotification");
+      this.notificationService.getTodayNotification().subscribe({
+        next: notifiche => {
+          this.lista_notifiche = notifiche;
+          this.ALREADY_GET_NOTIFICATIONS = true;
+        },
+        error: error => {
+          this.handleErrorMessages(error);
+        }
+      })
+    }
+    
   }
 
   /*
