@@ -4,13 +4,14 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { RagllmService } from '../../../../services/services/ragllm.service';
 import { ConversationMessage } from '../../services/models/conversationMessage';
+import { ScrollToBottomDirective } from '../../directives/scroll-to-bottom.directive';
 import * as Showdown from 'showdown';
-import { ToggleButtonsComponent } from '../toggle-buttons/toggle-buttons.component';
+import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-chatbot',
   standalone: true,
-  imports: [ReactiveFormsModule, NgFor, NgIf],
+  imports: [ReactiveFormsModule, NgFor, NgIf, ScrollToBottomDirective, SafeHtmlPipe],
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.css']
 })
@@ -32,7 +33,7 @@ export class ChatbotComponent {
 
 
   openEnd(content: TemplateRef<any>) {
-		this.offcanvasService.open(content, { position: 'end' });
+		this.offcanvasService.open(content, { position: 'end'});
 	}
 
   onSubmit() {
@@ -41,15 +42,20 @@ export class ChatbotComponent {
       this.promptForm.disable();
       this.messages.push({userPrompt: promptValue.trim(), chatbotResponse: ''});
       const subscription$ = this.ragllmService.answerQuestion({body: {question: promptValue.trim()}}).subscribe({
-          next: ragllmResponse => {
-              this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml(ragllmResponse.response.toString());
+          next: async ragllmResponse => {
+              let temp = "";
+              for (const char of ragllmResponse.response.toString()) {
+                temp += char;
+                this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml(temp);
+                await this.sleep(2);
+              }
+              this.promptForm.enable();
           },
           error: error => {
             this.promptForm.enable();
             this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml(error.error.error);
           },
           complete: () => {
-            this.promptForm.enable();
             subscription$.unsubscribe();
           }
           }
@@ -63,5 +69,9 @@ export class ChatbotComponent {
 
   get userPrompt() {
     return this.promptForm.get('userPrompt');
+  }
+
+  private sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

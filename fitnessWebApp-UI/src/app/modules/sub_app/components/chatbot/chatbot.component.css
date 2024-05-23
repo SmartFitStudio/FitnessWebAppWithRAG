@@ -14,5 +14,45 @@
 
 *:focus {
   outline: none !important;
-  box-shadow: none;
+  box-shadow: none !important;
+}
+
+#chatbot-button-height {
+  height: 60px;
+}
+
+.user-prompt {
+  background-color: #d8f6c0;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px;
+  width: fit-content;
+  max-width: 75%;
+  margin-left: auto;
+}
+
+.chatbot-response {
+  background-color: #f1f1f1;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px;
+  width: fit-content;
+  max-width: 75%;
+  margin-right: auto;
+}
+
+::ng-deep .chatbot-response h1{
+  font-size: 1.6rem;
+}
+
+::ng-deep .chatbot-response h2{
+  font-size: 1.4rem;
+}
+
+::ng-deep .chatbot-response h3{
+  font-size: 1.2rem;
+}
+
+::ng-deep .chatbot-response h4,.chatbot-response h5,.chatbot-response h6{
+  font-size: 1rem;
 }

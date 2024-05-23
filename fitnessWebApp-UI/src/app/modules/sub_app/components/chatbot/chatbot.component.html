@@ -3,11 +3,11 @@
 		<h4 class="offcanvas-title">Come posso aiutarti?</h4>
 		<button type="button" class="btn-close" aria-label="Chiudi" (click)="offcanvas.dismiss('Cross click')"></button>
 	</div>
-	<div class="offcanvas-body">
+	<div class="offcanvas-body" [appScrollToBottom]="true" id="scrollBody">
     <div *ngFor="let message of messages">
-      <p class="text-end">{{message.userPrompt}}</p>
+      <p class="user-prompt">{{message.userPrompt}}</p>
       <ng-container *ngIf="message.chatbotResponse; else loadingResponse">
-        <div innerHTML="{{message.chatbotResponse}}"></div>
+        <div class="chatbot-response" [innerHTML]="message.chatbotResponse | safeHtml"></div>
       </ng-container>
       <ng-template #loadingResponse>
         <div class="spinner-border spinner-border-sm" role="status">
@@ -31,6 +31,8 @@
 </ng-template>
 
 
-<button class="btn btn-lg btn-outline-light mb-2 me-2 chatbot-button" (click)="openEnd(content)">
+<button class="btn btn-lg btn-light btn-outline-dark mb-2 me-2 chatbot-button" (click)="openEnd(content)">
   <i class="fa-regular fa-comments"></i>
 </button>
+
+<div id="chatbot-button-height"></div>
