@@ -1,28 +1,35 @@
 <div id="stepperContainer">
-    <mat-tab-group>
-        <mat-tab label="Peso">
-            <div class="graphContainer">
-                <app-multi-line-graph [graphData]="dataPeso" [x1Name]="'time'" [x2Name]="'time'" [y1Name]="'Peso'"
-                    [y2Name]="'Peso ideale'">
-                </app-multi-line-graph>
-            </div>
-        </mat-tab>
-        <mat-tab label="Massa">
-            <div class="graphContainer">
-                <app-multi-line-graph [graphData]="dataMasse" [x1Name]="'time'" [x2Name]="'time'" [y1Name]="'M. grassa'"
-                [y2Name]="'M. muscolare'">
-                </app-multi-line-graph>
-            </div>
-        </mat-tab>
-    </mat-tab-group>
-    <hr>
-    <div class="pieGraphGroup">
-        <div class="left def_pie_graph" id="firstPie">
-            <p-chart type="pie" [data]="data" [options]="options" />
-        </div>
-        <div id="tableProgress">
-            <app-progress-table></app-progress-table>
-        </div>
+    <div *ngIf="isProgressDataEmpty; else progressFilledTemplate">
+        <p>
+            Non ci sono dati sufficienti per mostrare i progressi.
+        </p>
     </div>
-    
+    <ng-template #progressFilledTemplate>
+        <mat-tab-group>
+            <mat-tab label="Peso">
+                <div class="graphContainer">
+                    <app-multi-line-graph [graphData]="dataPeso" [x1Name]="'time'" [x2Name]="'time'" [y1Name]="'Peso'"
+                        [y2Name]="'Peso ideale'">
+                    </app-multi-line-graph>
+                </div>
+            </mat-tab>
+            <mat-tab label="Massa">
+                <div class="graphContainer">
+                    <app-multi-line-graph [graphData]="dataMasse" [x1Name]="'time'" [x2Name]="'time'" [y1Name]="'M. grassa'"
+                    [y2Name]="'M. muscolare'">
+                    </app-multi-line-graph>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+        <hr>
+        <div class="pieGraphGroup">
+            <div class="left def_pie_graph" id="firstPie">
+                <p-chart type="pie" [data]="data" [options]="options" />
+            </div>
+            <div id="tableProgress">
+                <app-progress-table></app-progress-table>
+            </div>
+        </div>
+    </ng-template>
+
 </div>

@@ -4,10 +4,10 @@
 }
 
 .allenamento_esercizio_card{
-        display: grid;
-        grid-template-columns: 100px 1fr 30px; /* Le colonne avranno larghezza uguale */
-        gap: 1em; /* Spazio tra le colonne */
-        padding: .5em;
+    display: grid;
+    grid-template-columns: 100px 1fr 100px;
+    gap: 1em;
+    padding: 0.5em;
 }
 .allenamento_esercizio_card dt.exerciseName{
     display: inline;
@@ -44,4 +44,29 @@
     content: " · ";
     font-weight: 700;
 
+}
+.buttonHanlder{
+    display: flex;
+    gap: .2em;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+:host ::ng-deep .p-inputtext {
+    max-width: 50px;
+    max-height: 30px;
+    padding-left: .1em;
+}
+
+
+:host ::ng-deep span.p-inputnumber.p-component {
+    padding-left: .2em;
+}
+
+:host ::ng-deep .p-message-wrapper {
+    max-height: 20px;
+}
+:host ::ng-deep .p-messages.p-component {
+    max-width: 200px;
+    
 }

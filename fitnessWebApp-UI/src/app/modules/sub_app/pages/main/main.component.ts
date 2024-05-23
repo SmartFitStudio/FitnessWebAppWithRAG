@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { PeriodsService } from '../../../../services/services';
-import { PeriodManagerService } from '../../services/period-manager-service/period-manager.service';
-import { ScheduleEvent } from '../../services/models/scheduleEvent';
+import { Component } from '@angular/core';
+
 import { RouterOutlet } from '@angular/router';
 import { NotificationListComponent } from '../../components/notification-list/notification-list.component';
 import { MenuComponent } from '../../components/menu/menu.component';
 import { ChatbotComponent } from '../../components/chatbot/chatbot.component';
-import { ToggleButtonsComponent } from '../../components/toggle-buttons/toggle-buttons.component';
+import { AvatarModule } from 'primeng/avatar';
+import { BadgeModule } from 'primeng/badge';
+import { TokenService } from '../../../../services/token/token.service';
 
 @Component({
     selector: 'app-main',
@@ -17,9 +17,17 @@ import { ToggleButtonsComponent } from '../../components/toggle-buttons/toggle-b
         MenuComponent,
         NotificationListComponent,
         RouterOutlet,
-        ChatbotComponent    ],
+        ChatbotComponent,
+        AvatarModule, BadgeModule],
 })
 
 export class MainComponent {
+    private username = this.tokenService.getuserFullName();
+    constructor(
+        private tokenService: TokenService,
+    ) { }
 
+    get username_firstLetter() {
+        return this.username.charAt(0);
+    }
 }

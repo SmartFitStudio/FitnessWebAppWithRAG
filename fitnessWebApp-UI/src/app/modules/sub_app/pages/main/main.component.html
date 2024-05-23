@@ -1,5 +1,12 @@
 <header>
-  <h1 class="logo">FitnessHub</h1>
+  <div id="headerMainContainer">
+    <h1 class="logo">FitnessHub</h1>
+    <p-avatar 
+      label="{{username_firstLetter}}" 
+      styleClass="mr-2" 
+      [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }" 
+      shape="circle" />
+  </div>
 </header>
 <app-menu></app-menu>
 <app-notification-list></app-notification-list>
