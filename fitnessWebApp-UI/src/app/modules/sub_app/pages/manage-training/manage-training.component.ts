@@ -30,6 +30,7 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
   });
 
   private _openedTab = 0;
+  private n_exercises = 0;
   isDisabled = false;
 
   constructor(
@@ -59,6 +60,14 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
           this.handleErrorMessages(error);
         }
       });
+    }
+  }
+
+  ngDoCheck(): void {
+    const element = document.getElementById("exerciseOfTrainTab");
+    if (element && this.training_exercises.length > 0 && this.training_exercises.length != this.n_exercises) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      this.n_exercises = this.training_exercises.length;
     }
   }
 
