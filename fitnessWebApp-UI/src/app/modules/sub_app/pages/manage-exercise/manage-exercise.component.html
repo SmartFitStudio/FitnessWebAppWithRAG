@@ -40,12 +40,12 @@
           <label class="form-check-label" for="flexSwitchCheckDefault">Condividi</label>
       </div>
         <div class="d-flex justify-content-end gap-2 col-12">
-          <button (click)="saveExercise()" type="submit" class="def_button">
-            <i class="fas fa-save"></i>&nbsp;Save
-          </button>
-          <a [routerLink]="myExercisePath" type="submit" class="def_button">
-            <i class="fas fa-times"></i>&nbsp;Cancel
+          <a [routerLink]="myExercisePath" type="submit" class="def_button left">
+            <i class="fas fa-times"></i>&nbsp;Indietro
           </a>
+          <button (click)="saveExercise()" type="submit" class="def_button right">
+            <i class="fas fa-save"></i>&nbsp;Salva
+          </button>
         </div>
     </div>
   </div>

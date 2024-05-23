@@ -5,6 +5,8 @@
 
 .card{
     border: none;
+    background: var(--card_secondary_background);
+
 }
 .card-title{
     text-align: center;
@@ -15,7 +17,13 @@
 .card-body{
     padding: 0.4em;
     border-bottom: 2px solid  #4d4a4b;
+    background: var(--card_secondary_background);
 }
+
+.list-group-item{
+    background: var(--card_secondary_background);
+}
+
 
 .bold{
     font-weight: bold;

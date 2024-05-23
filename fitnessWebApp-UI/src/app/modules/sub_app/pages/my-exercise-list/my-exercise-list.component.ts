@@ -18,7 +18,7 @@ import { PaginatedComponent } from '../../../../services/common/PaginatedCompone
     imports: [NgIf, RouterLink, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent]
 })
 export class MyExerciseListComponent extends PaginatedComponent implements OnInit {
-  exerciseResponse$?: Observable<PageResponseExerciseResponse>;
+  exerciseResponse?: PageResponseExerciseResponse;
 
   private _isListForInput = false; // La lista è per la selezione di un esercizio da aggiungere ad un allenamento? Viene passato dal padre
   private _is_adding_permitted = true; // Do la possibilità all'utente di andare sulla schermata per creare un nuovo esericizio? di default si, ma viene passato dal padre
@@ -29,6 +29,8 @@ export class MyExerciseListComponent extends PaginatedComponent implements OnIni
     @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
     super(handleError);
+    console.log("constructor")
+    this.getData();
   }
 
   @Input()
@@ -42,27 +44,27 @@ export class MyExerciseListComponent extends PaginatedComponent implements OnIni
   }
 
   ngOnInit(): void {
-    this.getData();
+    console.log("ngOnInit")
   }
 
   protected override getData() {
-    this.exerciseResponse$ = this.exerciseService.findAllAuthenticatedUserExercisesPaginated({
+   this.exerciseService.findAllAuthenticatedUserExercisesPaginated({
       page: this._page,
       size: this._size
-    }).pipe(
-      map((response: PageResponseExerciseResponse) => {
+    }).subscribe({
+      next: (response) => {
+        this.exerciseResponse = response;
         this.totalPages = response.totalPages;
-         this._pages = Array(response.totalPages)
-            .fill(0)
-            .map((x, i) => i);
-        return response;
-      }),
-      catchError((error) => {
-       this.handleErrorMessages(error);
-        return EMPTY;
+        this._pages = Array(response.totalPages)
+           .fill(0)
+           .map((x, i) => i);
+      },
+      error: (error) => {
+        this.handleErrorMessages(error);
       }
-    ));
-  }
+    });
+    }
+  
 
   deleteExercise(exerciseResponse: ExerciseResponse) {
     this.exerciseService.deleteExercise({ 'exercise-id': exerciseResponse.id as number})

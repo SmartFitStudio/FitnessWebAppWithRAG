@@ -22,6 +22,7 @@ import {
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
+import { NgVarDirective } from '../../directives/ngVar/ng-var.directive';
 
 @Component({
   selector: 'app-manage-period',
@@ -30,7 +31,7 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
   providers: [PeriodManagerService] // Fornisce il servizio a livello di componente
   ,
   standalone: true,
-  imports: [MatDialogModule, NgIf, NgFor,CalendarModule, MyTrainingListNoPaginationComponent, MatStepperModule, NgClass, FormsModule, ReactiveFormsModule, MatButtonModule, PeriodDayCardComponent, TrainingPeriodCardComponent, FeedbackInfoPointComponent]
+  imports: [MatDialogModule, NgIf, NgFor, NgVarDirective, CalendarModule, MyTrainingListNoPaginationComponent, MatStepperModule, NgClass, FormsModule, ReactiveFormsModule, MatButtonModule, PeriodDayCardComponent, TrainingPeriodCardComponent, FeedbackInfoPointComponent]
 })
 
 export class ManagePeriodComponent extends MessageHandler implements OnInit, OnDestroy {
@@ -68,7 +69,7 @@ export class ManagePeriodComponent extends MessageHandler implements OnInit, OnD
 
   ngOnInit(): void {
     const periodo_id = this.activatedRoute.snapshot.params['period_id'];
-    if (periodo_id!=null && periodo_id!=undefined) {
+    if (periodo_id != null && periodo_id != undefined) {
       this.subs.push(this._periodManager.setInfoByPeriodName$(periodo_id).subscribe({
         complete: () => {
           this.periodForm.patchValue({
@@ -76,7 +77,7 @@ export class ManagePeriodComponent extends MessageHandler implements OnInit, OnD
             obiettivo: this._periodManager.periodoObiettivo,
             durata_in_giorni: this._periodManager.periodoDurataInGiorni,
             data_inizio: new Date(this._periodManager.periodoDataInizio),
-            data_fine: this._periodManager.periodoDataFine? new Date(this._periodManager.periodoDataFine ) : null,
+            data_fine: this._periodManager.periodoDataFine ? new Date(this._periodManager.periodoDataFine) : null,
             is_attivo: this._periodManager.periodoAttivo
           });
           this.addMessage('success', 'Informazioni caricate correttamente')
@@ -208,6 +209,15 @@ export class ManagePeriodComponent extends MessageHandler implements OnInit, OnD
   getAllenamentoPeriodoByDay(day: number): PeriodoAllenamentoRequest[] {
     return this._periodManager.getAllenamentiPeriodoByDay(day);
   }
+
+  getInfoAllenamentoByDay(lista_allenameni_periodo: PeriodoAllenamentoRequest[]): { id_allenamento: number, nome_allenamento: string }[] {
+    let result: { id_allenamento: number, nome_allenamento: string }[] = [];
+    lista_allenameni_periodo.forEach((allenamento) => {
+      result.push({ id_allenamento: allenamento.id_allenamento, nome_allenamento: this.getAllenamentoById(allenamento.id_allenamento)?.name as string });
+    });
+    return result;
+  }
+
 
   get isPopUpOpen(): boolean {
     return this._isPopUpOpen;

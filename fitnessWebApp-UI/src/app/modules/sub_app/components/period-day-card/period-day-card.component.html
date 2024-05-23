@@ -3,18 +3,18 @@
         <h5 class="card-title">Giorno {{index}}</h5>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item"><span class="bold">Mattina: </span> {{allenamentoPerodoMattina?.id_allenamento}}
-            <button class="def_button" *ngIf="!allenamentoPerodoMattina" (click)="addAllenamento(PeriodoGiornata.MATTINA)"><i class="fa-solid fa-plus"></i></button>
-            <button class="def_button" *ngIf="allenamentoPerodoMattina"  (click)="removeAllenamento(PeriodoGiornata.MATTINA)"><i class="fa-solid fa-minus"></i></button>
+        <li class="list-group-item" *ngVar="allenamentoPeriodoMattina as allenamento_mattina"><span class="bold">Mattina: </span> {{allenamento_mattina?.nome_allenamento}}
+            <button class="def_button" *ngIf="!allenamento_mattina" (click)="addAllenamento(PeriodoGiornata.MATTINA)"><i class="fa-solid fa-plus"></i></button>
+            <button class="def_button" *ngIf="allenamento_mattina"  (click)="removeAllenamento(PeriodoGiornata.MATTINA)"><i class="fa-solid fa-minus"></i></button>
 
         </li>
-        <li class="list-group-item"><span class="bold">Pomeriggio: </span>{{allenamentoPerodoPomeriggio?.id_allenamento}}
-            <button class="def_button" *ngIf="!allenamentoPerodoPomeriggio" (click)="addAllenamento(PeriodoGiornata.POMERIGGIO)"><i class="fa-solid fa-plus"></i></button>
-            <button class="def_button" *ngIf="allenamentoPerodoPomeriggio"  (click)="removeAllenamento(PeriodoGiornata.POMERIGGIO)"><i class="fa-solid fa-minus"></i></button>
+        <li class="list-group-item" *ngVar="allenamentoPeriodoPomeriggio as allenamento_pomeriggio"><span class="bold">Pomeriggio: </span>{{allenamento_pomeriggio?.nome_allenamento}}
+            <button class="def_button" *ngIf="!allenamento_pomeriggio" (click)="addAllenamento(PeriodoGiornata.POMERIGGIO)"><i class="fa-solid fa-plus"></i></button>
+            <button class="def_button" *ngIf="allenamento_pomeriggio"  (click)="removeAllenamento(PeriodoGiornata.POMERIGGIO)"><i class="fa-solid fa-minus"></i></button>
         </li>
-        <li class="list-group-item"><span class="bold">Sera: </span>{{allenamentoPerodoSera?.id_allenamento}}
-            <button class="def_button" *ngIf="!allenamentoPerodoSera" (click)="addAllenamento(PeriodoGiornata.SERA)"><i class="fa-solid fa-plus"></i></button>
-            <button class="def_button" *ngIf="allenamentoPerodoSera"  (click)="removeAllenamento(PeriodoGiornata.SERA)"><i class="fa-solid fa-minus"></i></button>
+        <li class="list-group-item" *ngVar="allenamentoPeriodoSera as allenamento_sera"><span class="bold">Sera: </span>{{allenamento_sera?.nome_allenamento}}
+            <button class="def_button" *ngIf="!allenamento_sera" (click)="addAllenamento(PeriodoGiornata.SERA)"><i class="fa-solid fa-plus"></i></button>
+            <button class="def_button" *ngIf="allenamento_sera"  (click)="removeAllenamento(PeriodoGiornata.SERA)"><i class="fa-solid fa-minus"></i></button>
         </li>
     </ul>
 </div>

@@ -37,92 +37,95 @@ const PERIOD_DETAILS_PATH = 'period-details';
 const routes: Routes = [
   {
     path: '',
-    component: MainComponent,
+    loadComponent: () => import('./pages/main/main.component').then(m => m.MainComponent),
     canActivate: [authGuard],
     children: [
       {
         path: '',
-        component: MyExerciseListComponent,
+        loadComponent: () => import('./pages/home-page/home-page.component').then(m => m.HomePageComponent),
         canActivate: [authGuard]
       },
       {
         path: HOME_PATH,
-        component: HomePageComponent,
+        loadComponent: () => import('./pages/home-page/home-page.component').then(m => m.HomePageComponent),
         canActivate: [authGuard]
       },
       {
         path: MANAGE_EXERCISE_PATH,
-        component: ManageExerciseComponent,
+        loadComponent: () => import('./pages/manage-exercise/manage-exercise.component').then(m => m.ManageExerciseComponent),
         canActivate: [authGuard]
       },
       {
-        path: MANAGE_EXERCISE_PATH + '/:exerciseId',
-        component: ManageExerciseComponent,
+        path: `${MANAGE_EXERCISE_PATH}/:exerciseId`,
+        loadComponent: () => import('./pages/manage-exercise/manage-exercise.component').then(m => m.ManageExerciseComponent),
         canActivate: [authGuard]
       },
       {
         path: EXERCISE_STORE_PATH,
-        component: ExerciseStoreComponent,
+        loadComponent: () => import('./pages/exercise-store/exercise-store.component').then(m => m.ExerciseStoreComponent),
         canActivate: [authGuard]
       },
       {
         path: MY_EXERCISES_PATH,
-        component: MyExerciseListComponent,
-        canActivate: [authGuard]
+        loadComponent: () => import('./pages/my-exercise-list/my-exercise-list.component').then(m => m.MyExerciseListComponent),
+        canActivate: [authGuard],
+        data: { preload: true }  // Preload this component
+
       },
       {
         path: MY_TRAINS_PATH,
-        component: MyTrainListComponent,
+        loadComponent: () => import('./pages/my-train-list/my-train-list.component').then(m => m.MyTrainListComponent),
         canActivate: [authGuard]
       },
       {
         path: MY_PERIODS_PATH,
-        component: MyPeriodListComponent,
+        loadComponent: () => import('./pages/my-period-list/my-period-list.component').then(m => m.MyPeriodListComponent),
         canActivate: [authGuard]
       },
       {
-        path: PERIOD_DETAILS_PATH + '/:period_id',
-        component: PeriodDetailsComponent,
+        path: `${PERIOD_DETAILS_PATH}/:period_id`,
+        loadComponent: () => import('./pages/period-details/period-details.component').then(m => m.PeriodDetailsComponent),
         canActivate: [authGuard]
       },
       {
         path: MANAGE_PERIOD_PATH,
-        component: ManagePeriodComponent,
+        loadComponent: () => import('./pages/manage-period/manage-period.component').then(m => m.ManagePeriodComponent),
         canActivate: [authGuard]
       },
       {
-        path: MANAGE_PERIOD_PATH + '/:period_id',
-        component: ManagePeriodComponent,
+        path: `${MANAGE_PERIOD_PATH}/:period_id`,
+        loadComponent: () => import('./pages/manage-period/manage-period.component').then(m => m.ManagePeriodComponent),
         canActivate: [authGuard]
       },
       {
-        path: TRAINING_DETAILS_PATH + '/:training_id',
-        component: TrainingDetailsComponent,
+        path: `${TRAINING_DETAILS_PATH}/:training_id`,
+        loadComponent: () => import('./pages/training-details/training-details.component').then(m => m.TrainingDetailsComponent),
         canActivate: [authGuard]
       },
       {
         path: MANAGE_TRAINING_PATH,
-        component: ManageTrainingComponent,
+        loadComponent: () => import('./pages/manage-training/manage-training.component').then(m => m.ManageTrainingComponent),
         canActivate: [authGuard]
       },
       {
-        path: MANAGE_TRAINING_PATH + '/:training_id',
-        component: ManageTrainingComponent,
+        path: `${MANAGE_TRAINING_PATH}/:training_id`,
+        loadComponent: () => import('./pages/manage-training/manage-training.component').then(m => m.ManageTrainingComponent),
         canActivate: [authGuard]
       },
       {
         path: MANAGE_PROGRESS_PATH,
-        component: ManageProgressComponent,
+        loadComponent: () => import('./pages/manage-progress/manage-progress.component').then(m => m.ManageProgressComponent),
         canActivate: [authGuard]
       },
       {
-        path: MANAGE_PROGRESS_PATH + '/:progresso_id',
-        component: ManageProgressComponent,
+        path: `${MANAGE_PROGRESS_PATH}/:progresso_id`,
+        loadComponent: () => import('./pages/manage-progress/manage-progress.component').then(m => m.ManageProgressComponent),
         canActivate: [authGuard]
       },
     ]
   }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

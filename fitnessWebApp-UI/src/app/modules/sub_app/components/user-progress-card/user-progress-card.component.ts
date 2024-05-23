@@ -87,48 +87,18 @@ export class UserProgressCardComponent extends MessageHandler implements OnInit 
       }});
     }
   
-  get seriesPeso(): any[] {
-     return [
-      {
-        type: "line",
-        xKey: 'xAxesValue',
-        yKey: 'FirstYAxesValue',
-        xName: 'Tempo',  // Nome assegnato alla serie x
-        yName: 'Peso',  // Nome assegnato alla prima serie y
-        marker: {
-          stroke: '#fd6384',
-          fillOpacity: 0.9,
-          fill: '#fd6384',
-      },
-      },
-      {
-        type: "line",
-        xKey: 'xAxesValue',
-        yKey: 'SecondYAxesValue',
-        xName: 'Tempo',  // Nome assegnato alla serie x
-        yName: 'Peso ideale',  // Nome assegnato alla seconda serie y
-        marker: {
-          stroke: '#ffcb62',
-          fillOpacity: 0.5,
-          fill: '#ffcb62',
-      },
-      },
-    ]
-  }
 
-    get dataMassaGrassa():{
+    get dataMasse():{
       xAxesValue: Date,
-      YAxesValue: number,
+      FirstYAxesValue: number,
+      SecondYAxesValue?: number,
     }[]  {
       return this.progressData.map((value) => {
         return {
           xAxesValue: new Date(value.dataMisurazione),
-          YAxesValue: value.percentualeMassaGrassa,
+          FirstYAxesValue: value.percentualeMassaGrassa,
+          SecondYAxesValue: value.percentualeMassaMuscolare,
         }});
       }
-  
-     
-
-    
       
 }

@@ -7,14 +7,14 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
 
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { NgFor, NgIf } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { ProgressoResponse } from '../../../../services/models';
 
 @Component({
   selector: 'app-manage-progress',
   standalone: true,
-  imports: [NgFor, NgIf, FeedbackInfoPointComponent, ReactiveFormsModule, FormsModule, ReactiveFormsModule],
+  imports: [NgFor, NgIf, FeedbackInfoPointComponent,RouterLink, ReactiveFormsModule, FormsModule, ReactiveFormsModule],
   templateUrl: './manage-progress.component.html',
   styleUrl: './manage-progress.component.scss'
 })
@@ -163,5 +163,9 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
   }
   get IsFormValid(): boolean {
     return this.progressoForm.valid;
+  }
+
+  get homePath(): string {
+    return sub_appRoutingModule.full_homePath;
   }
 }

@@ -1,7 +1,7 @@
 <app-feedback-info-point [messages]="messages">
 </app-feedback-info-point>
 
-<div class="lista_esercizi" *ngIf="(exerciseResponse$ | async) as exerciseResponse">
+<div class="lista_esercizi" *ngIf="exerciseResponse">
   <div class="buttons">
     <a [routerLink]="newExerciseLink" class="def_button" *ngIf="isAddingPermitted"><i class="fa-solid fa-plus"></i> Aggiungi</a>
     <a [routerLink]="goToStore" class="def_button" *ngIf="isAddingPermitted"><i class="fa-solid fa-store"></i> Vai allo store</a>
