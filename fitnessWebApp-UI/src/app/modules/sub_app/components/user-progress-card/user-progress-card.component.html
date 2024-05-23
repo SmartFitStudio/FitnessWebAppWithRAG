@@ -1,20 +1,19 @@
 <div id="stepperContainer">
     <mat-tab-group>
-        <mat-tab label="First">
+        <mat-tab label="Peso">
             <div class="graphContainer">
                 <app-multi-line-graph [graphData]="dataPeso" [x1Name]="'time'" [x2Name]="'time'" [y1Name]="'Peso'"
                     [y2Name]="'Peso ideale'">
                 </app-multi-line-graph>
             </div>
         </mat-tab>
-        <mat-tab label="Second">
+        <mat-tab label="Massa">
             <div class="graphContainer">
-                <app-mono-line-graph [graphData]="dataMassaGrassa" [xName]="'time'"
-                    [yName]="'Massa grassa'">
-                </app-mono-line-graph>
+                <app-multi-line-graph [graphData]="dataMasse" [x1Name]="'time'" [x2Name]="'time'" [y1Name]="'M. grassa'"
+                [y2Name]="'M. muscolare'">
+                </app-multi-line-graph>
             </div>
         </mat-tab>
-        <mat-tab label="Third"> Content 3 </mat-tab>
     </mat-tab-group>
     <hr>
     <div class="pieGraphGroup">

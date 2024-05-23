@@ -1,5 +1,6 @@
 <app-feedback-info-point [messages]="messages">
 </app-feedback-info-point>
+
 <section>
     <h2>Nuovo progresso</h2>
     <div>
@@ -47,7 +48,7 @@
                 </small>
             </div>
             <div class="buttons">
-                <button class="def_button left inline"><i class="fa-solid fa-x"></i> Chiudi</button>
+                <a [routerLink]="homePath" class="def_button left inline" ><i class="fa-solid fa-x"></i> Chiudi</a>
 
                 <button type="submit" class="def_button right inline" (click)="submitForm()"><i
                         class="fa-solid fa-floppy-disk"></i> Salva</button>

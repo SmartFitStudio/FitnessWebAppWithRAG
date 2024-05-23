@@ -6,6 +6,7 @@ import {authGuard} from './services/guard/auth.guard';
 import {ActivateAccountComponent} from './pages/activate-account/activate-account.component';
 import { PagenotfoundComponent } from './pages/pagenotfound/pagenotfound.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
+import { CustomPreloadingStrategy } from './CustomPreloadingStrategy ';
 
 
 const HOME_PATH = '';
@@ -18,34 +19,36 @@ const ACTIVATE_ACCOUNT_PATH = 'activate-account';
 const routes: Routes = [
   {
     path: HOME_PATH,
-    component: HomePageComponent
+    loadComponent: () => import('./pages/home-page/home-page.component').then(m => m.HomePageComponent)
   },
   {
     path: LOGIN_PATH,
-    component: LoginComponent
+    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent)
   },
   {
     path: REGISTER_PATH,
-    component: RegisterComponent
+    loadComponent: () => import('./pages/register/register.component').then(m => m.RegisterComponent)
   },
   {
     path: ACTIVATE_ACCOUNT_PATH,
-    component: ActivateAccountComponent
+    loadComponent: () => import('./pages/activate-account/activate-account.component').then(m => m.ActivateAccountComponent)
   },
   {
     path: PERSONAL_AREA_PATH,
     loadChildren: () => import('./modules/sub_app/sub_app.module').then(m => m.sub_appModule),
     canActivate: [authGuard]
   },
-  //Wild Card Route for 404 request 
-  { path: '**', pathMatch: 'full',  
-  component: PagenotfoundComponent }, 
+  // Wild Card Route for 404 request
+  { 
+    path: '**', 
+    pathMatch: 'full',  
+    loadComponent: () => import('./pages/pagenotfound/pagenotfound.component').then(m => m.PagenotfoundComponent)
+  },
 ];
 
 
-
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: CustomPreloadingStrategy })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

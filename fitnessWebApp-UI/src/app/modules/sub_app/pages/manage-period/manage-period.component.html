@@ -7,6 +7,7 @@
     <button class="backButton def_button" (click)="closeDialog()">Close</button>
 </div>
 
+<!--STEPPER-->
 <mat-horizontal-stepper linear #stepper [ngClass]="{'blur': isPopUpOpen}">
     <mat-step [stepControl]="periodForm">
         <ng-template matStepLabel>Dati periodo</ng-template>
@@ -30,7 +31,6 @@
                         L'obiettivo del periodo è obbligatorio
                     </small>
                 </div>
-
                 <div>
 
                     <label for="durata_in_giorni" class="form-label">Durata in giorni del ciclo</label>
@@ -42,9 +42,8 @@
                 </div>
 
                 <div>
-
                     <label for="data_inizio" class="form-label">Data inizio</label><br>
-                    <p-calendar id="data_inizio" formControlName="data_inizio" [inputStyle]="{maxHeight: '30px'}" dateFormat="dd/mm/yy"/>
+                    <p-calendar formControlName="data_inizio"  dateFormat="dd/mm/yy"/>
                     <small class="text-danger block" *ngIf="!IsDataInizioInputValid">
                         La data di inizio è obbligatoria.
                     </small>
@@ -52,7 +51,7 @@
 
                 <div>
                     <label for="data_fine" class="form-label">Data fine</label><br>
-                    <p-calendar formControlName="data_fine" [inputStyle]="{maxHeight: '30px', display: 'block'}"  dateFormat="dd/mm/yy"/>
+                    <p-calendar formControlName="data_fine"  dateFormat="dd/mm/yy"/>
                 </div>
 
 
@@ -73,23 +72,31 @@
             </form>
         </section>
         <div>
-            <button mat-button matStepperNext class="nextButton def_button">Next</button>
+            <button mat-button matStepperNext class="nextButton def_button">Avanti</button>
         </div>
     </mat-step>
+    <!--Seconda pagina-->
     <mat-step>
         <ng-template matStepLabel>Allenamenti</ng-template>
         <section id="sezioneCalenderio">
             <h2>Calendario</h2>
             <p>Qui puoi inserire gli allenamenti all'interno del periodo selezionato</p>
             <div class="flex">
-                <app-period-day-card *ngFor="let _ of [].constructor(period_length); let i = index" [index]="i"
-                    [allenamenti]="getAllenamentoPeriodoByDay(i)" (requestToAdd)="addNewTraining($event)"
+                <div *ngFor="let _ of [].constructor(period_length); let i = index" >
+                    <app-period-day-card 
+                    *ngVar="getAllenamentoPeriodoByDay(i) as allenamenti_periodo_byDay"
+                    [index]="i"
+                    [allenamenti]="allenamenti_periodo_byDay"
+                    [allenamenti_info_minimazed]="getInfoAllenamentoByDay(allenamenti_periodo_byDay)"
+                     (requestToAdd)="addNewTraining($event)"
                     (requestToRemove)="removeTraining($event)"></app-period-day-card>
+                </div>
+                
             </div>
         </section>
         <div>
-            <button mat-button matStepperPrevious class="backButton def_button">Back</button>
-            <button mat-button matStepperNext class="nextButton def_button">Next</button>
+            <button mat-button matStepperPrevious class="backButton def_button">Indietro</button>
+            <button mat-button matStepperNext class="nextButton def_button">Avanti</button>
         </div>
     </mat-step>
     <mat-step>
@@ -119,9 +126,9 @@
             </ul>
         </section>
         <div>
-            <button mat-button matStepperPrevious class="backButton def_button">Back</button>
+            <button mat-button matStepperPrevious class="backButton def_button">Indietro</button>
             <button mat-button (click)="submitPeriod()" class="nextButton def_button" type="submit"><i
-                    class="fa-solid fa-floppy-disk"></i> Save</button>
+                    class="fa-solid fa-floppy-disk"></i> Salva</button>
         </div>
     </mat-step>
 </mat-horizontal-stepper>
