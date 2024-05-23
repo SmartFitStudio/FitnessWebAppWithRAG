@@ -30,6 +30,7 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
   });
 
   private _openedTab = 0;
+  private tabChangedAfterIA = false;
   isDisabled = false;
 
   constructor(
@@ -59,6 +60,14 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
           this.handleErrorMessages(error);
         }
       });
+    }
+  }
+
+  ngDoCheck(): void {
+    const element = document.getElementById("exerciseOfTrainTab");
+    if (element && this.tabChangedAfterIA) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      this.tabChangedAfterIA=false;
     }
   }
 
@@ -120,6 +129,7 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
           this.isDisabled = false;
           ragObserver$.unsubscribe();
           this._openedTab++;
+          this.tabChangedAfterIA=true;
         },
         error: (error) => {
           this.clearMessages();

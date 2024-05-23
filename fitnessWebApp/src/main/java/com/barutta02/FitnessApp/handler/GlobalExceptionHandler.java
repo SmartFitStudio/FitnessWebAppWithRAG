@@ -2,6 +2,7 @@ package com.barutta02.FitnessApp.handler;
 
 import jakarta.mail.MessagingException;
 
+import org.springframework.core.codec.DecodingException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.barutta02.FitnessApp.exception.ActivationTokenException;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
@@ -175,6 +177,26 @@ public class GlobalExceptionHandler {
                 .body(
                         ExceptionResponse.builder()
                                 .error("Il sistema di intelligenza artificiale al momento non è raggiungibile.\n Si prega di riprovare più tardi.")
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(WebClientResponseException.class)
+    public ResponseEntity<ExceptionResponse> handleException(WebClientResponseException exp) {
+        return ResponseEntity
+                .status(exp.getStatusCode())
+                .body(
+                        exp.getResponseBodyAs(ExceptionResponse.class)
+                );
+    }
+
+    @ExceptionHandler(DecodingException.class)
+    public ResponseEntity<ExceptionResponse> handleException(DecodingException exp) {
+        return ResponseEntity
+                .status(INTERNAL_SERVER_ERROR)
+                .body(
+                        ExceptionResponse.builder()
+                                .error("Non è stato possibile generare l'allenamento richiesto.\n Si prega di riprovare più tardi.")
                                 .build()
                 );
     }
