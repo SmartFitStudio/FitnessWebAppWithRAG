@@ -216,7 +216,8 @@ mentre i due mergeMap sono concettualmente sequenziali, ciò non implica che l'i
 
     private getIDsOfRemovedExercises(): number[] {
         return this._starting_trainingExerciseRequests.filter(
-            (exercise) => !this._trainingExerciseRequests.find((request) => (request.id === exercise.id))
+            (exercise) => (!this._trainingExerciseRequests.find((request) => (request.id === exercise.id) ) ||
+            !this._trainingExerciseRequests.find((request) => (request.id === exercise.id && request.index === exercise.index) ))
         ).map((exercise) => exercise.id as number);
     }
 

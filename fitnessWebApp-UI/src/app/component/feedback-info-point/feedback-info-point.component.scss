@@ -3,6 +3,8 @@
     margin: auto;
     margin-top: var(--default_padding);
     margin-bottom: var(--default_padding);
+    background: none;
+    border: none;
 }
 
 
@@ -13,6 +15,7 @@
         .p-message-wrapper {
             padding: .5em .5em;
             gap: 1em;
+            margin: .5em
         }
     }    
 }
