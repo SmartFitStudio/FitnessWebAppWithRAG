@@ -1,7 +1,23 @@
 <header>
-  <h1 class="logo">FitnessHub</h1>
+  <div id="headerMainContainer">
+    <h1 class="logo">FitnessHub</h1>
+    <a [routerLink]="profile_settings_path" routerLinkActive="active" ariaCurrentWhenActive="page">
+      <p-avatar 
+        label="{{username_firstLetter}}" 
+        styleClass="mr-2" 
+        [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }" 
+        shape="circle" />
+    </a>
+  </div>
 </header>
 <app-menu></app-menu>
+
+<p-breadcrumb 
+    class="max-w-full" 
+    [model]="items" 
+    [style]="{ 'background': 'none', 'border': 'none', 'color': '#fff', 'padding': '0', 'padding-top': '.5em', 'width': '100%'}"
+    [home]="home" />
+
 <app-notification-list></app-notification-list>
 
 <div class="d-flex flex-column gap-1 container_page">

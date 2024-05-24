@@ -10,11 +10,12 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { MonoLineGraphComponent } from '../mono-line-graph/mono-line-graph.component';
 import { ChartModule } from 'primeng/chart';
 import { ProgressTableComponent } from '../progress-table/progress-table.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-user-progress-card',
   standalone: true,
-  imports: [MultiLineGraphComponent, MatTabsModule, MonoLineGraphComponent, ChartModule, ProgressTableComponent],
+  imports: [NgIf,MultiLineGraphComponent, MatTabsModule, MonoLineGraphComponent, ChartModule, ProgressTableComponent],
   templateUrl: './user-progress-card.component.html',
   styleUrl: './user-progress-card.component.scss'
 })
@@ -45,18 +46,20 @@ export class UserProgressCardComponent extends MessageHandler implements OnInit 
         this.handleErrorMessages(error);
       },
       complete: () => {
-        this.lastMassaGrassaValue = this.progressData[0].percentualeMassaGrassa;
-        if (this.lastMassaGrassaValue) {
-          this.data = {
-            labels: ['Massa grassa', 'Massa magra'],
-            datasets: [
-                {
-                    data: [this.lastMassaGrassaValue, 100 - this.lastMassaGrassaValue],
-                    backgroundColor: [this.documentStyle.getPropertyValue('--blue-500'), this.documentStyle.getPropertyValue('--yellow-500'), this.documentStyle.getPropertyValue('--green-500')],
-                    hoverBackgroundColor: [this.documentStyle.getPropertyValue('--blue-400'), this.documentStyle.getPropertyValue('--yellow-400'), this.documentStyle.getPropertyValue('--green-400')]
-                }
-            ]
-        };
+        if(!this.isProgressDataEmpty){
+          this.lastMassaGrassaValue = this.progressData[0].percentualeMassaGrassa;
+          if (this.lastMassaGrassaValue) {
+            this.data = {
+              labels: ['Massa grassa', 'Massa magra'],
+              datasets: [
+                  {
+                      data: [this.lastMassaGrassaValue, 100 - this.lastMassaGrassaValue],
+                      backgroundColor: [this.documentStyle.getPropertyValue('--blue-500'), this.documentStyle.getPropertyValue('--yellow-500'), this.documentStyle.getPropertyValue('--green-500')],
+                      hoverBackgroundColor: [this.documentStyle.getPropertyValue('--blue-400'), this.documentStyle.getPropertyValue('--yellow-400'), this.documentStyle.getPropertyValue('--green-400')]
+                  }
+              ]
+          };
+          }
         }
       }
     }
@@ -99,6 +102,10 @@ export class UserProgressCardComponent extends MessageHandler implements OnInit 
           FirstYAxesValue: value.percentualeMassaGrassa,
           SecondYAxesValue: value.percentualeMassaMuscolare,
         }});
+      }
+
+      get isProgressDataEmpty(): boolean {
+        return this.progressData.length === 0;
       }
       
 }

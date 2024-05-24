@@ -84,6 +84,13 @@ export class ManageTrainingComponent extends MessageHandler  implements OnInit {
   goDown($event: number) { //index is passed
     this._trainManager.goDown($event);
   }
+  updateAllenamentoEsercizio($event : AllenamentoEsercizioRequest) {
+    try{
+      this._trainManager.updateExerciseOfTrain($event);
+    }catch(error){
+      this.handleErrorMessages(error);
+    }
+  }
 
   submitTrain() {
     if (!this.trainingForm.valid) {

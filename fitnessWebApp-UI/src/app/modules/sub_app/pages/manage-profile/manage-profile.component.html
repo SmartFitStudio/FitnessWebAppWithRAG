@@ -1,0 +1,73 @@
+<app-feedback-info-point [messages]="messages">
+</app-feedback-info-point>
+
+<section class="def_section">
+    <h3>Il tuo profilo <i class="fa-solid fa-user right"></i></h3>
+    <form [formGroup]="profileForm">
+        <fieldset>
+            <legend>Informazioni personali</legend>
+            <div>
+                <p-floatLabel>
+                    <input  formControlName="nome" pInputText id="nome" />
+                    <label for="username">Nome</label>
+                </p-floatLabel>
+            </div>
+            <div>
+                <p-floatLabel>
+                    <input formControlName="cognome" pInputText id="cognome"/>
+                    <label for="username">Cognome</label>
+                </p-floatLabel>
+            </div>
+            <div>
+                <p-floatLabel>
+                    <p-calendar 
+                        formControlName="data_nascita"
+                        inputId="birth_date"
+                        dateFormat="dd/mm/yy" />
+                    <label for="birth_date">Data di nascita</label>
+                </p-floatLabel>
+            </div>
+            <div>
+                <button *ngIf="!IsProfileEditable" (click)="editProfile()" class="def_button"><i class="fa-solid fa-pencil"></i></button>
+                <button *ngIf="IsProfileEditable" (click)="saveProfile()" class="def_button"><i class="fa-solid fa-floppy-disk"></i></button>
+            </div>
+        </fieldset>
+    </form>
+    <div>
+        <h4>Info di contatto</h4>
+        <dl>
+            <dt class="inline">Email: </dt>
+            <dd class="inline">{{user_email}}</dd>
+        </dl>
+    </div>
+</section>
+<section class="def_section">
+    <h3>Impostazioni <i class="fa-solid fa-sliders right"></i></h3>
+    <form [formGroup]="passwordForm">
+        <fieldset>
+            <legend>Password <i class="pi pi-eye" ></i>
+            </legend>
+            <div>
+                <p-floatLabel>
+                    <p-password  formControlName="password_attuale"  id="password_attuale" [feedback]="false" />
+                    <label for="password_attuale">Password attuale</label>
+                </p-floatLabel>
+            </div>
+            <div>
+                <p-floatLabel>
+                    <p-password formControlName="nuova_password"  id="nuova_password"/>
+                    <label for="nuova_password">Nuova password</label>
+                </p-floatLabel>
+            </div>
+            <div>
+                <p-floatLabel>
+                    <p-password formControlName="conferma_password"  id="new_password_confirm" [feedback]="false"/>
+                    <label for="new_password_confirm">Conferma password</label>
+                </p-floatLabel>
+            </div>
+            <div>
+                <button *ngIf="!IsProfileEditable" (click)="saveNewPassword()" class="def_button"><i class="fa-solid fa-floppy-disk"></i></button>
+            </div>
+            </fieldset>
+    </form>
+</section>

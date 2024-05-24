@@ -51,10 +51,14 @@
             <div class="exercise_training_list" *ngFor="let trainingExercise of training_exercises" [style.order]="trainingExercise.index">
                 <app-train-exercise-handler
                     *ngIf="getExercisesOfTrainingById(trainingExercise.id_esercizio) as exerciseResponse"
-                    [trainingExercise]="trainingExercise" [exercise]="exerciseResponse"
+                    [trainingExercise]="trainingExercise"
+                    [exercise]="exerciseResponse"
                     [index]="trainingExercise.index"
-                    (deleteExercise)="deleteExerciseFromTraining($event)" (goUp)="goUp($event)"
-                    (goDown)="goDown($event)"></app-train-exercise-handler>
+                    (deleteExercise)="deleteExerciseFromTraining($event)"
+                    (goUp)="goUp($event)"
+                    (goDown)="goDown($event)"
+                    (updateInfoAllenamentoEsercizio)="updateAllenamentoEsercizio($event)">
+                </app-train-exercise-handler>
             </div>
         </div>
 

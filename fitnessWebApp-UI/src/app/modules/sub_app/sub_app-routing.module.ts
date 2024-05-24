@@ -18,6 +18,8 @@ import { ManageProgressComponent } from './pages/manage-progress/manage-progress
 
 const HOME_PATH = 'home';
 
+const PROFILE_SETTINGS_PATH = 'profile-settings';
+
 const MANAGE_EXERCISE_PATH = 'manage-exercise';
 const MANAGE_TRAINING_PATH = 'manage-training';
 const MANAGE_PERIOD_PATH = 'manage-period';
@@ -28,7 +30,6 @@ const MY_TRAINS_PATH = 'my-trains';
 const MY_PERIODS_PATH = 'my-periods';
 
 const EXERCISE_STORE_PATH = 'exercise-store';
-
 
 const TRAINING_DETAILS_PATH = 'training-details';
 const PERIOD_DETAILS_PATH = 'period-details';
@@ -41,86 +42,288 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       {
+        path: PROFILE_SETTINGS_PATH,
+        loadComponent: () => import('./pages/manage-profile/manage-profile.component').then(m => m.ManageProfileComponent),
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: [
+            {
+              label: 'Profile',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }
+          ]
+        },
+      },
+      {
         path: '',
         loadComponent: () => import('./pages/home-page/home-page.component').then(m => m.HomePageComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            []
+        },
       },
       {
         path: HOME_PATH,
         loadComponent: () => import('./pages/home-page/home-page.component').then(m => m.HomePageComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            []
+        },
       },
       {
         path: MANAGE_EXERCISE_PATH,
         loadComponent: () => import('./pages/manage-exercise/manage-exercise.component').then(m => m.ManageExerciseComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Esercizi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            {
+              label: 'Gestisci esercizi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        },
       },
       {
         path: `${MANAGE_EXERCISE_PATH}/:exerciseId`,
         loadComponent: () => import('./pages/manage-exercise/manage-exercise.component').then(m => m.ManageExerciseComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Gestisci esercizi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        },
       },
       {
         path: EXERCISE_STORE_PATH,
         loadComponent: () => import('./pages/exercise-store/exercise-store.component').then(m => m.ExerciseStoreComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Store esercizi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        },
       },
       {
         path: MY_EXERCISES_PATH,
         loadComponent: () => import('./pages/my-exercise-list/my-exercise-list.component').then(m => m.MyExerciseListComponent),
         canActivate: [authGuard],
-        data: { preload: true }  // Preload this component
+        data: { preload: true,
+          breadcrumb: 
+            [{
+              label: 'Esercizi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+         },  // Preload this component
 
       },
       {
         path: MY_TRAINS_PATH,
         loadComponent: () => import('./pages/my-train-list/my-train-list.component').then(m => m.MyTrainListComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Allenamenti',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        },
       },
       {
         path: MY_PERIODS_PATH,
         loadComponent: () => import('./pages/my-period-list/my-period-list.component').then(m => m.MyPeriodListComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Periodi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        },
       },
       {
         path: `${PERIOD_DETAILS_PATH}/:period_id`,
         loadComponent: () => import('./pages/period-details/period-details.component').then(m => m.PeriodDetailsComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Periodi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            {
+              label: 'Dettagli periodo',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        },
       },
       {
         path: MANAGE_PERIOD_PATH,
         loadComponent: () => import('./pages/manage-period/manage-period.component').then(m => m.ManagePeriodComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Periodi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            {
+              label: 'Gestisci periodo',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        },
       },
       {
         path: `${MANAGE_PERIOD_PATH}/:period_id`,
         loadComponent: () => import('./pages/manage-period/manage-period.component').then(m => m.ManagePeriodComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Periodi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            {
+              label: 'Gestisci periodo',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        }
       },
       {
         path: `${TRAINING_DETAILS_PATH}/:training_id`,
         loadComponent: () => import('./pages/training-details/training-details.component').then(m => m.TrainingDetailsComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Allenamenti',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            {
+              label: 'Dettagli allenamento',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        }
       },
       {
         path: MANAGE_TRAINING_PATH,
         loadComponent: () => import('./pages/manage-training/manage-training.component').then(m => m.ManageTrainingComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Allenamenti',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            {
+              label: 'Gestisci allenamento',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        }
       },
       {
         path: `${MANAGE_TRAINING_PATH}/:training_id`,
         loadComponent: () => import('./pages/manage-training/manage-training.component').then(m => m.ManageTrainingComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Allenamenti',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            {
+              label: 'Gestisci allenamento',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        }
       },
       {
         path: MANAGE_PROGRESS_PATH,
         loadComponent: () => import('./pages/manage-progress/manage-progress.component').then(m => m.ManageProgressComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Progressi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            {
+              label: 'Gestisci progresso',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        }
       },
       {
         path: `${MANAGE_PROGRESS_PATH}/:progresso_id`,
         loadComponent: () => import('./pages/manage-progress/manage-progress.component').then(m => m.ManageProgressComponent),
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        data: {
+          breadcrumb: 
+            [{
+              label: 'Progressi',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            {
+              label: 'Gestisci progresso',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            }]
+        }
       },
     ]
   }
@@ -161,6 +364,9 @@ export class sub_appRoutingModule {
 
 
   //MANAGING
+  static get full_manageProfilePath(): string {
+    return "/" + AppRoutingModule.personalAreaPath + "/" + PROFILE_SETTINGS_PATH;
+  }
   static get full_manageExercisePath(): string {
     return "/" + AppRoutingModule.personalAreaPath + "/" + MANAGE_EXERCISE_PATH;
   }

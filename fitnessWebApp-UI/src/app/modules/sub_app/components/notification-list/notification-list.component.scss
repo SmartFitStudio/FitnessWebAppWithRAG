@@ -14,7 +14,17 @@
 app-notification-card{
     max-width: 300px;
 }
+#bellIcon{
+    margin-right: -1em;
+    font-size: 1.3em;}
 
+#notificationNumber{
+    position: relative;
+    bottom: 17px;
+    left: -11px;
+    padding-right: 5px;
+    font-size: 0.8em;
+}
 .right{
     float: right;
 }

@@ -13,3 +13,57 @@ header h1 {
     width: 100%;
 }
 
+#headerMainContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 0.3em;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid #dee9fb;
+    padding-bottom: .5em;
+}
+
+:host ::ng-deep  .p-menuitem-text{
+    color: var(--txtColor)
+}
+
+:host ::ng-deep .p-menuitem{
+    color: var(--txtColor)
+}
+
+:host ::ng-deep .p-menuitem-link{
+    color: var(--txtColor);
+    text-decoration: none;
+}
+
+:host ::ng-deep .p-menuitem-link:hover{
+    color: var(--txtColor);
+}
+
+:host ::ng-deep .p-menuitem-link:focus{
+    color: var(--txtColor);
+}
+
+:host ::ng-deep .p-menuitem-link:active{
+    color: var(--txtColor);
+}
+
+:host ::ng-deep .p-menuitem-link:visited{
+    color: var(--txtColor);
+}
+
+:host ::ng-deep .p-icon{
+    color: var(--txtColor);
+}
+
+:host ::ng-deep .p-menuitem-icon.pi.pi-home{
+    color: var(--txtColor);
+}
+
+:host ::ng-deep ol.p-breadcrumb-list {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    row-gap: .5em;
+}

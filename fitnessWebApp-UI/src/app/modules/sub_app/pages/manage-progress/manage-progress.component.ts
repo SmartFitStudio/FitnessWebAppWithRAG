@@ -31,7 +31,8 @@ export class ManageProgressComponent extends MessageHandler implements OnInit {
   private progressoRequest!: ProgressoRequest;
   private progressoId?: number;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private progressoService: ProgressService,

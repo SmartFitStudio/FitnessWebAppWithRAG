@@ -108,6 +108,9 @@ export class TrainingManagerService {
         }
         this.updateExerciseIndexAfterRemovingIndex(index);
     }
+    public updateExerciseOfTrain(allenamentoEsercizioRequest: AllenamentoEsercizioRequest) {
+        this._trainingExerciseRequests[allenamentoEsercizioRequest.index] = allenamentoEsercizioRequest;
+    }
 
     /*combination delle richieste tramite forkJoin: Una volta create tutte le richieste per gli esercizi, vengono raccolte in un array di Observable. Questi Observable rappresentano ciascuna delle richieste di salvataggio degli esercizi. Utilizzando l'operatore forkJoin, tutte queste richieste vengono combinate in un unico Observable. Questo Observable emetterà un valore solo quando tutte le richieste di salvataggio degli esercizi saranno state completate. */
     public saveTraining$(): Observable<any> {
