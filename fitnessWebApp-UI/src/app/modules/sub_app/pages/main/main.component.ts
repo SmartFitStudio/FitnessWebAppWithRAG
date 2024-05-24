@@ -63,4 +63,8 @@ export class MainComponent implements OnInit, OnDestroy{
     get profile_settings_path(): string {
         return sub_appRoutingModule.full_manageProfilePath;
     }
+
+    get logout_path(): string {
+      return sub_appRoutingModule.full_logoutPath;
+  }
 }

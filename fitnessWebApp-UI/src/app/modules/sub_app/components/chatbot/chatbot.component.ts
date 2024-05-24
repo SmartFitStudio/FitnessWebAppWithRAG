@@ -53,7 +53,7 @@ export class ChatbotComponent {
           },
           error: error => {
             this.promptForm.enable();
-            this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml(error.error.error);
+            this.messages[this.messages.length-1].chatbotResponse = this.converter.makeHtml(error.error.businessErrorDescription);
           },
           complete: () => {
             subscription$.unsubscribe();

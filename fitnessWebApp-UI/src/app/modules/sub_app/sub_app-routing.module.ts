@@ -1,22 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from '../../services/guard/auth.guard';
-import { MainComponent } from './pages/main/main.component';
-import { ManageExerciseComponent } from './pages/manage-exercise/manage-exercise.component';
-import { MyExerciseListComponent } from './pages/my-exercise-list/my-exercise-list.component';
 import { AppRoutingModule } from '../../app-routing.module';
-import { ManageTrainingComponent } from './pages/manage-training/manage-training.component';
-import { MyTrainListComponent } from './pages/my-train-list/my-train-list.component';
-import { TrainingDetailsComponent } from './pages/training-details/training-details.component';
-import { MyPeriodListComponent } from './pages/my-period-list/my-period-list.component';
-import { ManagePeriodComponent } from './pages/manage-period/manage-period.component';
-import { PeriodDetailsComponent } from './pages/period-details/period-details.component';
-import { HomePageComponent } from './pages/home-page/home-page.component';
-import { ExerciseStoreComponent } from './pages/exercise-store/exercise-store.component';
-import { ManageProgressComponent } from './pages/manage-progress/manage-progress.component';
 
 
 const HOME_PATH = 'home';
+
+const LOGOUT_PATH = 'logout';
 
 const PROFILE_SETTINGS_PATH = 'profile-settings';
 
@@ -61,7 +51,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/home-page/home-page.component').then(m => m.HomePageComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             []
         },
       },
@@ -70,7 +60,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/home-page/home-page.component').then(m => m.HomePageComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             []
         },
       },
@@ -79,7 +69,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/manage-exercise/manage-exercise.component').then(m => m.ManageExerciseComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Esercizi',
               url: '',
@@ -99,7 +89,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/manage-exercise/manage-exercise.component').then(m => m.ManageExerciseComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Gestisci esercizi',
               url: '',
@@ -113,7 +103,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/exercise-store/exercise-store.component').then(m => m.ExerciseStoreComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Store esercizi',
               url: '',
@@ -127,7 +117,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/my-exercise-list/my-exercise-list.component').then(m => m.MyExerciseListComponent),
         canActivate: [authGuard],
         data: { preload: true,
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Esercizi',
               url: '',
@@ -142,7 +132,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/my-train-list/my-train-list.component').then(m => m.MyTrainListComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Allenamenti',
               url: '',
@@ -156,7 +146,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/my-period-list/my-period-list.component').then(m => m.MyPeriodListComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Periodi',
               url: '',
@@ -170,7 +160,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/period-details/period-details.component').then(m => m.PeriodDetailsComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Periodi',
               url: '',
@@ -190,7 +180,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/manage-period/manage-period.component').then(m => m.ManagePeriodComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Periodi',
               url: '',
@@ -210,7 +200,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/manage-period/manage-period.component').then(m => m.ManagePeriodComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Periodi',
               url: '',
@@ -230,7 +220,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/training-details/training-details.component').then(m => m.TrainingDetailsComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Allenamenti',
               url: '',
@@ -250,7 +240,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/manage-training/manage-training.component').then(m => m.ManageTrainingComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Allenamenti',
               url: '',
@@ -270,7 +260,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/manage-training/manage-training.component').then(m => m.ManageTrainingComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Allenamenti',
               url: '',
@@ -290,7 +280,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/manage-progress/manage-progress.component').then(m => m.ManageProgressComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Progressi',
               url: '',
@@ -310,7 +300,7 @@ const routes: Routes = [
         loadComponent: () => import('./pages/manage-progress/manage-progress.component').then(m => m.ManageProgressComponent),
         canActivate: [authGuard],
         data: {
-          breadcrumb: 
+          breadcrumb:
             [{
               label: 'Progressi',
               url: '',
@@ -325,6 +315,11 @@ const routes: Routes = [
             }]
         }
       },
+      {
+        path: LOGOUT_PATH,
+        loadComponent: () => import('./pages/logout/logout.component').then(m => m.LogoutComponent),
+        canActivate: [authGuard]
+      }
     ]
   }
 ];
@@ -340,6 +335,11 @@ export class sub_appRoutingModule {
   //HOME
   static get full_homePath(): string {
     return "/" + AppRoutingModule.personalAreaPath + "/" + HOME_PATH;
+  }
+
+  //LOGOUT
+  static get full_logoutPath(): string {
+    return "/" + AppRoutingModule.personalAreaPath + "/" + LOGOUT_PATH;
   }
 
   //LIST VIEWS

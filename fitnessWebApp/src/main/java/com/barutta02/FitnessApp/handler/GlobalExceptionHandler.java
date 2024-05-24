@@ -1,6 +1,7 @@
 package com.barutta02.FitnessApp.handler;
 
 import jakarta.mail.MessagingException;
+import reactor.netty.http.client.PrematureCloseException;
 
 import org.springframework.core.codec.DecodingException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -176,7 +177,22 @@ public class GlobalExceptionHandler {
                 .status(SERVICE_UNAVAILABLE)
                 .body(
                         ExceptionResponse.builder()
-                                .error("Il sistema di intelligenza artificiale al momento non è raggiungibile.\n Si prega di riprovare più tardi.")
+                                .businessErrorCode(SERVICE_UNAVAILABLE.value())
+                                .businessErrorDescription("Il sistema di intelligenza artificiale al momento non è raggiungibile.\n Si prega di riprovare più tardi.")
+                                .error(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(PrematureCloseException.class)
+    public ResponseEntity<ExceptionResponse> handleException(PrematureCloseException exp) {
+        return ResponseEntity
+                .status(SERVICE_UNAVAILABLE)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(SERVICE_UNAVAILABLE.value())
+                                .businessErrorDescription("Il sistema di intelligenza artificiale al momento non è raggiungibile.\n Si prega di riprovare più tardi.")
+                                .error(exp.getMessage())
                                 .build()
                 );
     }
@@ -186,7 +202,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(exp.getStatusCode())
                 .body(
-                        exp.getResponseBodyAs(ExceptionResponse.class)
+                        ExceptionResponse.builder()
+                                .businessErrorCode(exp.getStatusCode().value())
+                                .businessErrorDescription(exp.getResponseBodyAs(ExceptionResponse.class).getError())
+                                .error(exp.getMessage())
+                                .build()
                 );
     }
 
@@ -196,7 +216,9 @@ public class GlobalExceptionHandler {
                 .status(INTERNAL_SERVER_ERROR)
                 .body(
                         ExceptionResponse.builder()
-                                .error("Non è stato possibile generare l'allenamento richiesto.\n Si prega di riprovare più tardi.")
+                                .businessErrorCode(INTERNAL_SERVER_ERROR.value())
+                                .businessErrorDescription("Non è stato possibile generare l'allenamento richiesto.\n Si prega di riprovare più tardi.")
+                                .error(exp.getMessage())
                                 .build()
                 );
     }
