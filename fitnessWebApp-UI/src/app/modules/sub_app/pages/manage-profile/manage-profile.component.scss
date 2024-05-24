@@ -1,0 +1,30 @@
+.inputContainer{
+    height: 100px;
+}
+
+h3{
+    border-bottom: 1.5px solid #d9d0d0;
+    padding-bottom: .4em;
+}
+
+fieldset>div {
+    padding: 1em;
+}
+
+fieldset{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+legend,h4{
+    font-weight: 400;
+    padding: 1em;}
+
+.def_button {
+   margin-top: .5em;
+}
+
+dl{
+    padding-left: 2em;
+}

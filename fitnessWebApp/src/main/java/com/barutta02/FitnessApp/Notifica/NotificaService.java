@@ -1,34 +1,24 @@
 package com.barutta02.FitnessApp.Notifica;
 
 import com.barutta02.FitnessApp.Notifica.DTO.NotificaResponse;
-import com.barutta02.FitnessApp.common.PageResponse;
 import com.barutta02.FitnessApp.config.UserExtractor;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
 import com.barutta02.FitnessApp.periodo.Periodo;
 import com.barutta02.FitnessApp.periodo.PeriodoRepository;
-import com.barutta02.FitnessApp.periodo.DTO.PeriodoRequest;
-import com.barutta02.FitnessApp.periodo.DTO.PeriodoResponse;
 import com.barutta02.FitnessApp.periodo_allenamento.PeriodoAllenamento;
 import com.barutta02.FitnessApp.periodo_allenamento.PeriodoAllenamentoRepository;
-import com.barutta02.FitnessApp.periodo_allenamento.PeriodoAllenamentoService;
 import com.barutta02.FitnessApp.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,6 +65,13 @@ public class NotificaService {
 
     }
 
+    /**
+     * Generate notifications for today
+     * 
+     * @param periodo
+     * @param allenamenti
+     * @return
+     */
     private ArrayList<Notifica> generateTodayNotifications(Periodo periodo, ArrayList<PeriodoAllenamento> allenamenti) {
         ArrayList<Notifica> notifiche = new ArrayList<>();
         LocalDate today = LocalDate.now(); // Attenzione UTC
@@ -102,14 +99,30 @@ public class NotificaService {
         return notifiche;
     }
 
+    /**
+     * Check if there are notifications for today already generated
+     * @param user
+     * @param today
+     * @return
+     */
     private boolean isThereAnyNotificationForToday(User user, LocalDate today) {
         return notificaRepository.existsByCreatorAndDate(user, today);
     }
 
+    /**
+     * Delete old notifications that are not for today
+     * @param user
+     * @param today
+     */
     private void deleteOldNotifications(User user, LocalDate today) {
         notificaRepository.deleteByCreatorAndDateNot(user, today);
     }
 
+    /**
+     * Set a notification as read
+     * @param notification_id
+     * @param connectedUser
+     */
     public NotificaResponse setNotificationAsRead(Long notification_id, Authentication connectedUser) {
         User user = userExtractor.getUserFromAuthentication(connectedUser);
         Notifica notifica = notificaRepository.findById(notification_id)

@@ -21,6 +21,7 @@ import { MessageHandler } from '../../../../services/myServices/error-handler/Me
   imports: [NgFor,NgIf, CalendarComponent, ObiettivoPeriodoPipePipe, FeedbackInfoPointComponent]
 })
 export class PeriodDetailsComponent extends MessageHandler implements OnInit {
+  events: string[] = [];
 
   private _eventSetting: EventSettingsModel = {};
   private infoTaken: boolean = false;
@@ -44,6 +45,9 @@ export class PeriodDetailsComponent extends MessageHandler implements OnInit {
           this._eventSetting.dataSource = this.periodManagerService.getScheduleEvents(20);
           this.infoTaken = true;
           periodInfoSubscription$.unsubscribe();
+          this.events = [new Date(this.period_data_inizio).toLocaleDateString('en-GB'),
+             new Date().toLocaleDateString('en-GB') + "(Ora)",
+              this.period_data_fine != ""? new Date(this.period_data_fine).toLocaleDateString('en-GB') : 'Ignota'];
         }, error: (error) => {
           this.handleErrorMessages(error);
         }

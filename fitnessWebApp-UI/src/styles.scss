@@ -17,7 +17,7 @@
   --card_background: #4a4a48; // or any global you wish to share with components
   --default_padding: 1em;
   --default_margin: 1em;
-  --default_border_radius: 10px;
+  --default_border_radius: 20px;
   --background_color: linear-gradient(to left bottom, #5a5757, #444142, #2e2d2d, #1b1a1a, #000000);
   --txtColor: #fff;
   --secondTxtColor: #dfcdcd;
@@ -95,7 +95,13 @@ body {
   flex-grow: 1;
 }
 
-
+.def_section{
+  background: var(--card_secondary_background);
+  padding: var(--default_padding);
+  color: var(--txtColorDark);
+  border-radius: var(--default_border_radius);
+  margin: var(--default_margin);
+}
 .background {
   background-size: cover;
   background-repeat: no-repeat;
@@ -119,7 +125,10 @@ body {
 .block{
   display: block;
 }
+.bold-500{
+  font-weight: 500;
 
+}
 small.text-danger{
   padding: .3em;
   color: #b22a27!important;

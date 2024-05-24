@@ -1,7 +1,11 @@
 <div id="stepperContainer">
     <div *ngIf="isProgressDataEmpty; else progressFilledTemplate">
+        <p class="bold-500">
+            Devi ancora inserire dei dati sui tuoi progressi, cosa aspetti?
+        </p>
         <p>
-            Non ci sono dati sufficienti per mostrare i progressi.
+            Tieni traccia dei tuoi progressi inserendo i tuoi pesi e le tue misure corporee.
+            Il chatbot ti potrà dare consigli su come migliorare la tua forma fisica sulla base dei dati inseriti.
         </p>
     </div>
     <ng-template #progressFilledTemplate>
