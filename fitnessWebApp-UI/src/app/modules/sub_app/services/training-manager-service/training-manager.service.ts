@@ -213,11 +213,17 @@ mentre i due mergeMap sono concettualmente sequenziali, ciò non implica che l'i
             this._trainingExerciseRequests[i].id_allenamento = id;
         }
     }
-
+    /**
+     * Dammi gli id degli esercizi che sono stati rimossi
+     * ma anche gli i degli esercizi che sono stati spostati
+     * questo perche se li salvo e basta durante il salvataggio avrei un errore di unique constraint
+     * @returns 
+     */
     private getIDsOfRemovedExercises(): number[] {
         return this._starting_trainingExerciseRequests.filter(
             (exercise) => (!this._trainingExerciseRequests.find((request) => (request.id === exercise.id) ) ||
-            !this._trainingExerciseRequests.find((request) => (request.id === exercise.id && request.index === exercise.index) ))
+                            !this._trainingExerciseRequests.find((request) => (request.id === exercise.id &&       
+                                                                                request.index === exercise.index) ))
         ).map((exercise) => exercise.id as number);
     }
 
