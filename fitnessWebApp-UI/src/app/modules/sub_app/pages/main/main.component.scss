@@ -24,7 +24,9 @@ header h1 {
 }
 
 
-
+:host ::ng-deep p-breadcrumb .p-menuitem-text{
+    color: var(--txtColor);
+}
 :host ::ng-deep .p-menuitem{
     color: var(--txtColor)
 }
