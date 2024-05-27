@@ -2,8 +2,10 @@
 </app-feedback-info-point>
 <!--POP UP per inserire l'allenamento-->
 <div class="popUp" *ngIf="isPopUpOpen">
-    <app-my-training-list-no-pagination
-        (add_training)="add_training_top_period($event)"></app-my-training-list-no-pagination>
+    <p-scrollPanel [style]="{ width: '100%', height: '90%' }" styleClass="custombar1">
+        <app-my-training-list-no-pagination
+            (add_training)="add_training_top_period($event)"></app-my-training-list-no-pagination>
+    </p-scrollPanel>
     <button class="backButton def_button" (click)="closeDialog()">Close</button>
 </div>
 

@@ -3,13 +3,14 @@ import { AllenamentoEsercizioRequest, ExerciseResponse } from '../../../../servi
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
-
+import { InplaceModule } from 'primeng/inplace';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
 @Component({
   selector: 'app-exercise-card',
   templateUrl: './exercise-card.component.html',
   styleUrls: ['./exercise-card.component.scss'],
   standalone: true,
-  imports: [NgIf, FormsModule, ReactiveFormsModule, ScrollPanelModule]
+  imports: [NgIf, FormsModule, ReactiveFormsModule, ScrollPanelModule ,InplaceModule, TruncatePipe] 
 })
 export class ExerciseCardComponent {
   isOpenInputView = false;

@@ -45,6 +45,9 @@ ul{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    height: 450px;
+    max-width: 450px;
+    border: 1px solid #bbb2b2;
     background-color: var(--card_secondary_background);
     color: #000;
     max-width: 600px;
@@ -55,6 +58,11 @@ ul{
     border-radius: 20px;
     padding: var(--default_padding);
 }
+
+.popUp .def_button{
+    margin: 0;
+}
+
 
 
 .blur{
@@ -70,4 +78,8 @@ ul{
 }
 .bold{
     font-weight: bold;
+}
+
+:host ::ng-deep .mat-horizontal-content-container {
+    overflow: visible;
 }

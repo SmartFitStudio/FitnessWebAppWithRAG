@@ -5,37 +5,42 @@
         <dl>
             <dt class="exerciseName">{{exercise.name}}</dt>
             <dd class="secondary category"> {{exercise.category}}</dd>
-            <dd class="description">{{exercise.description}}</dd>
+            <p-scrollPanel [style]="{ width: '100%', height: '50px' }">
+                <dd class="description">{{exercise.description}}</dd>
+
+            </p-scrollPanel>
             <p-messages *ngIf="is_editing_started" severity="info">
                 <ng-template pTemplate>
                     <div class="ml-2">Modifica in corso.</div>
                 </ng-template>
             </p-messages>
-            <dd class="secondary serie">
-                <i aria-label="Serie" class="fa-solid fa-repeat"></i>
-                <p-inputNumber inputId="integeronly" formControlName="serie"/>
-            </dd>
-            <dd class="secondary ripetizioni">
-                <i aria-label="Ripetizioni" class="fa-solid fa-hashtag"></i>
-                <p-inputNumber inputId="integeronly" formControlName="ripetizioni" />
-            </dd>
-            <dd class="secondary recupero">
-                <i aria-label="Recupero" class="fa-solid fa-stopwatch"></i>
-                <p-inputNumber inputId="integeronly" formControlName="recupero" />
-            </dd>
+            <div class="flex_row_to_column">
+                <dd class="secondary serie flex_row">
+                    <i aria-label="Serie" class="fa-solid fa-repeat"></i>
+                    <p-inputNumber inputId="integeronly" formControlName="serie"/>
+                </dd>
+                <dd class="secondary ripetizioni flex_row">
+                    <i aria-label="Ripetizioni" class="fa-solid fa-hashtag"></i>
+                    <p-inputNumber inputId="integeronly" formControlName="ripetizioni" />
+                </dd>
+                <dd class="secondary recupero flex_row">
+                    <i aria-label="Recupero" class="fa-solid fa-stopwatch"></i>
+                    <p-inputNumber inputId="integeronly" formControlName="recupero" />
+                </dd>
+            </div>   
         </dl>
     </form>       
 
     </div>
     <div class="buttonHanlder" >
         <div>
-            <button class="def_button" (click)="up()"><i class="fa-solid fa-arrow-up"></i></button>
-            <button class="def_button" (click)="down()"><i class="fa-solid fa-arrow-down"></i></button>
+            <button class="def_button inline_to_block_resp" (click)="up()"><i class="fa-solid fa-arrow-up"></i></button>
+            <button class="def_button inline_to_block_resp" (click)="down()"><i class="fa-solid fa-arrow-down"></i></button>
         </div>
         <div>
-            <button class="def_button" (click)="deleteExerciseFromTraining()"><i class="fa-solid fa-trash"></i></button>
-            <button *ngIf="!is_editing_started" class="def_button" (click)="startEditing()"><i class="fa-solid fa-pencil"></i></button>
-            <button *ngIf="is_editing_started" class="def_button" (click)="updateInfo()"><i class="fa-solid fa-floppy-disk"></i></button>
+            <button class="def_button inline_to_block_resp" (click)="deleteExerciseFromTraining()"><i class="fa-solid fa-trash"></i></button>
+            <button *ngIf="!is_editing_started" class="def_button inline_to_block_resp" (click)="startEditing()"><i class="fa-solid fa-pencil"></i></button>
+            <button *ngIf="is_editing_started" class="def_button inline_to_block_resp" (click)="updateInfo()"><i class="fa-solid fa-floppy-disk"></i></button>
         </div>
     </div>
 </div>

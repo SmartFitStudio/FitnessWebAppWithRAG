@@ -1,0 +1,15 @@
+.inptContainer{
+    padding-bottom: 2em;
+}
+form> div:first-child{
+    padding-top: 1em;
+}
+:host ::ng-deep .p-button{
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+:host ::ng-deep .p-fieldset-legend{
+    background:none;
+    border:none;
+}

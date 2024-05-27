@@ -29,7 +29,6 @@ p-floatLabel {
 }
 
 .homeInfo {
-    padding-top: 5em;
     padding-left: 2em;
     padding-right: .5em;
     background: #f0efef;
@@ -81,10 +80,4 @@ p.display-6 {
     flex-wrap: wrap;
     flex-direction: row;
     gap: .5em;
-}
-
-@media screen and (max-width: 768px){
-    .homePicture {
-        display: none;
-    }
 }

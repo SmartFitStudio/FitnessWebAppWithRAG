@@ -1,0 +1,74 @@
+<div class="card">
+    <p-stepper orientation="vertical">
+        <p-stepperPanel header="Informazioni">
+            <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                            <p-fieldset legend="Dati per la generazione" >
+                                <p>
+                                  Inserisci i dati necessari per la generazione della dieta.
+                                </p>
+                                <form>
+                                    <div class="inptContainer">
+                                        <p-floatLabel>
+                                            <input pInputText id="username"  />
+                                            <label for="titolo">Titolo</label>
+                                        </p-floatLabel>
+                                    </div>
+
+                                    <div class="inptContainer">
+                                        <p-floatLabel>
+                                            <textarea 
+                                                id="descrizione" 
+                                                rows="5" cols="30" 
+                                                pInputTextarea>
+                                            </textarea>
+                                            <label for="descrizione">Descrizione</label>
+                                        </p-floatLabel>
+                                    </div>
+
+                                    <div class="inptContainer">
+                                        <p-multiSelect 
+                                        [options]="menu_tipos" 
+                                        placeholder="Seleziona i tipi di menu" 
+                                        optionLabel="name" 
+                                        display="chip" 
+                                        [showClear]="true" />
+                                    </div>
+                                    
+                                </form>
+                            </p-fieldset>
+                    </div>
+                </div>
+                <div class="flex py-4">
+                    <p-button label="Next" (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Dieta">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        Content II
+                    </div>
+                </div>
+                <div class="flex py-4 gap-2">
+                    <p-button label="Back" severity="secondary" (onClick)="prevCallback.emit()" />
+                    <p-button label="Next" (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Fine">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        Content III
+                    </div>
+                </div>
+                <div class="flex py-4">
+                    <p-button label="Back" (onClick)="prevCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+    </p-stepper>
+</div>

@@ -3,8 +3,7 @@
     <img src="../../assets/images/home/homePhoto.png" class="fullCover">
   </div>
   <div class="homeInfo">
-    <div class="container-fluid card login-container">
-
+    <div class="container-fluid card register-container">
       <h3 class="display-5">Login</h3>
       <app-feedback-info-point [messages]="messages">
       </app-feedback-info-point>
@@ -18,19 +17,19 @@
           <label for="password">Password</label>
         </p-floatLabel>
       </form>
-        <div class="flex">
-          <div>
-            <button (click)="login()" type="button" class="def_button">
-              <em class="fas fa-sign-in-alt"> Accedi</em>
-            </button>
-          </div>
-          <div>
-            Non possiedi un account? 
-            <button (click)="register()" type="button" class="btn btn-link">
-              Registrati
-            </button>
-          </div>
+      <div class="flex">
+        <div>
+          <button (click)="login()" type="button" class="def_button">
+            <em class="fas fa-sign-in-alt">&nbsp;Login</em>
+          </button>
         </div>
+        <div>
+          Non possiedi un account?&nbsp;
+          <button (click)="register()" type="button" class="btn btn-link">
+            Registrati
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </section>

@@ -4,13 +4,15 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessagesModule } from 'primeng/messages';
 import { NgIf } from '@angular/common';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { InplaceModule } from 'primeng/inplace';
 
 @Component({
   selector: 'app-train-exercise-handler',
   templateUrl: './train-exercise-handler.component.html',
   styleUrls: ['./train-exercise-handler.component.scss'],
   standalone: true,
-  imports: [NgIf,InputNumberModule,FormsModule, ReactiveFormsModule, MessagesModule,]
+  imports: [NgIf,InputNumberModule,FormsModule, ReactiveFormsModule, MessagesModule,ScrollPanelModule, InplaceModule]
 })
 export class TrainExerciseHandlerComponent {
   private _trainingExercise!: AllenamentoEsercizioRequest;

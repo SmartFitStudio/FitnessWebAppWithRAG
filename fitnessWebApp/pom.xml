@@ -1,135 +1,278 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>
+		4.0.0
+	</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>
+			org.springframework.boot
+		</groupId>
+		<artifactId>
+			spring-boot-starter-parent
+		</artifactId>
+		<version>
+			3.2.2
+		</version>
+		<relativePath />
+		<!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.barutta02</groupId>
-	<artifactId>authsystem</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>authsystem</name>
-	<description>Demo project for Spring Boot</description>
+	<groupId>
+		com.barutta02
+	</groupId>
+	<artifactId>
+		authsystem
+	</artifactId>
+	<version>
+		0.0.1-SNAPSHOT
+	</version>
+	<name>
+		authsystem
+	</name>
+	<description>
+		Demo project for Spring Boot
+	</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>
+			17
+		</java.version>
+		 <sonar.host.url>http://localhost:9000</sonar.host.url>
+  <sonar.login>${env.SONAR_TOKEN}</sonar.login> <!-- Usa una variabile d'ambiente per il token -->
+  <sonar.projectKey>your-project-key</sonar.projectKey>
+  <sonar.projectName>Your Project Name</sonar.projectName>
+  <sonar.projectVersion>1.0</sonar.projectVersion>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<groupId>
+				org.springframework.boot
+			</groupId>
+			<artifactId>
+				spring-boot-starter-data-jpa
+			</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>javax.persistence-api</artifactId>
-			<version>2.2</version>
+			<groupId>
+				javax.persistence
+			</groupId>
+			<artifactId>
+				javax.persistence-api
+			</artifactId>
+			<version>
+				2.2
+			</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
+			<groupId>
+				org.springframework.boot
+			</groupId>
+			<artifactId>
+				spring-boot-starter-mail
+			</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<groupId>
+				org.springframework.boot
+			</groupId>
+			<artifactId>
+				spring-boot-starter-security
+			</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<groupId>
+				org.springframework.boot
+			</groupId>
+			<artifactId>
+				spring-boot-starter-thymeleaf
+			</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
+			<groupId>
+				org.springframework.boot
+			</groupId>
+			<artifactId>
+				spring-boot-starter-validation
+			</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+			<groupId>
+				org.springframework.boot
+			</groupId>
+			<artifactId>
+				spring-boot-starter-web
+			</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<groupId>
+				org.postgresql
+			</groupId>
+			<artifactId>
+				postgresql
+			</artifactId>
+			<scope>
+				runtime
+			</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
+			<groupId>
+				org.projectlombok
+			</groupId>
+			<artifactId>
+				lombok
+			</artifactId>
+			<optional>
+				true
+			</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.junit.vintage</groupId>
-			<artifactId>junit-vintage-engine</artifactId>
-			<scope>test</scope>
+			<groupId>
+				io.jsonwebtoken
+			</groupId>
+			<artifactId>
+				jjwt-api
+			</artifactId>
+			<version>
+				0.11.5
+			</version>
+		</dependency>
+		<dependency>
+			<groupId>
+				org.junit.vintage
+			</groupId>
+			<artifactId>
+				junit-vintage-engine
+			</artifactId>
+			<scope>
+				test
+			</scope>
 			<exclusions>
 				<exclusion>
-					<groupId>org.hamcrest</groupId>
-					<artifactId>hamcrest-core</artifactId>
+					<groupId>
+						org.hamcrest
+					</groupId>
+					<artifactId>
+						hamcrest-core
+					</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version>
+			<groupId>
+				io.jsonwebtoken
+			</groupId>
+			<artifactId>
+				jjwt-impl
+			</artifactId>
+			<version>
+				0.11.5
+			</version>
 		</dependency>
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.5</version>
+			<groupId>
+				io.jsonwebtoken
+			</groupId>
+			<artifactId>
+				jjwt-jackson
+			</artifactId>
+			<version>
+				0.11.5
+			</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.1.0</version>
+			<groupId>
+				org.springdoc
+			</groupId>
+			<artifactId>
+				springdoc-openapi-starter-webmvc-ui
+			</artifactId>
+			<version>
+				2.1.0
+			</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>
+				org.springframework.boot
+			</groupId>
+			<artifactId>
+				spring-boot-starter-test
+			</artifactId>
+			<scope>
+				test
+			</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
+			<groupId>
+				org.springframework.security
+			</groupId>
+			<artifactId>
+				spring-security-test
+			</artifactId>
+			<scope>
+				test
+			</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
+			<groupId>
+				org.springframework.boot
+			</groupId>
+			<artifactId>
+				spring-boot-starter-webflux
+			</artifactId>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>
+					org.sonarsource.scanner.maven
+				</groupId>
+				<artifactId>
+					sonar-maven-plugin
+				</artifactId>
+				<version>
+					3.9.1.2184
+				</version>
 			</plugin>
-			    <plugin>
-      <groupId>org.jacoco</groupId>
-      <artifactId>jacoco-maven-plugin</artifactId>
-      <version>0.8.7</version>
-      <executions>
-        <execution>
-          <goals>
-            <goal>prepare-agent</goal>
-          </goals>
-        </execution>
-        <execution>
-          <id>report</id>
-          <phase>test</phase>
-          <goals>
-            <goal>report</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
+			<plugin>
+				<groupId>
+					org.springframework.boot
+				</groupId>
+				<artifactId>
+					spring-boot-maven-plugin
+				</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>
+					org.jacoco
+				</groupId>
+				<artifactId>
+					jacoco-maven-plugin
+				</artifactId>
+				<version>
+					0.8.7
+				</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>
+								prepare-agent
+							</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>
+							report
+						</id>
+						<phase>
+							test
+						</phase>
+						<goals>
+							<goal>
+								report
+							</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
