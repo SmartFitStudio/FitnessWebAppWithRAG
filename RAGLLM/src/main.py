@@ -63,6 +63,24 @@ def generate_workout():
         return response, 200
     else:
         return jsonify({'error': response}), 500
+    
+@app.route('/generateDiet', methods=['POST'])
+def generate_diet():
+    try:
+        jsonRequest = request.get_json()
+    except:
+        return jsonify({'error': 'Formato della richiesta non valido'}), 400
+    if 'diet_data' not in jsonRequest:
+        return jsonify({'error': 'Nella richiesta non è presente il campo "diet_data" relativo ai dati base del piano alimentare'}), 400
+    if 'user_data' not in jsonRequest:
+        return jsonify({'error': 'Nella richiesta non è presente il campo "user_data" relativo ai dati dell\'utente'}), 400
+    diet_data = jsonRequest.get("diet_data")
+    user_data = jsonRequest.get("user_data")
+    is_successful, response = answer.generate_diet_json(diet_data, user_data)
+    if is_successful:
+        return response, 200
+    else:
+        return jsonify({'error': response}), 500
 
 if __name__ == "__main__":
     serve(app, host='0.0.0.0', port=5000)
