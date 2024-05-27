@@ -1,7 +1,7 @@
 import common
 
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_experimental.text_splitter import SemanticChunker
 from langchain_community.vectorstores import Chroma
 
 def load_PDF(doc_path):
@@ -9,7 +9,7 @@ def load_PDF(doc_path):
     return loader.load() #pages
 
 def make_chuncks(pages):
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+    text_splitter = SemanticChunker(common.embeddings_model)
     return text_splitter.split_documents(pages) #chunks
 
 def embed_and_load_chunks_into_DB(chunks):
