@@ -2,34 +2,30 @@
   <div id="headerMainContainer">
     <h1 class="logo">FitnessHub</h1>
     <div class="headerLinks">
-      <a [routerLink]="profile_settings_path" routerLinkActive="active" ariaCurrentWhenActive="page">
-        <p-avatar
-          label="{{username_firstLetter}}"
-          styleClass="mr-2"
-          [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }"
-          shape="circle" />
-      </a>
-      <a [routerLink]="logout_path" routerLinkActive="active" ariaCurrentWhenActive="page">
-        <p-avatar
-        icon="pi pi-sign-out"
-        styleClass="mr-2"
-        [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }"
-        shape="circle" />
-      </a>
+      
+
+      <div>
+
+        <a (click)="menu.toggle($event)" routerLinkActive="active" ariaCurrentWhenActive="page" >
+          <p-avatar label="{{username_firstLetter}}" styleClass="mr-2"
+            [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }" shape="circle" />
+        </a>
+        <p-tieredMenu #menu [model]="toogle_menu_items" [popup]="true"/>
+
+      </div>
+
     </div>
   </div>
 </header>
 <app-menu></app-menu>
 
-<p-breadcrumb
-    class="max-w-full"
-    [model]="items"
-    [style]="{ 'background': 'none', 'border': 'none', 'color': '#fff', 'padding': '0', 'padding-top': '.5em', 'width': '100%'}"
-    [home]="home" />
+<p-breadcrumb class="max-w-full" [model]="items"
+  [style]="{ 'background': 'none', 'border': 'none', 'color': '#fff', 'padding': '0', 'padding-top': '.5em', 'width': '100%'}"
+  [home]="home" />
 
 <app-notification-list></app-notification-list>
 
 <div class="d-flex flex-column gap-1 container_page">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>
 <app-chatbot></app-chatbot>

@@ -2,7 +2,10 @@
   <img class="card-img-top" [src]="exerciseCover" alt="">
   <div class="card-body">
     <h5 class="card-title">{{exercise.name}}</h5>
-    <p class="card-text description">{{exercise.description}}</p>
+    <p-scrollPanel [style]="{ width: '100%', height: '100px' }">
+      <p class="card-text description">{{exercise.description}}</p>
+
+    </p-scrollPanel>
     <p class="card-text category">{{exercise.category}}</p>
     <div class="d-flex gap-2 iteractionButtons" *ngIf="!isAnOrderedInput && isModifiable() && !storeViewActive">
       <i (click)="onEdit()" class="fa-solid fa-pen-to-square"></i>
@@ -27,23 +30,23 @@
         <label class="sr-only" [for]="'serieInput' + exercise.id">Serie</label>
         <input formControlName="serie" type="number" class="form-control mb-2 mr-sm-2" [id]="'serieInput' + exercise.id"
           placeholder="Serie" min="0" name="serie">
-          <small class="text-danger" *ngIf="!IsSerieInputValid">
-            E' necessario inserire un valore maggiore di 0
-          </small>
+        <small class="text-danger" *ngIf="!IsSerieInputValid">
+          E' necessario inserire un valore maggiore di 0
+        </small>
         <!--Ripetizioni o tempi-->
         <label class="sr-only" [for]="'ripetizioniInput' + exercise.id">Ripetizioni</label>
         <input formControlName="ripetizioni" type="number" class="form-control mb-2 mr-sm-2"
           [id]="'ripetizioniInput' + exercise.id" placeholder="Ripetizioni" min="0" name="ripetizioni">
-          <small class="text-danger" *ngIf="!IsRipetizioniInputValid">
-            E' necessario inserire un valore maggiore di 0
-          </small>
+        <small class="text-danger" *ngIf="!IsRipetizioniInputValid">
+          E' necessario inserire un valore maggiore di 0
+        </small>
         <!--Recupero-->
         <label class="sr-only" [for]="'recuperoInput' + exercise.id">Recupero</label>
         <input formControlName="recupero" type="number" class="form-control mb-2 mr-sm-2"
           [id]="'recuperoInput' + exercise.id" placeholder="Recupero" min="0" name="recupero">
-          <small class="text-danger" *ngIf="!IsRecuperoInputValid">
-            E' necessario inserire un valore maggiore di 0
-          </small>
+        <small class="text-danger" *ngIf="!IsRecuperoInputValid">
+          E' necessario inserire un valore maggiore di 0
+        </small>
       </form>
     </div>
   </div>

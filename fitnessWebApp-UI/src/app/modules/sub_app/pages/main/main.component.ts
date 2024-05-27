@@ -11,6 +11,8 @@ import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { Subscription } from 'rxjs';
+import { TieredMenuModule } from 'primeng/tieredmenu';
+import { ButtonModule } from 'primeng/button';
 @Component({
     selector: 'app-main',
     templateUrl: './main.component.html',
@@ -23,12 +25,15 @@ import { Subscription } from 'rxjs';
         ChatbotComponent,
         AvatarModule, BadgeModule,
         RouterLinkActive, RouterLink,
-        BreadcrumbModule],
+        BreadcrumbModule,
+        TieredMenuModule,
+        ButtonModule],
 })
 
 export class MainComponent implements OnInit, OnDestroy{
     items: MenuItem[] = [];
     home: MenuItem | undefined;
+    toogle_menu_items: MenuItem[] = [];
 
     private username = this.tokenService.getuserFullName();
     private subscription!: Subscription;
@@ -51,7 +56,28 @@ export class MainComponent implements OnInit, OnDestroy{
             }
           });
         this.home = { icon: 'pi pi-home', routerLink: '/' };
-    }
+
+        this.toogle_menu_items = [
+          {
+              label: 'Il tuo profilo',
+              icon: 'pi pi-user-edit',
+              routerLink: this.profile_settings_path
+          },
+          {
+              label: 'Search',
+              icon: 'pi pi-search'
+          },
+          {
+              separator: true
+          },
+          {
+              label: 'Logout',
+              icon: 'pi pi-sign-out',
+              routerLink: this.logout_path
+          }
+      ]
+  }
+    
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();}

@@ -35,16 +35,13 @@ export class NotificationListComponent extends MessageHandler implements OnInit 
         next: notifiche => {
           this.lista_notifiche = notifiche;
           this.ALREADY_GET_NOTIFICATIONS = true;
-          this.notificationNumber = this.lista_notifiche.length;
+          this.notificationNumber = this.lista_notifiche? this.lista_notifiche.length : 0;
         },
         error: error => {
           this.handleErrorMessages(error);
         }
       })
     }
-    console.log(this.lista_notifiche)
-
-    console.log(this.notificationNumber);
 
   }
 
