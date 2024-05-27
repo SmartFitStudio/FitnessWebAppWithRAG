@@ -10,7 +10,7 @@ export abstract class MessageHandler {
     protected handleErrorMessages(error: any) {
         this.handleError.handleError(error).forEach((value) => {
             this._codes.push(value.code);
-            this._messages.push({ severity: 'error', summary: value.code.toString(), detail: value.message });
+            this._messages.push({ severity: 'error', detail: value.message });
         });
     }
 
