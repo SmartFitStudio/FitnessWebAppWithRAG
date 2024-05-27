@@ -10,7 +10,7 @@
         [rows]="5"
         styleClass="p-datatable tableStyle" 
         [showCurrentPageReport]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        currentPageReportTemplate="Elementi dal {first} al {last}"
         (onLazyLoad)="findProgress($event)"
         [totalRecords]='totalPages? totalPages*size : 0'
         [tableStyle]="{ 'background-color': 'red' }"

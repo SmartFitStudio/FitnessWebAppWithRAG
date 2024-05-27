@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 
 import { NotificaService } from '../../../../services/services';
 import { NotificaResponse } from '../../../../services/models';
@@ -20,6 +20,8 @@ export class NotificationListComponent extends MessageHandler implements OnInit 
   seeAll: boolean = false;
   notificationNumber: number = 0;
 
+  @Input() showErrors: boolean = false;
+  
   private lista_notifiche?: NotificaResponse[];
   private ALREADY_GET_NOTIFICATIONS: boolean = false;
 
