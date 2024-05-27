@@ -23,10 +23,10 @@ header h1 {
     padding-bottom: .5em;
 }
 
-:host ::ng-deep  .p-menuitem-text{
-    color: var(--txtColor)
-}
 
+:host ::ng-deep p-breadcrumb .p-menuitem-text{
+    color: var(--txtColor);
+}
 :host ::ng-deep .p-menuitem{
     color: var(--txtColor)
 }
@@ -66,10 +66,15 @@ header h1 {
     flex-direction: row;
     flex-wrap: wrap;
     row-gap: .5em;
+} 
+
+:host ::ng-deep div.ng-trigger  {
+    top: 50px!important;
 }
 
-.headerLinks{
+.headerLinks {
   display: flex;
   flex-direction: row;
   gap: 1em;
 }
+

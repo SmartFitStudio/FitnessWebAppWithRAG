@@ -34,7 +34,8 @@ export abstract class PaginatedComponent extends MessageHandler {
       }
     
       isLastPage() {
-        return this._page === this.totalPages as number - 1;
+        console.log("last page" + this._pages.length)
+        return this._page === this._pages.length as number - 1;
       }
     
       get page(): number {
