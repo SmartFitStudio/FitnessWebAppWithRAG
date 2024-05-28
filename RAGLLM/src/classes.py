@@ -35,4 +35,4 @@ class PianoAlimentare(BaseModel):
     ven: DietaGiornaliera = Field(description="Dieta del venerdì")
     sab: DietaGiornaliera = Field(description="Dieta del sabato")
     dom: DietaGiornaliera = Field(description="Dieta della domenica")
-    motivazioni: str = Field(description="Motivazioni per la dieta")
+    motivazioni: str = Field(description="Motivazioni delle scelte effettuate per la creazione della dieta")
