@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.barutta02.FitnessApp.ragllm.DTO.Question;
 import com.barutta02.FitnessApp.ragllm.DTO.ChatbotResponse;
+import com.barutta02.FitnessApp.ragllm.DTO.DietBase;
+import com.barutta02.FitnessApp.ragllm.DTO.PianoAlimentareRag;
 import com.barutta02.FitnessApp.ragllm.DTO.WorkoutBase;
 import com.barutta02.FitnessApp.ragllm.DTO.WorkoutResponse;
 
@@ -38,5 +40,10 @@ public class RagllmController {
     @PostMapping(path = "/generateWorkout")
     public ResponseEntity<WorkoutResponse> generateWorkout(@Valid @RequestBody WorkoutBase workoutBase, Authentication connectedUser) {
         return ResponseEntity.ok(ragllmService.generateWorkout(workoutBase, connectedUser).block());
+    }
+
+    @PostMapping(path = "/generateDiet")
+    public ResponseEntity<PianoAlimentareRag> generateDiet(@Valid @RequestBody DietBase dietBase, Authentication connectedUser) {
+        return ResponseEntity.ok(ragllmService.generateDiet(dietBase, connectedUser).block());
     }
 }

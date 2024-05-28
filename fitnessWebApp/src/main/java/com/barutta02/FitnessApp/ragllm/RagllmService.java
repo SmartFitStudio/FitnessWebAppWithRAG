@@ -6,6 +6,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.barutta02.FitnessApp.ragllm.DTO.Question;
 import com.barutta02.FitnessApp.ragllm.DTO.ChatbotRequest;
 import com.barutta02.FitnessApp.ragllm.DTO.ChatbotResponse;
+import com.barutta02.FitnessApp.ragllm.DTO.DietBase;
+import com.barutta02.FitnessApp.ragllm.DTO.DietRequest;
+import com.barutta02.FitnessApp.ragllm.DTO.PianoAlimentareRag;
 import com.barutta02.FitnessApp.ragllm.DTO.WorkoutBase;
 import com.barutta02.FitnessApp.ragllm.DTO.WorkoutRequest;
 import com.barutta02.FitnessApp.ragllm.DTO.WorkoutResponse;
@@ -41,5 +44,15 @@ public class RagllmService {
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(WorkoutResponse.class);
+    }
+
+    public Mono<PianoAlimentareRag> generateDiet(DietBase dietBase, Authentication connectedUser) {
+        DietRequest request = new DietRequest(dietBase.toString(), userDataExtractor.getUserDataMinimal(connectedUser));
+        return webClient.post()
+                .uri("/generateDiet")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(PianoAlimentareRag.class);
     }
 }
