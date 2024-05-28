@@ -10,13 +10,14 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 import { PaginatedComponent } from '../../../../services/common/PaginatedComponent';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-my-period-list',
   templateUrl: './my-period-list.component.html',
   styleUrls: ['./my-period-list.component.scss'],
   standalone: true,
-  imports: [NgIf, RouterLink, NgFor, PeriodCardComponent, AsyncPipe, FeedbackInfoPointComponent]
+  imports: [NgIf, RouterLink, NgFor, PeriodCardComponent, AsyncPipe, FeedbackInfoPointComponent,PaginatorModule]
 })
 export class MyPeriodListComponent extends PaginatedComponent implements OnInit {
   periodsResponse$!: Observable<PageResponsePeriodoResponse>;
@@ -42,14 +43,11 @@ export class MyPeriodListComponent extends PaginatedComponent implements OnInit 
 
   protected override getData() {
     this.periodsResponse$ = this.periodsService.findAllAuthenticatedUserPeriodoPaginated({
-      page: this._page,
-      size: this._size
+      page: this.lastPageEvent.page,
+      size: this.lastPageEvent.rows
     }).pipe(
       map((response: PageResponsePeriodoResponse) => {
         this.totalPages = response.totalPages;
-        this._pages = Array(response.totalPages)
-          .fill(0)
-          .map((x, i) => i);
         return response;
       }),
       catchError((error) => {

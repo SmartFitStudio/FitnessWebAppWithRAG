@@ -13,13 +13,14 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ExerciseCategory, getExerciseCategories } from '../../../../services/myModels/exerciseCategory';
 import { FormsModule } from '@angular/forms';
 import { FilterSelector } from '../../../../services/myModels/filterSelector';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-exercise-store',
   templateUrl: './exercise-store.component.html',
   styleUrls: ['./exercise-store.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent, MultiSelectModule, FormsModule]
+  imports: [NgIf, NgFor, ExerciseCardComponent, AsyncPipe, FeedbackInfoPointComponent, MultiSelectModule, FormsModule,PaginatorModule]
 })
 export class ExerciseStoreComponent extends PaginatedComponent implements OnInit {
   categories!: FilterSelector[];
@@ -70,8 +71,8 @@ export class ExerciseStoreComponent extends PaginatedComponent implements OnInit
 
   private searchByFilterOptions() {
     this.exerciseResponse$ = this.exerciseService.findExercisesByCategories({
-      page: this._page,
-      size: this._size,
+      page: this.lastPageEvent.page,
+      size: this.lastPageEvent.rows,
       categories: this.selectedCategories.map((category) => category.name as ExerciseCategory)
     }).pipe(
       catchError((error) => {
@@ -84,14 +85,11 @@ export class ExerciseStoreComponent extends PaginatedComponent implements OnInit
 
   private getAllPublicExercises() {
     this.exerciseResponse$ = this.exerciseService.getExercisesFromPublicStore({
-      page: this._page,
-      size: this._size
+      page: this.lastPageEvent.page,
+      size: this.lastPageEvent.rows
     }).pipe(
       map((response: PageResponseExerciseResponse) => {
         this.totalPages = response.totalPages;
-        this._pages = Array(response.totalPages)
-          .fill(0)
-          .map((x, i) => i);
         return response;
       }),
       catchError((error) => {

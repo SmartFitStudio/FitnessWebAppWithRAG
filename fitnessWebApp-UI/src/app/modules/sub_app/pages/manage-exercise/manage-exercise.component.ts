@@ -9,12 +9,15 @@ import { NgIf, NgFor } from '@angular/common';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+
 @Component({
   selector: 'app-manage-exercise',
   templateUrl: './manage-exercise.component.html',
   styleUrls: ['./manage-exercise.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, RouterLink, FeedbackInfoPointComponent]
+  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, RouterLink, FeedbackInfoPointComponent ,MultiSelectModule ,InputTextModule]
 })
 
 export class ManageExerciseComponent extends MessageHandler implements OnInit {
