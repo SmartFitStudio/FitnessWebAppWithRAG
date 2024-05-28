@@ -2,6 +2,7 @@
 [![codecov](https://codecov.io/gh/SmartFitStudio/FitnessWebAppWithRAG/graph/badge.svg?token=86DN46081Y)](https://codecov.io/gh/SmartFitStudio/FitnessWebAppWithRAG)
 # Backend Static analysis
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SmartFitStudio_FitnessWebAppWithRAG&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SmartFitStudio_FitnessWebAppWithRAG)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=SmartFitStudio_FitnessWebAppWithRAG&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=SmartFitStudio_FitnessWebAppWithRAG)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SmartFitStudio_FitnessWebAppWithRAG&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=SmartFitStudio_FitnessWebAppWithRAG)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=SmartFitStudio_FitnessWebAppWithRAG&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=SmartFitStudio_FitnessWebAppWithRAG)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=SmartFitStudio_FitnessWebAppWithRAG&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=SmartFitStudio_FitnessWebAppWithRAG)
