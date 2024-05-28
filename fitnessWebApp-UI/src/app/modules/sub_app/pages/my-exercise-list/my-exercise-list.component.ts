@@ -9,7 +9,6 @@ import { ErrorHandlerService } from '../../../../services/myServices/error-handl
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { PaginatedComponent } from '../../../../services/common/PaginatedComponent';
 import { PaginatorModule } from 'primeng/paginator';
-import { PageEvent } from '../../../../services/common/PaginatedComponent';
 
 @Component({
     selector: 'app-my-exercise-list',
@@ -29,8 +28,6 @@ export class MyExerciseListComponent extends PaginatedComponent implements OnIni
     @Inject(ErrorHandlerService) handleError: ErrorHandlerService
   ) {
     super(handleError);
-    console.log("constructor")
-    this.getData();
   }
 
   @Input()
@@ -44,7 +41,8 @@ export class MyExerciseListComponent extends PaginatedComponent implements OnIni
   }
 
   ngOnInit(): void {
-    console.log("ngOnInit")
+    this.rows = 5;
+    this.getData();
   }
 
   protected override getData() {
