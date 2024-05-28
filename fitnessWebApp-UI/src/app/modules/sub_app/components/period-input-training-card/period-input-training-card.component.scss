@@ -5,8 +5,7 @@
 
 .allenamento_esercizio_card{
         display: grid;
-        grid-template-columns: 1fr 30px; /* Le colonne avranno larghezza uguale */
-        gap: 1em; /* Spazio tra le colonne */
+        grid-template-columns: 1fr 40px; /* Le colonne avranno larghezza uguale */
         padding: .5em;
 }
 .allenamento_esercizio_card dt.exerciseName{

@@ -27,5 +27,9 @@ export class MenuComponent {
   get homeLink(): string {
     return sub_appRoutingModule.full_homePath;
   }
+
+  get dietLink(): string {
+    return sub_appRoutingModule.full_manageDietPath;
+  }
 }
 

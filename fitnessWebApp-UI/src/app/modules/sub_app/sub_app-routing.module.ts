@@ -14,6 +14,7 @@ const MANAGE_EXERCISE_PATH = 'manage-exercise';
 const MANAGE_TRAINING_PATH = 'manage-training';
 const MANAGE_PERIOD_PATH = 'manage-period';
 const MANAGE_PROGRESS_PATH = 'manage-progress';
+const MANAGE_DIET_PATH = 'manage-diet';
 
 const MY_EXERCISES_PATH = 'my-exercises';
 const MY_TRAINS_PATH = 'my-trains';
@@ -316,6 +317,21 @@ const routes: Routes = [
         }
       },
       {
+        path: MANAGE_DIET_PATH,
+        loadComponent: () => import('./pages/manage-diet/manage-diet.component').then(m => m.ManageDietComponent),
+        canActivate: [authGuard],
+        data: {
+          breadcrumb:
+            [{
+              label: 'Dieta',
+              url: '',
+              active: true,
+              class: 'breadcrumb-item active'
+            },
+            ]
+        }
+      },
+      {
         path: LOGOUT_PATH,
         loadComponent: () => import('./pages/logout/logout.component').then(m => m.LogoutComponent),
         canActivate: [authGuard]
@@ -379,7 +395,9 @@ export class sub_appRoutingModule {
   static get full_manageProgressPath(): string {
     return "/" + AppRoutingModule.personalAreaPath + "/" + MANAGE_PROGRESS_PATH;
   }
-
+  static get full_manageDietPath(): string {
+    return "/" + AppRoutingModule.personalAreaPath + "/" + MANAGE_DIET_PATH;
+  }
 
     //STORE
     static get full_exerciseStorePath(): string {

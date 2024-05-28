@@ -1,55 +1,73 @@
-.allenamento_esercizio_card img{
+.allenamento_esercizio_card img {
     width: 100px;
     border-radius: 15px;
+    padding-right: .5em;
 }
 
-.allenamento_esercizio_card{
+.allenamento_esercizio_card {
     display: grid;
     grid-template-columns: 100px 1fr 100px;
     gap: 1em;
     padding: 0.5em;
 }
-.allenamento_esercizio_card dt.exerciseName{
+
+.allenamento_esercizio_card dt.exerciseName {
     display: inline;
 }
 
-.allenamento_esercizio_card dd.description{
+.allenamento_esercizio_card dd.description {
     display: block;
     font-weight: 500;
     font-size: .8em;
 
 }
-.allenamento_esercizio_card dd{
+
+.allenamento_esercizio_card dd {
     display: inline;
     padding-right: .5em;
     margin-bottom: 0;
 }
 
-.exercise_info{
+.exercise_info {
     width: 100%;
 }
 
-.secondary{
+.secondary {
     font-size: .7em;
 }
 
 
-.allenamento_esercizio_card .category{
+.allenamento_esercizio_card .category {
     font-size: 0.8em;
     font-weight: 600;
     color: #818181;
 }
 
-.category::before{
+.category::before {
     content: " · ";
     font-weight: 700;
 
 }
-.buttonHanlder{
+
+.buttonHanlder {
     display: flex;
     gap: .2em;
     flex-direction: row;
     flex-wrap: nowrap;
+}
+
+.flex_row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+}
+
+.flex_row_to_column {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
 }
 
 :host ::ng-deep .p-inputtext {
@@ -58,6 +76,7 @@
     padding-left: .1em;
 }
 
+.inline_to_block_resp {}
 
 :host ::ng-deep span.p-inputnumber.p-component {
     padding-left: .2em;
@@ -66,7 +85,30 @@
 :host ::ng-deep .p-message-wrapper {
     max-height: 20px;
 }
+
 :host ::ng-deep .p-messages.p-component {
     max-width: 200px;
-    
+
+}
+
+.inline_to_block_resp {
+    display: inline;
+}
+
+@media screen and (max-width: 600px) {
+    .flex_row_to_column {
+        flex-direction: column;
+    }
+
+    .inline_to_block_resp {
+        display: block;
+    }
+
+    .buttonHanlder {
+        flex-direction: column;
+    }
+
+    .allenamento_esercizio_card {
+        gap: 0;
+    }
 }

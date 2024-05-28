@@ -1,5 +1,5 @@
 <div class="notification_list">
-    <app-feedback-info-point [messages]="messages">
+    <app-feedback-info-point [messages]="messages" *ngIf="showErrors">
     </app-feedback-info-point>
     <ng-container   *ngIf="seeAll">
         <app-notification-card *ngFor="let notifica of notifiche" 

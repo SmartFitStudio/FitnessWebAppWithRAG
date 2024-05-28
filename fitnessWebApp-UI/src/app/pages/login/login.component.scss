@@ -1,4 +1,5 @@
-.login-container {
+.register-container {
+    margin-top: 4em;
     background: none;
     border: none;
     float: left;
@@ -12,6 +13,7 @@ p-floatLabel {
     margin: auto;
     padding: 3em;
 }
+
 
 .homeSection {
     width: 100vw;
@@ -27,7 +29,6 @@ p-floatLabel {
 }
 
 .homeInfo {
-    padding-top: 5em;
     padding-left: 2em;
     padding-right: .5em;
     background: #f0efef;
@@ -79,10 +80,4 @@ p.display-6 {
     flex-wrap: wrap;
     flex-direction: row;
     gap: .5em;
-}
-
-@media screen and (max-width: 768px){
-    .homePicture {
-        display: none;
-    }
 }

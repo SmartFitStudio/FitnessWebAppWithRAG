@@ -23,6 +23,8 @@ import { ErrorHandlerService } from '../../../../services/myServices/error-handl
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 import { NgVarDirective } from '../../directives/ngVar/ng-var.directive';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+
 
 @Component({
   selector: 'app-manage-period',
@@ -31,7 +33,7 @@ import { NgVarDirective } from '../../directives/ngVar/ng-var.directive';
   providers: [PeriodManagerService] // Fornisce il servizio a livello di componente
   ,
   standalone: true,
-  imports: [MatDialogModule, NgIf, NgFor, NgVarDirective, CalendarModule, MyTrainingListNoPaginationComponent, MatStepperModule, NgClass, FormsModule, ReactiveFormsModule, MatButtonModule, PeriodDayCardComponent, TrainingPeriodCardComponent, FeedbackInfoPointComponent]
+  imports: [MatDialogModule,ScrollPanelModule, NgIf, NgFor, NgVarDirective, CalendarModule, MyTrainingListNoPaginationComponent, MatStepperModule, NgClass, FormsModule, ReactiveFormsModule, MatButtonModule, PeriodDayCardComponent, TrainingPeriodCardComponent, FeedbackInfoPointComponent]
 })
 
 export class ManagePeriodComponent extends MessageHandler implements OnInit, OnDestroy {
