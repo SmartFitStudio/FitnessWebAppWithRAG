@@ -10,13 +10,14 @@ import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 import { PaginatedComponent } from '../../../../services/common/PaginatedComponent';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-my-train-list',
   templateUrl: './my-train-list.component.html',
   styleUrls: ['./my-train-list.component.scss'],
   standalone: true,
-  imports: [NgIf, RouterLink, NgFor, TrainCardComponent, AsyncPipe, FeedbackInfoPointComponent]
+  imports: [NgIf, RouterLink, NgFor, TrainCardComponent, AsyncPipe, FeedbackInfoPointComponent,PaginatorModule]
 })
 export class MyTrainListComponent extends PaginatedComponent implements OnInit {
   trainingsResponse$!: Observable<PageResponseAllenamentoResponse>;
@@ -42,14 +43,11 @@ export class MyTrainListComponent extends PaginatedComponent implements OnInit {
 
   protected override getData() {
     this.trainingsResponse$ = this.trainService.findAllAllenamentoByAuthenticatedUser({
-      page: this._page,
-      size: this._size
+      page: this.lastPageEvent.page,
+      size: this.lastPageEvent.rows
     }).pipe(
       map((response: PageResponseAllenamentoResponse) => {
         this.totalPages = response.totalPages;
-        this._pages = Array(response.totalPages)
-          .fill(0)
-          .map((x, i) => i);
         return response;
       }),
       catchError((error) => {

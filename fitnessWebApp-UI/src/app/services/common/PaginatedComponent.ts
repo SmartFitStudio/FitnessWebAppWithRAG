@@ -1,50 +1,33 @@
+import { get } from "http";
 import { MessageHandler } from "../myServices/error-handler/MessageHandler";
 
+export interface PageEvent {
+    first?: number;
+    rows?: number;
+    page?: number;
+    pageCount?: number;
+}
+
 export abstract class PaginatedComponent extends MessageHandler {
+
+
+    first: number = 0;
+    rows: number = 10;
+
+    protected lastPageEvent: PageEvent = {};
     protected totalPages? = 0;
-    protected _page = 0;
-    protected _size = 5;
-    protected _pages: any = [];
+
+    onPageChange(event: PageEvent) {
+        this.first = event.first? event.first : 0;
+        this.rows = event.rows? event.rows : 10;
+        this.lastPageEvent = event;
+        this.getData();
+    }
 
     protected abstract getData():any;
 
-    gotToPage(page: number) {
-        this._page = page;
-        this.getData();
-      }
-    
-      goToFirstPage() {
-        this._page = 0;
-        this.getData();
-      }
-    
-      goToPreviousPage() {
-        this._page--;
-        this.getData();
-      }
-    
-      goToLastPage() {
-        this._page = this.totalPages as number - 1;
-        this.getData();
-      }
-    
-      goToNextPage() {
-        this._page++;
-        this.getData();
-      }
-    
-      isLastPage() {
-        console.log("last page" + this._pages.length)
-        return this._page === this._pages.length as number - 1;
-      }
-    
-      get page(): number {
-        return this._page;
-      }
-      get size(): number {
-        return this._size;
-      }
-      get pages(): any {
-        return this._pages;
-      }
+    get totalRecords(): number {
+        return this.totalPages? this.totalPages * this.rows : 0;
+    }
+
 }

@@ -12,7 +12,7 @@
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Elementi dal {first} al {last}"
         (onLazyLoad)="findProgress($event)"
-        [totalRecords]='totalPages? totalPages*size : 0'
+        [totalRecords]='totalPages? totalPages*rows : 0'
         [tableStyle]="{ 'background-color': 'red' }"
     >
     <ng-template pTemplate="caption">

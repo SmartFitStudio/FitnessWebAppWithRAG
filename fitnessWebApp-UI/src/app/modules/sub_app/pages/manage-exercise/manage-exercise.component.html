@@ -1,44 +1,58 @@
-<div class="p-2">
-  <h2>Manage my exercise</h2>
+<div class="formContainer">
+  <h2>Informazioni esercizio</h2>
   <app-feedback-info-point [messages]="messages">
   </app-feedback-info-point>
-  <form [formGroup]="exerciseForm" class="row g-3" >
-  <div class="d-flex gap-2 input_container_all">
-    <div class="col-3">
-      <img class="rounded-1" width="100%" height="100%" [src]=" selectedPicture" alt="">
-      <div class="mt-2">
-        <input (change)="onFileSelected($event)" class="form-control" type="file" id="formFile" accept="image/*">
+  <form [formGroup]="exerciseForm">
+    <div>
+      <div>
+        <img class="rounded-1" width="100%" height="100%" [src]=" selectedPicture" alt="" *ngIf="selectedPicture">
+        <div class="mt-2">
+          <input (change)="onFileSelected($event)" class="form-control" type="file" id="formFile" accept="image/*">
+        </div>
       </div>
-    </div>
-    <div class="col-9">
-        <div class="col-12">
-          <label for="nome" class="form-label">Nome esercizio</label>
-          <input  type="text" class="form-control" id="nome" name="nome"
-            placeholder="Nome Esercizio" formControlName="exerciseName">
-            <small class="text-danger" *ngIf="!IsExerciseNameInputValid">
-              Il nome dell'esercizio è obbligatorio
-            </small>
+      <div>
+        <div class="inptContainer">
+          <div class="flex flex-column gap-2">
+            <label for="nome" class="block">Username</label>
+            <input pInputText id="nome" formControlName="exerciseName" />
+
+          </div>
+
+          <small class="text-danger" *ngIf="!IsExerciseNameInputValid">
+            Il nome dell'esercizio è obbligatorio
+          </small>
         </div>
-        <div class="col-md-6">
-          <label for="description" class="form-label">Descrizione</label>
-          <input formControlName="exerciseDescription" type="text" class="form-control" id="description"
-            name="description" placeholder="Descrizione">
-            <small class="text-danger" *ngIf="!IsExerciseDescriptionInputValid">
-              La descrizione dell'esercizio è obbligatoria
-            </small>
+
+
+        <div class="inptContainer">
+          <label for="description" class="block">Descrizione</label>
+
+            <textarea class="block" formControlName="exerciseDescription" id="description" rows="5" cols="30" pInputTextarea>
+            </textarea>
+
+          <small class="text-danger block" *ngIf="!IsExerciseDescriptionInputValid">
+            La descrizione dell'esercizio è obbligatoria
+          </small>
         </div>
-        <div class="col-12">
-          <label for="categorySelect" class="form-label">Categorie</label>
-          <select formControlName="exerciseCategory" class="form-select" aria-label="Default select example"
-            multiple name="category" id="categorySelect">
-            <option *ngFor="let category of categories" [value]="category"> {{category}}</option>
-          </select>
+
+
+        <div class="inptContainer">
+          <div class="card flex justify-content-center">
+            <p-multiSelect 
+                [options]="categories" 
+                formControlName="exerciseCategory"
+                placeholder="Select Cities" 
+                display="chip" 
+                [showClear]="true" />
         </div>
+        </div>
+
+
         <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
-              formControlName="is_shareable">
+            formControlName="is_shareable">
           <label class="form-check-label" for="flexSwitchCheckDefault">Condividi</label>
-      </div>
+        </div>
         <div class="d-flex justify-content-end gap-2 col-12">
           <a [routerLink]="myExercisePath" type="submit" class="def_button left">
             <i class="fas fa-times"></i>&nbsp;Indietro
@@ -47,7 +61,7 @@
             <i class="fas fa-save"></i>&nbsp;Salva
           </button>
         </div>
+      </div>
     </div>
-  </div>
-</form>
+  </form>
 </div>

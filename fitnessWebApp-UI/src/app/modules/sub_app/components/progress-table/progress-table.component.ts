@@ -10,11 +10,12 @@ import { Router } from '@angular/router';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-progress-table',
   standalone: true,
-  imports: [TableModule, CommonModule,InplaceModule, FeedbackInfoPointComponent, ScrollPanelModule],
+  imports: [TableModule, CommonModule,InplaceModule, FeedbackInfoPointComponent, ScrollPanelModule,PaginatorModule],
   templateUrl: './progress-table.component.html',
   styleUrl: './progress-table.component.scss'
 })
@@ -35,16 +36,13 @@ export class ProgressTableComponent extends PaginatedComponent implements OnInit
 
   protected override getData() {
     this.progressoService.getAllProgressiPaginated({
-      page: this.page,
-      size: this.size
+      page: this.lastPageEvent.page,
+      size: this.lastPageEvent.rows
     }).subscribe({
       next: (response) => {
         console.log(this.totalPages);
         this.totalPages = response.totalPages;
         this.lista_progressi = response.content ? response.content : [];
-        this._pages = Array(response.totalPages)
-          .fill(0)
-          .map((x, i) => i);
       },
       error: (error) => {
         this.handleErrorMessages(error);
@@ -77,8 +75,8 @@ export class ProgressTableComponent extends PaginatedComponent implements OnInit
    */
     findProgress($event: any) {
       console.log($event);
-      this._page = $event.first  / $event.rows;
-      this._size = $event.rows;
+      this.lastPageEvent.page = $event.first  / $event.rows;
+      this.lastPageEvent.rows = $event.rows;
       this.getData();
     }
 }
