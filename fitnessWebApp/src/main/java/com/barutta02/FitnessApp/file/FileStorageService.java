@@ -54,6 +54,19 @@ public class FileStorageService {
         String targetFilePath = finalUploadPath + separator + currentTimeMillis() + "." + fileExtension;
         Path targetPath = Paths.get(targetFilePath);
         try {
+            /**
+             * targetPath.normalize().startsWith(fileUploadPath) verifica che il percorso normalizzato
+             *  inizi con la directory base fileUploadPath. Questo controllo è importante per garantire che il file venga salvato
+             *  solo all'interno della directory designata e non altrove nel filesystem, il che potrebbe essere un rischio di sicurezza.
+             */
+
+            // fileUploadPath is ./uploads
+            //normalized path is uploads...
+            // -> remove the first two characters
+            if (!targetPath.normalize().startsWith(fileUploadPath.substring(2))) {
+                throw new IOException("Entry is outside of the target directory");
+            }
+
             Files.write(targetPath, sourceFile.getBytes());
             log.info("File saved to: " + targetFilePath);
             return targetFilePath;
