@@ -1,5 +1,6 @@
 [![Java CI with Maven](https://github.com/SmartFitStudio/FitnessWebAppWithRAG/actions/workflows/maven.yml/badge.svg)](https://github.com/SmartFitStudio/FitnessWebAppWithRAG/actions/workflows/maven.yml)
 [![codecov](https://codecov.io/gh/SmartFitStudio/FitnessWebAppWithRAG/graph/badge.svg?token=86DN46081Y)](https://codecov.io/gh/SmartFitStudio/FitnessWebAppWithRAG)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=SmartFitStudio_FitnessWebAppWithRAG)](https://sonarcloud.io/summary/new_code?id=SmartFitStudio_FitnessWebAppWithRAG)
 # FitnessWebAppRAG
 Una fitness web app sviluppata con Spring ed Angular ed integrata con una piattaforma RAG
 
