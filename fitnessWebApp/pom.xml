@@ -16,30 +16,15 @@
 		<relativePath />
 		<!-- lookup parent from repository -->
 	</parent>
-	<groupId>
-		com.barutta02
-	</groupId>
-	<artifactId>
-		authsystem
-	</artifactId>
-	<version>
-		0.0.1-SNAPSHOT
-	</version>
-	<name>
-		authsystem
-	</name>
-	<description>
-		Demo project for Spring Boot
-	</description>
+	<groupId>com.barutta02</groupId>
+	<artifactId>FitnessApp</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>FitnessApp</name>
+	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>
-			17
-		</java.version>
-		 <sonar.host.url>http://localhost:9000</sonar.host.url>
-  <sonar.login>${env.SONAR_TOKEN}</sonar.login> <!-- Usa una variabile d'ambiente per il token -->
-  <sonar.projectKey>your-project-key</sonar.projectKey>
-  <sonar.projectName>Your Project Name</sonar.projectName>
-  <sonar.projectVersion>1.0</sonar.projectVersion>
+		<java.version>17</java.version>
+		<sonar.organization>smartfitstudio</sonar.organization>
+  		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
