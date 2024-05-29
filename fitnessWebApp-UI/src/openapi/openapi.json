@@ -337,6 +337,36 @@
         }
       }
     },
+    "/ragllm/generateDiet": {
+      "post": {
+        "tags": [
+          "Ragllm"
+        ],
+        "operationId": "generateDiet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DietBase"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PianoAlimentareRag"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ragllm/answer": {
       "post": {
         "tags": [
@@ -1369,31 +1399,38 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "ABS",
-                  "ARMS",
-                  "BACK",
-                  "CALVES",
-                  "CHEST",
-                  "LEGS",
-                  "CORE",
-                  "SHOULDERS",
+                  "FORZA",
+                  "RESISTENZA",
+                  "FLESSIBILITÀ",
+                  "EQUILIBRIO",
+                  "COORDINAZIONE",
+                  "AGILITÀ",
+                  "VELOCITÀ",
+                  "POTENZA",
+                  "PRECISIONE",
+                  "MOBILITÀ",
                   "CARDIO",
-                  "FULL_BODY",
+                  "CALISTHENICS",
                   "STRETCHING",
-                  "YOGA",
-                  "PILATES",
-                  "CROSSFIT",
-                  "FUNCTIONAL",
-                  "POWERLIFTING",
-                  "OLYMPIC_LIFTING",
-                  "STRONGMAN",
-                  "BODYBUILDING",
-                  "AEROBICS",
-                  "ZUMBA",
-                  "DANCE",
-                  "MARTIAL_ARTS",
+                  "MEDITAZIONE",
+                  "RESPIRAZIONE",
+                  "PETTORALI",
+                  "DORSALI",
+                  "SPALLE",
+                  "DELTOIDI",
+                  "BICIPITI",
+                  "TRICIPITI",
+                  "AVAMBRACCI",
+                  "ADDUTTORI",
+                  "QUADRICIPITI",
+                  "FLESSORI",
+                  "GLUTEI",
+                  "POLPACCI",
+                  "ADDOME",
+                  "OBLIQUI",
+                  "FULL_BODY",
                   "NON_DEFINITO",
-                  "OTHER"
+                  "ALTRO"
                 ]
               }
             }
@@ -1836,6 +1873,134 @@
           }
         }
       },
+      "DietBase": {
+        "required": [
+          "descrizione",
+          "titolo"
+        ],
+        "type": "object",
+        "properties": {
+          "titolo": {
+            "type": "string"
+          },
+          "descrizione": {
+            "type": "string"
+          },
+          "categorie": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "VEGETARIANA",
+                "VEGANA",
+                "ONNIVORA",
+                "CARNIVORA",
+                "PESCETARIANA",
+                "CHETOGENICA",
+                "MEDITERRANEA",
+                "BASSI_CARBOIDRATI",
+                "BASSI_GRASSI",
+                "SENZA_GLUTINE",
+                "SENZA_LATTICINI",
+                "ALTO_CONTENUTO_PROTEICO"
+              ]
+            }
+          }
+        }
+      },
+      "AlimentoRag": {
+        "required": [
+          "calorie",
+          "nome",
+          "quantita"
+        ],
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "quantita": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "calorie": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "DietaGiornalieraRag": {
+        "required": [
+          "cena",
+          "colazione",
+          "pranzo"
+        ],
+        "type": "object",
+        "properties": {
+          "colazione": {
+            "$ref": "#/components/schemas/PastoRag"
+          },
+          "pranzo": {
+            "$ref": "#/components/schemas/PastoRag"
+          },
+          "cena": {
+            "$ref": "#/components/schemas/PastoRag"
+          }
+        }
+      },
+      "PastoRag": {
+        "required": [
+          "alimenti"
+        ],
+        "type": "object",
+        "properties": {
+          "alimenti": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlimentoRag"
+            }
+          }
+        }
+      },
+      "PianoAlimentareRag": {
+        "required": [
+          "dom",
+          "gio",
+          "lun",
+          "mar",
+          "mer",
+          "motivazioni",
+          "sab",
+          "ven"
+        ],
+        "type": "object",
+        "properties": {
+          "lun": {
+            "$ref": "#/components/schemas/DietaGiornalieraRag"
+          },
+          "mar": {
+            "$ref": "#/components/schemas/DietaGiornalieraRag"
+          },
+          "mer": {
+            "$ref": "#/components/schemas/DietaGiornalieraRag"
+          },
+          "gio": {
+            "$ref": "#/components/schemas/DietaGiornalieraRag"
+          },
+          "ven": {
+            "$ref": "#/components/schemas/DietaGiornalieraRag"
+          },
+          "sab": {
+            "$ref": "#/components/schemas/DietaGiornalieraRag"
+          },
+          "dom": {
+            "$ref": "#/components/schemas/DietaGiornalieraRag"
+          },
+          "motivazioni": {
+            "type": "string"
+          }
+        }
+      },
       "Question": {
         "required": [
           "question"
@@ -2037,31 +2202,38 @@
             "items": {
               "type": "string",
               "enum": [
-                "ABS",
-                "ARMS",
-                "BACK",
-                "CALVES",
-                "CHEST",
-                "LEGS",
-                "CORE",
-                "SHOULDERS",
+                "FORZA",
+                "RESISTENZA",
+                "FLESSIBILITÀ",
+                "EQUILIBRIO",
+                "COORDINAZIONE",
+                "AGILITÀ",
+                "VELOCITÀ",
+                "POTENZA",
+                "PRECISIONE",
+                "MOBILITÀ",
                 "CARDIO",
-                "FULL_BODY",
+                "CALISTHENICS",
                 "STRETCHING",
-                "YOGA",
-                "PILATES",
-                "CROSSFIT",
-                "FUNCTIONAL",
-                "POWERLIFTING",
-                "OLYMPIC_LIFTING",
-                "STRONGMAN",
-                "BODYBUILDING",
-                "AEROBICS",
-                "ZUMBA",
-                "DANCE",
-                "MARTIAL_ARTS",
+                "MEDITAZIONE",
+                "RESPIRAZIONE",
+                "PETTORALI",
+                "DORSALI",
+                "SPALLE",
+                "DELTOIDI",
+                "BICIPITI",
+                "TRICIPITI",
+                "AVAMBRACCI",
+                "ADDUTTORI",
+                "QUADRICIPITI",
+                "FLESSORI",
+                "GLUTEI",
+                "POLPACCI",
+                "ADDOME",
+                "OBLIQUI",
+                "FULL_BODY",
                 "NON_DEFINITO",
-                "OTHER"
+                "ALTRO"
               ]
             }
           },
@@ -2097,31 +2269,38 @@
             "items": {
               "type": "string",
               "enum": [
-                "ABS",
-                "ARMS",
-                "BACK",
-                "CALVES",
-                "CHEST",
-                "LEGS",
-                "CORE",
-                "SHOULDERS",
+                "FORZA",
+                "RESISTENZA",
+                "FLESSIBILITÀ",
+                "EQUILIBRIO",
+                "COORDINAZIONE",
+                "AGILITÀ",
+                "VELOCITÀ",
+                "POTENZA",
+                "PRECISIONE",
+                "MOBILITÀ",
                 "CARDIO",
-                "FULL_BODY",
+                "CALISTHENICS",
                 "STRETCHING",
-                "YOGA",
-                "PILATES",
-                "CROSSFIT",
-                "FUNCTIONAL",
-                "POWERLIFTING",
-                "OLYMPIC_LIFTING",
-                "STRONGMAN",
-                "BODYBUILDING",
-                "AEROBICS",
-                "ZUMBA",
-                "DANCE",
-                "MARTIAL_ARTS",
+                "MEDITAZIONE",
+                "RESPIRAZIONE",
+                "PETTORALI",
+                "DORSALI",
+                "SPALLE",
+                "DELTOIDI",
+                "BICIPITI",
+                "TRICIPITI",
+                "AVAMBRACCI",
+                "ADDUTTORI",
+                "QUADRICIPITI",
+                "FLESSORI",
+                "GLUTEI",
+                "POLPACCI",
+                "ADDOME",
+                "OBLIQUI",
+                "FULL_BODY",
                 "NON_DEFINITO",
-                "OTHER"
+                "ALTRO"
               ]
             }
           },

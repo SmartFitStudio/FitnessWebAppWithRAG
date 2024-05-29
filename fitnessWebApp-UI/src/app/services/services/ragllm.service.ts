@@ -12,8 +12,11 @@ import { StrictHttpResponse } from '../strict-http-response';
 import { answerQuestion } from '../fn/ragllm/answer-question';
 import { AnswerQuestion$Params } from '../fn/ragllm/answer-question';
 import { ChatbotResponse } from '../models/chatbot-response';
+import { generateDiet } from '../fn/ragllm/generate-diet';
+import { GenerateDiet$Params } from '../fn/ragllm/generate-diet';
 import { generateWorkout } from '../fn/ragllm/generate-workout';
 import { GenerateWorkout$Params } from '../fn/ragllm/generate-workout';
+import { PianoAlimentareRag } from '../models/piano-alimentare-rag';
 import { WorkoutResponse } from '../models/workout-response';
 
 @Injectable({ providedIn: 'root' })
@@ -44,6 +47,31 @@ export class RagllmService extends BaseService {
   generateWorkout(params: GenerateWorkout$Params, context?: HttpContext): Observable<WorkoutResponse> {
     return this.generateWorkout$Response(params, context).pipe(
       map((r: StrictHttpResponse<WorkoutResponse>): WorkoutResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `generateDiet()` */
+  static readonly GenerateDietPath = '/ragllm/generateDiet';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `generateDiet()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  generateDiet$Response(params: GenerateDiet$Params, context?: HttpContext): Observable<StrictHttpResponse<PianoAlimentareRag>> {
+    return generateDiet(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `generateDiet$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  generateDiet(params: GenerateDiet$Params, context?: HttpContext): Observable<PianoAlimentareRag> {
+    return this.generateDiet$Response(params, context).pipe(
+      map((r: StrictHttpResponse<PianoAlimentareRag>): PianoAlimentareRag => r.body)
     );
   }
 
