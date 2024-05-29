@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export { AlimentoRag } from './models/alimento-rag';
 export { AllenamentoEsercizioRequest } from './models/allenamento-esercizio-request';
 export { AllenamentoEsercizioResponse } from './models/allenamento-esercizio-response';
 export { AllenamentoRequest } from './models/allenamento-request';
@@ -7,6 +8,8 @@ export { AllenamentoResponse } from './models/allenamento-response';
 export { AuthenticationRequest } from './models/authentication-request';
 export { AuthenticationResponse } from './models/authentication-response';
 export { ChatbotResponse } from './models/chatbot-response';
+export { DietaGiornalieraRag } from './models/dieta-giornaliera-rag';
+export { DietBase } from './models/diet-base';
 export { EsercizioRag } from './models/esercizio-rag';
 export { ExerciseRequest } from './models/exercise-request';
 export { ExerciseResponse } from './models/exercise-response';
@@ -17,10 +20,12 @@ export { PageResponseExerciseResponse } from './models/page-response-exercise-re
 export { PageResponsePeriodoAllenamentoResponse } from './models/page-response-periodo-allenamento-response';
 export { PageResponsePeriodoResponse } from './models/page-response-periodo-response';
 export { PageResponseProgressoResponse } from './models/page-response-progresso-response';
+export { PastoRag } from './models/pasto-rag';
 export { PeriodoAllenamentoRequest } from './models/periodo-allenamento-request';
 export { PeriodoAllenamentoResponse } from './models/periodo-allenamento-response';
 export { PeriodoRequest } from './models/periodo-request';
 export { PeriodoResponse } from './models/periodo-response';
+export { PianoAlimentareRag } from './models/piano-alimentare-rag';
 export { ProgressoRequest } from './models/progresso-request';
 export { ProgressoResponse } from './models/progresso-response';
 export { Question } from './models/question';
