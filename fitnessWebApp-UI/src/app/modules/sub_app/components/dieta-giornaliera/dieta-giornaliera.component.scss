@@ -1,0 +1,21 @@
+.alimento_cont{
+    padding-bottom: .5em;
+}
+
+.inpt_cont{
+    display: inline-block;
+    padding: .2em;
+}
+
+:host ::ng-deep .p-accordion-header-link {
+    text-decoration: none;
+    color: var(--txtColorDark);
+}
+
+:host ::ng-deep input.p-element.p-inputtext.p-component {
+    margin-right: .3em;
+}
+
+:host ::ng-deep input[type="number"] {
+    width: 75px;
+}

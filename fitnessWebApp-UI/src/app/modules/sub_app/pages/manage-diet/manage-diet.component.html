@@ -1,3 +1,5 @@
+<app-feedback-info-point [messages]="messages">
+</app-feedback-info-point>
 <div class="card">
     <p-stepper orientation="vertical">
         <p-stepperPanel header="Informazioni">
@@ -8,10 +10,11 @@
                                 <p>
                                   Inserisci i dati necessari per la generazione della dieta.
                                 </p>
-                                <form>
+                                <form [formGroup]="dietBaseForm">
                                     <div class="inptContainer">
                                         <p-floatLabel>
-                                            <input pInputText id="username"  />
+                                            <input formControlName="titolo"
+                                             pInputText id="username"  />
                                             <label for="titolo">Titolo</label>
                                         </p-floatLabel>
                                     </div>
@@ -19,6 +22,7 @@
                                     <div class="inptContainer">
                                         <p-floatLabel>
                                             <textarea 
+                                            formControlName="descrizione"
                                                 id="descrizione" 
                                                 rows="5" cols="30" 
                                                 pInputTextarea>
@@ -29,9 +33,9 @@
 
                                     <div class="inptContainer">
                                         <p-multiSelect 
+                                        formControlName="categorie"
                                         [options]="menu_tipos" 
                                         placeholder="Seleziona i tipi di menu" 
-                                        optionLabel="name" 
                                         display="chip" 
                                         [showClear]="true" />
                                     </div>
@@ -41,7 +45,9 @@
                     </div>
                 </div>
                 <div class="flex py-4">
-                    <p-button label="Next" (onClick)="nextCallback.emit()" />
+                    <p-button label="Genera" (onClick)="generateDiet()" />
+
+                    <p-button label="Avanti" (onClick)="nextCallback.emit()" [disabled]="!diet_generated" />
                 </div>
             </ng-template>
         </p-stepperPanel>
@@ -49,7 +55,8 @@
             <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
                 <div class="flex flex-column h-12rem">
                     <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-                        Content II
+                        <app-piano-alimentare-view [pianoAlimentare]="generated_diet"></app-piano-alimentare-view>
+
                     </div>
                 </div>
                 <div class="flex py-4 gap-2">
@@ -62,7 +69,7 @@
             <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
                 <div class="flex flex-column h-12rem">
                     <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-                        Content III
+                        contenet
                     </div>
                 </div>
                 <div class="flex py-4">

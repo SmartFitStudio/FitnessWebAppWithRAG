@@ -1,0 +1,47 @@
+<ng-container *ngIf="pianoAlimentare">
+    <div>
+        <div class="day">
+            <h4>
+                Lunedi
+            </h4>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.lun"></app-dieta-giornaliera>
+        </div>
+        <div class="day">
+            <h4>
+                Martedi
+            </h4>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.mar"></app-dieta-giornaliera>
+        </div>
+        <div class="day">
+            <h4>
+                Mercoledi
+            </h4>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.mer"></app-dieta-giornaliera>
+        </div>
+        <div class="day">
+            <h4>
+                Giovedi
+            </h4>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.gio"></app-dieta-giornaliera>
+        </div>
+        <div class="day">
+            <h4>
+                Venerdi
+            </h4>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.ven"></app-dieta-giornaliera>
+        </div>
+        <div class="day">
+            <h4>
+                Sabato
+            </h4>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.sab"></app-dieta-giornaliera>
+        </div>
+        <div class="day">
+            <h4>
+                Domenica
+            </h4>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.dom"></app-dieta-giornaliera>
+        </div>
+    </div>
+    <p>{{pianoAlimentare.motivazioni}}</p>
+</ng-container>
