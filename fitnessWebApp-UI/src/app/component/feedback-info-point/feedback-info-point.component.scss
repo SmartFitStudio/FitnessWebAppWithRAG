@@ -6,7 +6,9 @@
     background: none;
     border: none;
 }
-
+:host ::ng-deep .p-messages {
+    background: #fff;
+}
 
 :host {
     ::ng-deep .p-message {
@@ -19,3 +21,9 @@
         }
     }    
 }
+
+@media print {
+    :host {
+      display: none;
+    }
+  }

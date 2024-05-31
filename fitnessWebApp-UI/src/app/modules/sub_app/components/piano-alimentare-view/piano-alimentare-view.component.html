@@ -1,47 +1,54 @@
 <ng-container *ngIf="pianoAlimentare">
+    <section>
+        <h3>Introduzione</h3>
+        <p>{{pianoAlimentare.motivazioni}}</p>
+    </section>
+    <section>
+        <h3>Piano alimentare</h3>
     <div>
         <div class="day">
             <h4>
                 Lunedi
             </h4>
-            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.lun"></app-dieta-giornaliera>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.lun" [printView]="printView"></app-dieta-giornaliera>
         </div>
         <div class="day">
             <h4>
                 Martedi
             </h4>
-            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.mar"></app-dieta-giornaliera>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.mar" [printView]="printView"></app-dieta-giornaliera>
         </div>
         <div class="day">
             <h4>
                 Mercoledi
             </h4>
-            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.mer"></app-dieta-giornaliera>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.mer" [printView]="printView"></app-dieta-giornaliera>
         </div>
         <div class="day">
             <h4>
                 Giovedi
             </h4>
-            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.gio"></app-dieta-giornaliera>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.gio" [printView]="printView"></app-dieta-giornaliera>
         </div>
         <div class="day">
             <h4>
                 Venerdi
             </h4>
-            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.ven"></app-dieta-giornaliera>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.ven" [printView]="printView"></app-dieta-giornaliera>
         </div>
         <div class="day">
             <h4>
                 Sabato
             </h4>
-            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.sab"></app-dieta-giornaliera>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.sab" [printView]="printView"></app-dieta-giornaliera>
         </div>
         <div class="day">
             <h4>
                 Domenica
             </h4>
-            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.dom"></app-dieta-giornaliera>
+            <app-dieta-giornaliera [dietaGiornaliera]="pianoAlimentare.dom" [printView]="printView"></app-dieta-giornaliera>
         </div>
     </div>
-    <p>{{pianoAlimentare.motivazioni}}</p>
+</section>
+
 </ng-container>

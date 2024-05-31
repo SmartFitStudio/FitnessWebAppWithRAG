@@ -15,14 +15,26 @@ import { NgFor, NgIf } from '@angular/common';
 })
 export class DietaGiornalieraComponent {
 private _dietaGiornaliera!: DietaGiornalieraRag;
-
+private _printView = false;
 @Input({required: true})
 set dietaGiornaliera(dietaGiornaliera: DietaGiornalieraRag) {
     this._dietaGiornaliera = dietaGiornaliera;
 }
 
+@Input()
+set printView(printView: boolean) {
+    this._printView = printView;
+}
+
 //BOILERPLATE CODE
 get dietaGiornaliera(): DietaGiornalieraRag {
     return this._dietaGiornaliera; 
+}
+
+get indexesToView(): number[] {
+  if(this._printView){
+    return [0,1,2];
+  }
+  return [0];
 }
 }

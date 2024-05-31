@@ -13,3 +13,15 @@ form> div:first-child{
     background:none;
     border:none;
 }
+
+
+   
+  @media print {
+    :host ::ng-deep .p-stepper-header ,:host ::ng-deep  p-button.p-element {
+        display: none;
+    }
+
+    * {
+        border: none;
+    }
+  }

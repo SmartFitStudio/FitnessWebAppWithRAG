@@ -155,3 +155,9 @@ nav.menu ul li a.active {
         justify-items: center;
     }
 }
+
+@media print {
+    :host {
+      display: none;
+    }
+  }

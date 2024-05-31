@@ -8,8 +8,14 @@
     padding: 1em;
     background: var(--card_secondary_background);
     border-radius: 20px;
+    width: fit-content;
+    margin: auto;
 }
 
 .def_button{
     margin-top:0;
+}
+
+#searchButton{
+    margin-left: .3em;
 }

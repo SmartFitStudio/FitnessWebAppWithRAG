@@ -11,17 +11,24 @@ import { NgFor, NgIf } from '@angular/common';
 })
 export class PianoAlimentareViewComponent {
  private _pianoAlimentare!: PianoAlimentareRag | undefined;
+ private _printView = false;
 
  @Input({required: true}) 
  set pianoAlimentare(pianoAlimentare: PianoAlimentareRag | undefined) {
     this._pianoAlimentare = pianoAlimentare;
   }
-
+  @Input()
+  set printView(printView: boolean) {
+      this._printView = printView;
+  }
 
 
 
   //BOILERPLATE CODE
   get pianoAlimentare(): PianoAlimentareRag | undefined{
     return this._pianoAlimentare;
+  }
+  get printView(): boolean {
+    return this._printView;
   }
 }
