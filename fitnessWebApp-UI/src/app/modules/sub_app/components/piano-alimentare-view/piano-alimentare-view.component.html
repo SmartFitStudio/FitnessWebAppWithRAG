@@ -1,0 +1,76 @@
+<ng-container *ngIf="pianoAlimentare">
+    <section>
+        <h3>Introduzione</h3>
+        <p>{{pianoAlimentare.motivazioni}}</p>
+    </section>
+    <section>
+        <h3>Piano alimentare</h3>
+    <div>
+        <div class="day">
+            <h4>
+                Lunedi
+            </h4>
+            <app-dieta-giornaliera *ngIf="pianoAlimentare.lun else erroreLunedi" [dietaGiornaliera]="pianoAlimentare.lun" [printView]="printView"></app-dieta-giornaliera>
+            <ng-template #erroreLunedi>
+                <p>Qualcosa è andato sorto.</p>
+            </ng-template>
+        </div>
+        <div class="day">
+            <h4>
+                Martedi
+            </h4>
+            <app-dieta-giornaliera *ngIf="pianoAlimentare.mar else erroreMartedi" [dietaGiornaliera]="pianoAlimentare.mar" [printView]="printView"></app-dieta-giornaliera>
+            <ng-template #erroreMartedi>
+                <p>Qualcosa è andato sorto.</p>
+            </ng-template>
+        </div>
+        <div class="day">
+            <h4>
+                Mercoledi
+            </h4>
+            <app-dieta-giornaliera *ngIf="pianoAlimentare.mer else erroreMercoledi" [dietaGiornaliera]="pianoAlimentare.mer" [printView]="printView"></app-dieta-giornaliera>
+            <ng-template #erroreMercoledi>
+                <p>Qualcosa è andato sorto.</p>
+            </ng-template>
+        </div>
+        <div class="day">
+            <h4>
+                Giovedi
+            </h4>
+            <app-dieta-giornaliera *ngIf="pianoAlimentare.gio else erroreGiovedi" [dietaGiornaliera]="pianoAlimentare.gio" [printView]="printView"></app-dieta-giornaliera>
+            <ng-template #erroreGiovedi>
+                <p>Qualcosa è andato sorto.</p>
+            </ng-template>
+        </div>
+        <div class="day">
+            <h4>
+                Venerdi
+            </h4>
+            <app-dieta-giornaliera *ngIf="pianoAlimentare.ven else erroreVenerdi" [dietaGiornaliera]="pianoAlimentare.ven" [printView]="printView"></app-dieta-giornaliera>
+            <ng-template #erroreVenerdi>
+                <p>Qualcosa è andato sorto.</p>
+            </ng-template>
+        </div>
+        <div class="day">
+            <h4>
+                Sabato
+            </h4>
+            <app-dieta-giornaliera *ngIf="pianoAlimentare.sab else erroreSabato" [dietaGiornaliera]="pianoAlimentare.sab" [printView]="printView"></app-dieta-giornaliera>
+            <ng-template #erroreSabato>
+                <p>Qualcosa è andato sorto.</p>
+            </ng-template>
+        </div>
+        <div class="day">
+            <h4>
+                Domenica
+            </h4>
+            <app-dieta-giornaliera *ngIf="pianoAlimentare.dom else erroreDomenica" [dietaGiornaliera]="pianoAlimentare.dom" [printView]="printView"></app-dieta-giornaliera>
+            <ng-template #erroreDomenica>
+                <p>Qualcosa è andato sorto.</p>
+            </ng-template>
+            
+        </div>
+    </div>
+</section>
+
+</ng-container>

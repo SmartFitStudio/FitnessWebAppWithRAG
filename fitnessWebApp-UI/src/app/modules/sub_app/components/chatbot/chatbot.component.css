@@ -57,3 +57,10 @@
 ::ng-deep .chatbot-response h4,.chatbot-response h5,.chatbot-response h6{
   font-size: 1rem;
 }
+
+
+@media print {
+  :host {
+    display: none;
+  }
+}

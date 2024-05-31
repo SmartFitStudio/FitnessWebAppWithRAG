@@ -78,3 +78,9 @@ header h1 {
   gap: 1em;
 }
 
+
+@media print {
+    header,  :host ::ng-deep p-breadcrumb{
+      display: none;
+    }
+  }

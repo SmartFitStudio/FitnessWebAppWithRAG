@@ -1,0 +1,95 @@
+<div class="card flex justify-content-center">
+    <p-accordion [multiple]="true" [activeIndex]="indexesToView">
+        <p-accordionTab header="Colazione" *ngIf="dietaGiornaliera.colazione.alimenti">
+            <div class="alimento_cont block" *ngFor="let alimento of dietaGiornaliera.colazione.alimenti">
+               <div class="inpt_cont">
+                <input 
+                type="text" 
+                pInputText 
+                pTooltip="Alimento" 
+                tooltipPosition="right" 
+                [placeholder]="alimento.nome" />
+               </div>
+                <div class="inpt_cont">
+                    <input 
+                    type="number" 
+                    pInputText 
+                    pTooltip="Calorie" 
+                    tooltipPosition="left" 
+                    [placeholder]="alimento.calorie" />
+                    <span>Kcal</span>
+                </div>
+                <div class="inpt_cont">
+                    <input 
+                    type="number" 
+                    pInputText 
+                    pTooltip="Quantità" 
+                    tooltipPosition="top" 
+                    [placeholder]="alimento.quantita" />
+                    <span>g</span>
+                </div>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab header="Pranzo" *ngIf="dietaGiornaliera.pranzo.alimenti">
+            <div class="alimento_cont block" *ngFor="let alimento of dietaGiornaliera.pranzo.alimenti">
+                <div class="inpt_cont">
+                    <input 
+                    type="text" 
+                    pInputText 
+                    pTooltip="Alimento" 
+                    tooltipPosition="right" 
+                    [placeholder]="alimento.nome" />
+                   </div>
+                    <div class="inpt_cont">
+                        <input 
+                        type="number" 
+                        pInputText 
+                        pTooltip="Calorie" 
+                        tooltipPosition="left" 
+                        [placeholder]="alimento.calorie" />
+                        <span>Kcal</span>
+                    </div>
+                    <div class="inpt_cont">
+                        <input 
+                        type="number" 
+                        pInputText 
+                        pTooltip="Quantità" 
+                        tooltipPosition="top" 
+                        [placeholder]="alimento.quantita" />
+                        <span>Qt</span>
+                    </div>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab header="Cena" *ngIf="dietaGiornaliera.cena.alimenti">
+            <div class="alimento_cont block" *ngFor="let alimento of dietaGiornaliera.cena.alimenti">
+                <div class="inpt_cont">
+                    <input 
+                    type="text" 
+                    pInputText 
+                    pTooltip="Alimento" 
+                    tooltipPosition="right" 
+                    [placeholder]="alimento.nome" />
+                   </div>
+                    <div class="inpt_cont">
+                        <input 
+                        type="number" 
+                        pInputText 
+                        pTooltip="Calorie" 
+                        tooltipPosition="left" 
+                        [placeholder]="alimento.calorie" />
+                        <span>Kcal</span>
+                    </div>
+                    <div class="inpt_cont">
+                        <input 
+                        type="number" 
+                        pInputText 
+                        pTooltip="Quantità" 
+                        tooltipPosition="top" 
+                        [placeholder]="alimento.quantita" />
+                        <span>Qt</span>
+                    </div>
+            </div>
+        </p-accordionTab>
+    </p-accordion>
+</div>
+

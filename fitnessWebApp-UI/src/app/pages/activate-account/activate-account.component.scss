@@ -11,6 +11,6 @@
   text-align: center;
 }
 
-.activation-error {
-  color: red;
+:host ::ng-deep span{
+  color: #fff;
 }
