@@ -95,8 +95,10 @@ def generate_workout_json(workout_data, user_data, available_exercises):
         try:
             answer = generate_answer(prompt)
             parsed_answer = parser.parse(answer)
+            if all(parsed_answer.__dict__.values()):
+                return True, parsed_answer
+            else:
+                continue
         except:
             continue
-        else:
-            return True, parsed_answer
     return False, "Non è stato possibile generare l'allenamento richiesto.\n Si prega di riprovare più tardi."
