@@ -1,9 +1,12 @@
 package com.barutta02.FitnessApp.ragllm;
 
 import com.barutta02.FitnessApp.ragllm.DTO.Question;
+import com.barutta02.FitnessApp.ragllm.DTO.AlimentoRag;
 import com.barutta02.FitnessApp.ragllm.DTO.ChatbotResponse;
 import com.barutta02.FitnessApp.ragllm.DTO.DietBase;
 import com.barutta02.FitnessApp.ragllm.DTO.DietaGiornalieraRag;
+import com.barutta02.FitnessApp.ragllm.DTO.EsercizioRag;
+import com.barutta02.FitnessApp.ragllm.DTO.PastoRag;
 import com.barutta02.FitnessApp.ragllm.DTO.PianoAlimentareRag;
 import com.barutta02.FitnessApp.ragllm.DTO.WorkoutBase;
 import com.barutta02.FitnessApp.ragllm.DTO.WorkoutResponse;
@@ -19,6 +22,7 @@ import reactor.core.publisher.Mono;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RagllmControllerTest {
 
@@ -53,7 +57,8 @@ public class RagllmControllerTest {
     @Test
     public void testGenerateWorkout() {
         WorkoutBase workoutBase = new WorkoutBase("Nome","Descrizione", 2.5f);
-        WorkoutResponse workoutResponse = new WorkoutResponse(new ArrayList<>());
+        EsercizioRag esercizioRag = new EsercizioRag(1L, 3, 12, 2);
+        WorkoutResponse workoutResponse = new WorkoutResponse(new ArrayList<EsercizioRag>(List.of(esercizioRag, esercizioRag)));
 
         when(ragllmService.generateWorkout(workoutBase, connectedUser)).thenReturn(Mono.just(workoutResponse));
 
@@ -67,7 +72,9 @@ public class RagllmControllerTest {
     @Test
     public void testGenerateDiet() {
         DietBase dietBase = new DietBase("Titolo","Descrizione", new DietCategory[]{DietCategory.VEGANA, DietCategory.SENZA_GLUTINE});
-        DietaGiornalieraRag dietaGiornalieraRag = new DietaGiornalieraRag(null, null, null);
+        AlimentoRag alimentoRag = new AlimentoRag("Pasta", 100, 350);
+        PastoRag pastoRag = new PastoRag(new ArrayList<AlimentoRag>(List.of(alimentoRag, alimentoRag)));
+        DietaGiornalieraRag dietaGiornalieraRag = new DietaGiornalieraRag(pastoRag, pastoRag, pastoRag);
         PianoAlimentareRag pianoAlimentareRag = new PianoAlimentareRag(dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,"Dieta per vegani celiaci");
 
         when(ragllmService.generateDiet(dietBase, connectedUser)).thenReturn(Mono.just(pianoAlimentareRag));

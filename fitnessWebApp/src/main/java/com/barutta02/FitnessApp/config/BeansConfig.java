@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.barutta02.FitnessApp.user.User;
 
+import java.time.Clock;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -96,6 +97,11 @@ public class BeansConfig {
     @Bean
     public WebClient webClient() {
         return WebClient.builder().baseUrl(chatbotBaseUrl).defaultHeader("Authorization", "Bearer " + apiKey).build();
+    }
+
+    @Bean
+    public Clock clock() {
+        return Clock.systemDefaultZone();
     }
 
 }

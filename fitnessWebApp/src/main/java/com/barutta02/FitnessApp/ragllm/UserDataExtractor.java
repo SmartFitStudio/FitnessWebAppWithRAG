@@ -1,5 +1,6 @@
 package com.barutta02.FitnessApp.ragllm;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class UserDataExtractor {
     private final AllenamentoService allenamentoService;
     private final AllenamentoEsercizioService allenamentoEsercizioService;
     private final ExerciseService exerciseService;
+    private final Clock clock;
 
     private String getBase(Authentication connectedUser){
         User user = userExtractor.getUserFromAuthentication(connectedUser);
@@ -67,7 +69,7 @@ public class UserDataExtractor {
         PeriodoResponse periodoAttivo = periodoService.findAuthenticatedUserActivePeriodo(connectedUser);
         String user_data = "Al momento l'utente non ha alcun periodo attivo\n";
         if(periodoAttivo != null) {
-            Long giorni_trascorsi_da_inizio_periodo = ChronoUnit.DAYS.between(periodoAttivo.getData_inizio(), LocalDate.now());
+            Long giorni_trascorsi_da_inizio_periodo = ChronoUnit.DAYS.between(periodoAttivo.getData_inizio(), LocalDate.now(clock));
             user_data =  "Periodo attivo dell'utente:\n" +
                          "Nome periodo: " + periodoAttivo.getName() + "\n" +
                          "Obiettivo: " + periodoAttivo.getObiettivo() + "\n" +
