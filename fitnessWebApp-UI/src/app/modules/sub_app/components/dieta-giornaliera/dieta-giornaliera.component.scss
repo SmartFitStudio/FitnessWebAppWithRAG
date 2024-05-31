@@ -1,10 +1,17 @@
-.alimento_cont{
+.alimento_cont {
     padding-bottom: .5em;
 }
 
-.inpt_cont{
+.inpt_cont {
     display: inline-block;
     padding: .2em;
+}
+
+
+.inpt_cont,
+input {
+
+    width: -webkit-fill-available;
 }
 
 :host ::ng-deep .p-accordion-header-link {

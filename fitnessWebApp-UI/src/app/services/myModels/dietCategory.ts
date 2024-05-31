@@ -8,11 +8,11 @@ export enum DietCategory {
   PESCETARIANA = "PESCETARIANA",
   CHETOGENICA = "CHETOGENICA",
   MEDITERRANEA = "MEDITERRANEA",
-  BASSI_CARBOIDRATI = "BASSI CARBOIDRATI",
-  BASSI_GRASSI = "BASSI GRASSI",
-  SENZA_GLUTINE = "SENZA GLUTINE",
-  SENZA_LATTICINI = "SENZA LATTICINI",
-  ALTO_CONTENUTO_PROTEICO = "ALTO CONTENUTO PROTEICO"
+  BASSI_CARBOIDRATI = "BASSI_CARBOIDRATI",
+  BASSI_GRASSI = "BASSI_GRASSI",
+  SENZA_GLUTINE = "SENZA_GLUTINE",
+  SENZA_LATTICINI = "SENZA_LATTICINI",
+  ALTO_CONTENUTO_PROTEICO = "ALTO_CONTENUTO_PROTEICO"
 }
 export function getAllDietCategories(): DietCategory[] {
   return [
@@ -37,7 +37,7 @@ export function getDietCategoryValues(): string[] {
     return Object.values(DietCategory) as string[];
 }
 
-export function getDietCategories(): FilterSelector[] {
+export function getDietCategories(): {name:DietCategory,label:string}[] {
   return [
     DietCategory.VEGETARIANA,
     DietCategory.VEGANA,
@@ -51,9 +51,10 @@ export function getDietCategories(): FilterSelector[] {
     DietCategory.SENZA_GLUTINE,
     DietCategory.SENZA_LATTICINI,
     DietCategory.ALTO_CONTENUTO_PROTEICO
-  ].map((category: string) => {
+  ].map((category: DietCategory) => {
     return {
-      name: category
+      name: category,
+      label : category.replace(/_/g, ' ')
     };
   });
 }

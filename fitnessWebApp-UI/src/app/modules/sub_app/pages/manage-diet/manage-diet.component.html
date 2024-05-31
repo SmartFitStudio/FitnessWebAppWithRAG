@@ -25,7 +25,7 @@
                                                 <textarea 
                                                 formControlName="descrizione"
                                                     id="descrizione" 
-                                                    rows="5" cols="30" 
+                                                    rows="5"  
                                                     pInputTextarea>
                                                 </textarea>
                                                 <label for="descrizione">Descrizione</label>
@@ -36,6 +36,7 @@
                                             <p-multiSelect 
                                             formControlName="categorie"
                                             [options]="menu_tipos" 
+                                            optionLabel="label"
                                             placeholder="Seleziona i tipi di menu" 
                                             display="chip" 
                                             [showClear]="true" />

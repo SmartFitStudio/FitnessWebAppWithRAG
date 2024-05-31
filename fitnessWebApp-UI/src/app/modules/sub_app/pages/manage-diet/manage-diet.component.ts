@@ -12,7 +12,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { MessageHandler } from '../../../../services/myServices/error-handler/MessageHandler';
 import { ObbiettivoPeriodo } from '../../../../services/myModels/obbiettivoPeriodo';
 import { ErrorHandlerService } from '../../../../services/myServices/error-handler/error-handler.service';
-import { DietCategory, getAllDietCategories } from '../../../../services/myModels/dietCategory';
+import { DietCategory, getAllDietCategories ,getDietCategories} from '../../../../services/myModels/dietCategory';
 import { RagllmService } from '../../../../services/services';
 import { DietBase, PianoAlimentareRag } from '../../../../services/models';
 import { PianoAlimentareViewComponent } from '../../components/piano-alimentare-view/piano-alimentare-view.component';
@@ -27,7 +27,7 @@ import { delay } from 'rxjs';
 
 })
 export class ManageDietComponent extends MessageHandler {
-  menu_tipos: DietCategory[] = getAllDietCategories();
+  menu_tipos: {name:DietCategory,label:string}[] = getDietCategories();
   diet_generated: boolean = false;
   // EVITA DI ATTENDERE LA RISPOSTA DEL SERVER
   //  diet_generated: boolean = true;
@@ -35,7 +35,7 @@ export class ManageDietComponent extends MessageHandler {
   dietBaseForm = this.formBuilder.group({
     titolo: ['', Validators.required],
     descrizione: ['', Validators.required],
-    categorie: [Array<DietCategory>(), []],
+    categorie: [Array<{name:DietCategory,label:string}>(), []],
   });
 
   private baseDiet: DietBase = {
@@ -262,6 +262,7 @@ export class ManageDietComponent extends MessageHandler {
 
   generateDiet() {
     if (this.bindDietBaseFormToBaseDiet()) {
+      console.log(this.baseDiet);
       this.addMessage('info', 'Generazione in corso...');
       this.ragService.generateDiet({ body: this.baseDiet }).subscribe({
         next: (diet) => {
@@ -299,7 +300,7 @@ export class ManageDietComponent extends MessageHandler {
         this.baseDiet.descrizione = this.dietBaseForm.value.descrizione;
       }
       if (this.dietBaseForm.value.categorie) {
-        this.baseDiet.categorie = this.dietBaseForm.value.categorie;
+        this.baseDiet.categorie = this.dietBaseForm.value.categorie.map((cat) =>   {return cat.name});
       }
       return true;
     }

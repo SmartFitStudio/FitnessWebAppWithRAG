@@ -14,8 +14,22 @@ form> div:first-child{
     border:none;
 }
 
+:host ::ng-deep .p-stepper.p-stepper-vertical .p-stepper-panel .p-stepper-content{
+    padding-left: .2em;
+}
+:host ::ng-deep .p-fieldset-content{
+    padding: 0;
+}
 
-   
+input{
+    width: -webkit-fill-available;
+}
+textarea{
+    width: -webkit-fill-available;
+}   
+:host ::ng-deep .p-fieldset-legend-text {
+    display: block;
+}
   @media print {
     :host ::ng-deep .p-stepper-header ,:host ::ng-deep  p-button.p-element {
         display: none;
@@ -23,5 +37,18 @@ form> div:first-child{
 
     * {
         border: none;
+    }
+  }
+
+  @media  screen and (max-width: 768px){
+    :host ::ng-deep p-stepperseparator.p-stepper-separator {
+        display: none;
+    }
+    :host ::ng-deep .p-stepper.p-stepper-vertical .p-stepper-panel .p-stepper-content{
+        padding-left: .5em;
+    }
+
+    :host ::ng-deep .p-multiselect{
+        width: -webkit-fill-available;
     }
   }
