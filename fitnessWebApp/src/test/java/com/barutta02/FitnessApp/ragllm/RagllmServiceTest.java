@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -180,7 +181,8 @@ public class RagllmServiceTest {
     @Test
     public void testGenerateWorkout() {
         WorkoutBase workoutBase = new WorkoutBase("Nome","Descrizione", 2.5f);
-        WorkoutResponse expectedResponse = new WorkoutResponse(new ArrayList<>());
+        EsercizioRag esercizioRag = new EsercizioRag(1L, 3, 12, 2);
+        WorkoutResponse expectedResponse = new WorkoutResponse(new ArrayList<EsercizioRag>(List.of(esercizioRag, esercizioRag)));
         when(responseSpec.bodyToMono(WorkoutResponse.class)).thenReturn(Mono.just(expectedResponse));
         Mono<WorkoutResponse> responseMono = ragllmService.generateWorkout(workoutBase, connectedUser);
         StepVerifier.create(responseMono)
@@ -191,7 +193,9 @@ public class RagllmServiceTest {
     @Test
     public void testGenerateDiet() {
         DietBase dietBase = new DietBase("Titolo","Descrizione", new DietCategory[]{DietCategory.VEGANA, DietCategory.SENZA_GLUTINE});
-        DietaGiornalieraRag dietaGiornalieraRag = new DietaGiornalieraRag(null, null, null);
+        AlimentoRag alimentoRag = new AlimentoRag("Pasta", 100, 350);
+        PastoRag pastoRag = new PastoRag(new ArrayList<AlimentoRag>(List.of(alimentoRag, alimentoRag)));
+        DietaGiornalieraRag dietaGiornalieraRag = new DietaGiornalieraRag(pastoRag, pastoRag, pastoRag);
         PianoAlimentareRag expectedResponse = new PianoAlimentareRag(dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,dietaGiornalieraRag,"Dieta per vegani celiaci");
         when(responseSpec.bodyToMono(PianoAlimentareRag.class)).thenReturn(Mono.just(expectedResponse));
         Mono<PianoAlimentareRag> responseMono = ragllmService.generateDiet(dietBase, connectedUser);
