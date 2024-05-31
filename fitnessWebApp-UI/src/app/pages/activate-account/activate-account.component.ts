@@ -28,11 +28,11 @@ export class ActivateAccountComponent {
       token
     }).subscribe({
       next: () => {
-        this.message = 'Your account has been successfully activated.\nNow you can proceed to login';
+        this.message = 'Il tuo account è stato attivato con successo, ora puoi effettuare il login';
         this.submitted = true;
       },
       error: () => {
-        this.message = 'Token has been expired or invalid';
+        this.message = 'Il token inserito non è valido, riprova o richiedi un nuovo codice di attivazione';
         this.submitted = true;
         this.isOkay = false;
       }
