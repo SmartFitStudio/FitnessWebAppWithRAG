@@ -23,7 +23,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
         Page<Exercise> findByCreatorNotAndShareableIsTrue(Pageable pageable, User user);
 
         Optional<Exercise> findByIdAndCreator(Long id, User creator);
-
+        Optional<Exercise> findByIdAndCreatorNot(Long id, User creator);
         Optional<Exercise> findByName(String name);
 
 

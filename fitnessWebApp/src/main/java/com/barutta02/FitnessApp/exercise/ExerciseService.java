@@ -145,9 +145,9 @@ public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseReq
         public ExerciseResponse importExercise(Long exerciseId, Authentication connectedUser) {
                 User user = userExtractor.getUserFromAuthentication(connectedUser);
                 log.info("User: " + user.getId() + " is importing exercise: " + exerciseId);
-                Exercise exercise = exerciseRepository.findById(exerciseId)
+                Exercise exercise = exerciseRepository.findByIdAndCreatorNot(exerciseId,user)
                                 .orElseThrow(() -> new EntityNotFoundException(
-                                                "No exercise found with ID:: " + exerciseId));
+                                                "Non è stato trovato un esercizio con tale ID di non tua appartenenza:: " + exerciseId));
                 log.info("" + exercise.getCreator().getId());
                 if (!exercise.isShareable()) {
                         throw new OperationNotPermittedException("You cannot import an exercise that is not shareable");
@@ -189,7 +189,7 @@ public class ExerciseService implements Service_CRUD<Exercise, Long, ExerciseReq
                 Exercise exercise = exerciseRepository.findById(exerciseId)
                                 .orElseThrow(() -> new EntityNotFoundException(
                                                 "No exercise found with ID:: " + exerciseId));
-                User user = ((User) connectedUser.getPrincipal());
+                User user = userExtractor.getUserFromAuthentication(connectedUser);
                 var profilePicture = fileStorageService.saveFile(file, exerciseId, user.getId()); // per ogni utente
                                                                                                   // voglio
                                                                                                   // creare una cartella
