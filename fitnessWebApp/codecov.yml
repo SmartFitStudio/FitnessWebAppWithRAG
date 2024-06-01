@@ -1,0 +1,7 @@
+exclude:
+  - paths:
+      - 'src\main\java\com\barutta02\FitnessApp\security/*.java'
+      - 'fitnessWebApp\src\main\java\com\barutta02\FitnessApp\handler/*.java'
+      - 'fitnessWebApp\src\main\java\com\barutta02\FitnessApp\file/*.java'
+      - 'fitnessWebApp\src\main\java\com\barutta02\FitnessApp\role/*.java'
+      - 'fitnessWebApp\src\main\java\com\barutta02\FitnessApp\common/*.java'
