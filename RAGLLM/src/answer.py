@@ -73,6 +73,23 @@ def answer_question(query, user_data):
     prompt = create_prompt_from_template_to_answer(context_text, query, user_data)
     return generate_answer(prompt)
 
+def check_for_null_fields(data):
+    print(data)
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if value is None:
+                return False
+            if isinstance(value, (dict, list)):
+                if not check_for_null_fields(value):
+                    return False
+    elif isinstance(data, list):
+        for item in data:
+            if item is None or not check_for_null_fields(item):
+                return False
+    elif data is None:
+        return False
+    return True
+
 def generate_diet_json(diet_data, user_data):
     context_text = create_context(diet_data)
     parser = JsonOutputParser(pydantic_object=classes.PianoAlimentare)
@@ -81,10 +98,12 @@ def generate_diet_json(diet_data, user_data):
         try:
             answer = generate_answer(prompt)
             parsed_answer = parser.parse(answer)
+            if check_for_null_fields(parsed_answer):
+                return True, parsed_answer
+            else:
+                continue
         except:
             continue
-        else:
-            return True, parsed_answer
     return False, "Non è stato possibile generare il piano alimentare richiesto.\n Si prega di riprovare più tardi."
 
 def generate_workout_json(workout_data, user_data, available_exercises):
@@ -95,7 +114,7 @@ def generate_workout_json(workout_data, user_data, available_exercises):
         try:
             answer = generate_answer(prompt)
             parsed_answer = parser.parse(answer)
-            if all(parsed_answer.__dict__.values()):
+            if check_for_null_fields(parsed_answer):
                 return True, parsed_answer
             else:
                 continue

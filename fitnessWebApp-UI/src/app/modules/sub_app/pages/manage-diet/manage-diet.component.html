@@ -2,7 +2,7 @@
     <app-feedback-info-point [messages]="messages">
     </app-feedback-info-point>
     <div class="card">
-        <p-stepper orientation="vertical">
+        <p-stepper orientation="vertical" [appDisable]="isDisabled">
             <p-stepperPanel header="Informazioni" class="infoInputStepper">
                 <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
                     <div class="flex flex-column h-12rem">
@@ -19,36 +19,35 @@
                                                 <label for="titolo">Titolo</label>
                                             </p-floatLabel>
                                         </div>
-    
                                         <div class="inptContainer">
                                             <p-floatLabel>
-                                                <textarea 
+                                                <textarea
                                                 formControlName="descrizione"
-                                                    id="descrizione" 
-                                                    rows="5"  
+                                                    id="descrizione"
+                                                    rows="5"
                                                     pInputTextarea>
                                                 </textarea>
                                                 <label for="descrizione">Descrizione</label>
                                             </p-floatLabel>
                                         </div>
-    
+
                                         <div class="inptContainer">
-                                            <p-multiSelect 
+                                            <p-multiSelect
                                             formControlName="categorie"
-                                            [options]="menu_tipos" 
+                                            [options]="menu_tipos"
                                             optionLabel="label"
-                                            placeholder="Seleziona i tipi di menu" 
-                                            display="chip" 
+                                            placeholder="Seleziona i tipi di menu"
+                                            display="chip"
                                             [showClear]="true" />
                                         </div>
-                                        
+
                                     </form>
                                 </p-fieldset>
                         </div>
                     </div>
                     <div class="flex py-4">
                         <p-button label="Genera" (onClick)="generateDiet()" />
-    
+
                         <p-button label="Avanti" (onClick)="nextCallback.emit()" [disabled]="!diet_generated" />
                     </div>
                 </ng-template>
@@ -58,7 +57,7 @@
                     <div class="flex flex-column h-12rem stepperContent">
                         <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
                             <app-piano-alimentare-view [pianoAlimentare]="generated_diet" [printView]="printView"></app-piano-alimentare-view>
-    
+
                         </div>
                     </div>
                     <div class="flex py-4 gap-2">

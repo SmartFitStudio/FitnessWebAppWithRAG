@@ -18,12 +18,13 @@ import { DietBase, PianoAlimentareRag } from '../../../../services/models';
 import { PianoAlimentareViewComponent } from '../../components/piano-alimentare-view/piano-alimentare-view.component';
 import { FeedbackInfoPointComponent } from '../../../../component/feedback-info-point/feedback-info-point.component';
 import { delay } from 'rxjs';
+import { DisableDirective } from '../../directives/disable.directive';
 @Component({
   selector: 'app-manage-diet',
   standalone: true,
   templateUrl: './manage-diet.component.html',
   styleUrl: './manage-diet.component.scss',
-  imports: [StepperModule, PianoAlimentareViewComponent, FeedbackInfoPointComponent, ButtonModule, FieldsetModule, FormsModule, ReactiveFormsModule, InputTextModule, MultiSelectModule, FloatLabelModule, InputTextareaModule, DropdownModule],
+  imports: [StepperModule, PianoAlimentareViewComponent, FeedbackInfoPointComponent, ButtonModule, FieldsetModule, FormsModule, ReactiveFormsModule, InputTextModule, MultiSelectModule, FloatLabelModule, InputTextareaModule, DropdownModule, DisableDirective],
 
 })
 export class ManageDietComponent extends MessageHandler {
@@ -31,6 +32,7 @@ export class ManageDietComponent extends MessageHandler {
   diet_generated: boolean = false;
   // EVITA DI ATTENDERE LA RISPOSTA DEL SERVER
   //  diet_generated: boolean = true;
+  isDisabled = false;
 
   dietBaseForm = this.formBuilder.group({
     titolo: ['', Validators.required],
@@ -263,6 +265,8 @@ export class ManageDietComponent extends MessageHandler {
   generateDiet() {
     if (this.bindDietBaseFormToBaseDiet()) {
       console.log(this.baseDiet);
+      this.isDisabled = true;
+      this.clearMessages();
       this.addMessage('info', 'Generazione in corso...');
       this.ragService.generateDiet({ body: this.baseDiet }).subscribe({
         next: (diet) => {
@@ -270,7 +274,8 @@ export class ManageDietComponent extends MessageHandler {
           this.clearMessages();
           this.diet_generated = true;
           console.log(diet);
-          this.addMessage('success', 'Dieta generata con successo');
+          this.addMessage('success', 'Dieta generata con successo!');
+          this.isDisabled = false;
         },
         error: (error) => {
           this.handleErrorMessages(error);
