@@ -14,13 +14,12 @@ form> div:first-child{
     border:none;
 }
 
-:host ::ng-deep .p-stepper.p-stepper-vertical .p-stepper-panel .p-stepper-content{
-    padding-left: .2em;
-}
 :host ::ng-deep .p-fieldset-content{
     padding: 0;
 }
-
+.stepperContent{
+    margin-right: .5em;
+}
 input{
     width: -webkit-fill-available;
 }
@@ -41,12 +40,6 @@ textarea{
   }
 
   @media  screen and (max-width: 768px){
-    :host ::ng-deep p-stepperseparator.p-stepper-separator {
-        display: none;
-    }
-    :host ::ng-deep .p-stepper.p-stepper-vertical .p-stepper-panel .p-stepper-content{
-        padding-left: .5em;
-    }
 
     :host ::ng-deep .p-multiselect{
         width: -webkit-fill-available;

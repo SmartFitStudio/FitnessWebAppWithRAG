@@ -6,7 +6,7 @@
             <p-stepperPanel header="Informazioni" class="infoInputStepper">
                 <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
                     <div class="flex flex-column h-12rem">
-                        <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium stepperContent">
                                 <p-fieldset legend="Dati per la generazione" >
                                     <p>
                                       Inserisci i dati necessari per la generazione della dieta.
@@ -55,7 +55,7 @@
             </p-stepperPanel>
             <p-stepperPanel header="Dieta">
                 <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-                    <div class="flex flex-column h-12rem">
+                    <div class="flex flex-column h-12rem stepperContent">
                         <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
                             <app-piano-alimentare-view [pianoAlimentare]="generated_diet" [printView]="printView"></app-piano-alimentare-view>
     
