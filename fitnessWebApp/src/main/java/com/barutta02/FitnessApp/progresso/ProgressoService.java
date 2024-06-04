@@ -5,8 +5,7 @@ import com.barutta02.FitnessApp.common.PageResponse;
 import com.barutta02.FitnessApp.common.Service_CRUD;
 import com.barutta02.FitnessApp.config.UserExtractor;
 import com.barutta02.FitnessApp.exception.OperationNotPermittedException;
-import com.barutta02.FitnessApp.exercise.Exercise;
-import com.barutta02.FitnessApp.exercise.DTO.ExerciseResponse;
+
 import com.barutta02.FitnessApp.progresso.DTO.ProgressoRequest;
 import com.barutta02.FitnessApp.progresso.DTO.ProgressoResponse;
 import com.barutta02.FitnessApp.user.User;

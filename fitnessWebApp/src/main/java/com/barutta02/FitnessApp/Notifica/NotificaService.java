@@ -42,6 +42,7 @@ public class NotificaService {
         this.deleteOldNotifications(userExtractor.getUserFromAuthentication(connectedUser), LocalDate.now());
         User user = userExtractor.getUserFromAuthentication(connectedUser);
 
+        //Guardo se ho gia generato le notifiche di oggi in caso skippo
         if (isThereAnyNotificationForToday(user, LocalDate.now())) {
             log.info("Notifiche già presenti per oggi");
             Optional<ArrayList<Notifica>> notifiche = notificaRepository.findByCreatorAndDate(user, LocalDate.now());
