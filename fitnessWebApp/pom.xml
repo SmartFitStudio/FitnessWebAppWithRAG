@@ -301,6 +301,9 @@
 							com/barutta02/FitnessApp/security/*.java
 						</exclude>
 						<exclude>**/config/*</exclude>
+						<exclude>**/security/*</exclude>
+						<exclude>**/handler/*</exclude>	
+						<exclude>**/customValidator/*</exclude>
 
 					</excludes>
 				</configuration>
