@@ -297,9 +297,11 @@
 				</executions>
 				<configuration>
 					<excludes>
-						<exclude>
-							com/barutta02/FitnessApp/security/*.java
-						</exclude>
+						<exclude>**/security/*</exclude>
+						<exclude>**/file/*</exclude>
+						<exclude>**/role/*</exclude>
+						<exclude>**/common/*</exclude>
+						<exclude>com.barutta02.FitnessApp/FitnessApplication.class </exclude>
 						<exclude>**/config/*</exclude>
 						<exclude>**/security/*</exclude>
 						<exclude>**/handler/*</exclude>	
