@@ -301,7 +301,7 @@
 						<exclude>**/file/*</exclude>
 						<exclude>**/role/*</exclude>
 						<exclude>**/common/*</exclude>
-						<exclude>com.barutta02.FitnessApp/FitnessApplication.class </exclude>
+						<exclude>com.barutta02.FitnessApp/FitnessApplication.java</exclude>
 						<exclude>**/config/*</exclude>
 						<exclude>**/security/*</exclude>
 						<exclude>**/handler/*</exclude>	
