@@ -26,6 +26,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Setter
@@ -53,7 +54,7 @@ public class Exercise extends BaseEntity{
 
     private String cover; //path to the exercise cover
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exercise", fetch = LAZY, cascade = CascadeType.ALL)
     private List<AllenamentoEsercizio> allenamenti_esercizi;
 
     @ManyToOne

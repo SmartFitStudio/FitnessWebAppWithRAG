@@ -31,6 +31,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import static jakarta.persistence.FetchType.LAZY;
 
 
 @Getter
@@ -65,6 +66,6 @@ public class Periodo extends BaseEntity{
 
         private boolean attivo;
 
-        @OneToMany(mappedBy = "periodo", cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "periodo", fetch = LAZY, cascade = CascadeType.ALL)
         private List<PeriodoAllenamento> periodo_allenamenti;
 }

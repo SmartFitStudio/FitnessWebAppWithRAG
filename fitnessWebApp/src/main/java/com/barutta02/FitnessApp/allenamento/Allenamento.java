@@ -23,7 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
+import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @Setter
 @SuperBuilder
@@ -48,9 +48,9 @@ public class Allenamento extends BaseEntity{
         @JoinColumn(name = "created_by_user")
         private User creator; 
 
-        @OneToMany(mappedBy = "allenamento", cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "allenamento",fetch = LAZY, cascade = CascadeType.ALL)
         private List<AllenamentoEsercizio> allenamenti_esercizi;
 
-        @OneToMany(mappedBy = "allenamento", cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "allenamento", fetch = LAZY, cascade = CascadeType.ALL)
         private List<PeriodoAllenamento> periodo_allenamenti;
 }
