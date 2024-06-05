@@ -74,7 +74,6 @@ def answer_question(query, user_data):
     return generate_answer(prompt)
 
 def check_for_null_fields(data):
-    print(data)
     if isinstance(data, dict):
         for key, value in data.items():
             if value is None:

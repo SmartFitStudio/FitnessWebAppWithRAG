@@ -1,0 +1,11 @@
+langchain_community
+langchain
+langchain_google_vertexai
+langchain_experimental
+pypdf
+chromadb
+flask
+flask_cors
+waitress
+flask_testing
+coverage
