@@ -75,26 +75,37 @@ public class NotificaService {
      */
     private ArrayList<Notifica> generateTodayNotifications(Periodo periodo, ArrayList<PeriodoAllenamento> allenamenti) {
         ArrayList<Notifica> notifiche = new ArrayList<>();
+        int MAX_ITERATIONS = 10000;
         LocalDate today = LocalDate.now(); // Attenzione UTC
-        log.info(today.toString());
+
+        if(periodo.getData_fine().isBefore(today)) return notifiche; //Se il periodo è finito non genero notifiche
+
         LocalDate lastAllenamentoDate = periodo.getData_inizio();
         int iterator = 0;
-        while ((lastAllenamentoDate.isBefore(today) || lastAllenamentoDate.isEqual(today)) && iterator < 100) {
+        while ((lastAllenamentoDate.isBefore(today) || lastAllenamentoDate.isEqual(today)) && iterator < MAX_ITERATIONS) {
+            LocalDate dataFineIterazione = periodo.getData_inizio().plusDays(iterator * periodo.getDurata_in_giorni());
+            //Se la data di fine iterazione è maggiore o uguale a oggi allora controllo se ci sono allenamenti da notificare
+            // altrimenti vado direttamente alla prossima iterazione
+            if(dataFineIterazione.isAfter(today) || dataFineIterazione.isEqual(today)){
+            
             for (int i = 0; i < allenamenti.size(); i++) {
                 lastAllenamentoDate = periodo.getData_inizio().plusDays(
                         allenamenti.get(i).getGiorno_del_periodo() + (iterator * periodo.getDurata_in_giorni()));
-                log.info(lastAllenamentoDate.toString());
+
                 if (lastAllenamentoDate.isEqual(today)) {
-                    Notifica notifica = new Notifica();
-                    notifica.setCreator(periodo.getCreator());
-                    notifica.setDate(today);
-                    notifica.setTitle(allenamenti.get(i).getAllenamento().getName());
-                    notifica.setMessage(MESSAGE_TEMPLATE.replace("{{PeriodoGiornata}}", allenamenti.get(i).getPeriodo_giornata().toString()));
-                    notifica.setRead(false);
+                    Notifica notifica =Notifica.builder()
+                    .creator(periodo.getCreator())
+                    .date(today)
+                    .title(allenamenti.get(i).getAllenamento().getName())
+                    .message(MESSAGE_TEMPLATE.replace("{{PeriodoGiornata}}", allenamenti.get(i).getPeriodo_giornata().toString()))
+                    .read(false)
+                    .build();
+
                     notifiche.add(notifica);
                     this.notificaRepository.save(notifica);
                 }
             }
+        }
             iterator++;
         }
         return notifiche;
