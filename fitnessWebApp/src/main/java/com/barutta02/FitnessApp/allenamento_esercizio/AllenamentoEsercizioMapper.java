@@ -19,7 +19,7 @@ public class AllenamentoEsercizioMapper {
         return AllenamentoEsercizio.builder()
                 .id(allenamentoEsercizioRequest.id())
                 .allenamento(allenamento)
-                .exercise_id(exercise)
+                .exercise(exercise)
                 .index(allenamentoEsercizioRequest.index())
                 .serie(allenamentoEsercizioRequest.serie())
                 .ripetizioni(allenamentoEsercizioRequest.ripetizioni())
@@ -31,7 +31,7 @@ public class AllenamentoEsercizioMapper {
         return AllenamentoEsercizioResponse.builder()
                 .id(allenamentoEsercizio.getId())
                 .allenamento_id(allenamentoEsercizio.getAllenamento().getId())// NOTE: Dipendenza transitiva
-                .esercizio_id(allenamentoEsercizio.getExercise_id().getId())// NOTE: Dipendenza transitiva
+                .esercizio_id(allenamentoEsercizio.getExercise().getId())// NOTE: Dipendenza transitiva
                 .creator(allenamentoEsercizio.getAllenamento().getCreator().getUsername()) // NOTE: Dipendenza
                                                                                            // transitiva, risolvi con
                                                                                            // getter

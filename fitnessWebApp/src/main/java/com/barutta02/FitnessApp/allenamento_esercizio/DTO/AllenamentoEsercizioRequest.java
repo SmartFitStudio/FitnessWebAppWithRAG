@@ -1,6 +1,5 @@
 package com.barutta02.FitnessApp.allenamento_esercizio.DTO;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record AllenamentoEsercizioRequest(
@@ -18,5 +17,4 @@ public record AllenamentoEsercizioRequest(
         @NotNull(message = "Il numero di serie è necessario")
         int serie,
         @NotNull(message = "Il tempo di recupero è necessario") 
-        int recupero) {
-}
+        int recupero) {}

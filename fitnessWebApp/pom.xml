@@ -306,6 +306,7 @@
 						<exclude>**/security/*</exclude>
 						<exclude>**/handler/*</exclude>	
 						<exclude>**/customValidator/*</exclude>
+						<exclude>**/email/*</exclude>
 
 					</excludes>
 				</configuration>

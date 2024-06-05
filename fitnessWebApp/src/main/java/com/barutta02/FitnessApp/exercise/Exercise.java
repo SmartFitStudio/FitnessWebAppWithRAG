@@ -53,7 +53,7 @@ public class Exercise extends BaseEntity{
 
     private String cover; //path to the exercise cover
 
-    @OneToMany(mappedBy = "exercise_id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<AllenamentoEsercizio> allenamenti_esercizi;
 
     @ManyToOne

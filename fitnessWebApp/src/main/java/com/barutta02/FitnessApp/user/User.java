@@ -15,11 +15,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.barutta02.FitnessApp.Notifica.Notifica;
 import com.barutta02.FitnessApp.allenamento.Allenamento;
+import com.barutta02.FitnessApp.common.BaseEntity;
 import com.barutta02.FitnessApp.exercise.Exercise;
 import com.barutta02.FitnessApp.periodo.Periodo;
 import com.barutta02.FitnessApp.progresso.Progresso;
 import com.barutta02.FitnessApp.role.Role;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -54,8 +56,7 @@ POTEVAMO FARE A MENO DI PRINCIPAL E USARE SOLO USERDETAILS
 @AllArgsConstructor
 @Entity
 @Table(name = "_user")
-@EntityListeners(AuditingEntityListener.class) //KEEP TRACK OF CREATED DATE AND LAST MODIFIED DATE
-public class User implements UserDetails, Principal {
+public class User extends BaseEntity implements UserDetails, Principal {
 
     @Id
     @GeneratedValue
@@ -78,29 +79,21 @@ public class User implements UserDetails, Principal {
     private List<Role> roles;
     
 
-    @OneToMany(mappedBy = "creator", fetch = LAZY)
+    @OneToMany(mappedBy = "creator", fetch = LAZY, cascade = CascadeType.ALL)
     private List<Exercise> exercises;
 
-    @OneToMany(mappedBy = "creator", fetch = LAZY)
+    @OneToMany(mappedBy = "creator", fetch = LAZY, cascade = CascadeType.ALL)
     private List<Allenamento> allenamenti;
    
-    @OneToMany(mappedBy = "creator", fetch = LAZY)
+    @OneToMany(mappedBy = "creator", fetch = LAZY, cascade = CascadeType.ALL)
     private List<Periodo> periodi;
 
-    @OneToMany(mappedBy = "creator", fetch = LAZY)
+    @OneToMany(mappedBy = "creator", fetch = LAZY, cascade = CascadeType.ALL)
     private List<Notifica> notifiche;
 
-    @OneToMany(mappedBy = "creator", fetch = LAZY)
+    @OneToMany(mappedBy = "creator", fetch = LAZY, cascade = CascadeType.ALL)
     private List<Progresso> progressi;
 
-    //Automatically setted by Spring Data JPA
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    @Column(insertable = false)
-    private LocalDateTime lastModifiedDate;
 
    /*
     * This method is used to get the authorities of the user

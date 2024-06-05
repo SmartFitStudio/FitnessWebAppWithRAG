@@ -44,7 +44,7 @@ public class AllenamentoEsercizio extends BaseEntity{
 
         @ManyToOne
         @JoinColumn(name = "exercise_id")
-        private Exercise exercise_id;
+        private Exercise exercise;
         
         private int ripetizioni;
         private int serie;
