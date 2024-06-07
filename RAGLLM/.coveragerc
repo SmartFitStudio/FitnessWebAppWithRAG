@@ -1,0 +1,13 @@
+[run]
+omit =
+    */test/*
+    */test_*.py
+
+[report]
+exclude_lines =
+    # Exclude standard test functions
+    def test_
+    def setUp
+    def tearDown
+    if __name__ == .__main__.:
+    pragma: no cover
