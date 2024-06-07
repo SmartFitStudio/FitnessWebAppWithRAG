@@ -10,3 +10,4 @@ fitnessWebApp/src/main/resources
 RAGLLM/env-file.txt
 RAGLLM/googleKey
 maven-repo-cache
+RAGLLM/coverage

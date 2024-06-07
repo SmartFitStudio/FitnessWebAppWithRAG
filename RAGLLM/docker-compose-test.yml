@@ -1,0 +1,20 @@
+services:
+  chromadb:
+    image: chromadb/chroma
+    hostname: chromadb
+    ports:
+      - 8000:8000
+      
+  test_rag_llm:
+    build: 
+      dockerfile: DockerfileTest
+    env_file:
+      - env-file.txt
+    volumes:
+      - ./coverage:/app/htmlcov 
+    depends_on:
+      - chromadb
+
+volumes:
+  coverage:
+    driver: local
