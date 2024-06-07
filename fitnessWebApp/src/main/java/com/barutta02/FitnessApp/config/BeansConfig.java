@@ -96,7 +96,10 @@ public class BeansConfig {
 
     @Bean
     public WebClient webClient() {
-        return WebClient.builder().baseUrl(chatbotBaseUrl).defaultHeader("Authorization", "Bearer " + apiKey).build();
+        return WebClient.builder()
+        .baseUrl(chatbotBaseUrl)
+        .defaultHeader("Authorization", "Bearer " + apiKey)
+        .build();
     }
 
     @Bean

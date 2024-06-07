@@ -35,6 +35,7 @@ public class Progresso extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false)
     private Long id;
 
     @Temporal(TemporalType.DATE)

@@ -60,6 +60,7 @@ public class User extends BaseEntity implements UserDetails, Principal {
 
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     private Integer id;
     private String firstname;
     private String lastname;

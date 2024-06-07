@@ -7,6 +7,7 @@ import com.barutta02.FitnessApp.common.BaseEntity;
 import com.barutta02.FitnessApp.user.User;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,6 +40,7 @@ public class Exercise extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false)
     private Long id;
 
     private String name;
