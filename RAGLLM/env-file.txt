@@ -1,0 +1,2 @@
+GOOGLE_APPLICATION_CREDENTIALS=/app/googleKey/chiaveGoogleCloud.json
+RAG_API_KEY=XXXXXX
