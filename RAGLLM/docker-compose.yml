@@ -6,8 +6,9 @@ services:
       - chromadb_data:/chroma/chroma
     ports:
       - 8000:8000
+    profiles: ["test","develop","prod"]
       
-  rag_llm:
+  rag-llm:
     build: 
       .
     ports:
@@ -18,6 +19,18 @@ services:
       - env-file.txt
     depends_on:
       - chromadb
+    profiles: ["develop","prod"]
+
+  test-rag-llm:
+    build: 
+      dockerfile: DockerfileTest
+    env_file:
+      - env-file.txt
+    volumes:
+      - ./coverage:/app/htmlcov 
+    depends_on:
+      - chromadb
+    profiles: ["test"]
 
 volumes:
   chromadb_data:
