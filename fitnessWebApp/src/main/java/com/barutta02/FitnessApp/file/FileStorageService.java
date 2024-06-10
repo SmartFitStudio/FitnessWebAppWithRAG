@@ -64,6 +64,7 @@ public class FileStorageService {
             //normalized path is uploads...
             // -> remove the first two characters
             if (!targetPath.normalize().startsWith(fileUploadPath.substring(2))) {
+                log.info(targetPath.normalize().toString());
                 throw new IOException("Entry is outside of the target directory");
             }
 

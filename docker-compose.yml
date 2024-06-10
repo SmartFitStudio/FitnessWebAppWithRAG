@@ -11,6 +11,8 @@ services:
     ports:
       - 5432:5432
     restart: unless-stopped
+    profiles: ["test","develop","prod"]
+
 
   mail-dev:
     container_name: mail-dev-bsn
@@ -18,7 +20,65 @@ services:
     ports:
       - 1080:1080
       - 1025:1025
+    profiles: ["develop"]
+
+  maven-app:
+     container_name: maven-app-bsn
+     image: maven:3.8.3-openjdk-17 # Usa una versione appropriata di Maven e JDK
+     working_dir: /app
+     volumes:
+        - ./fitnessWebApp:/app
+        - ./maven-repo-cache:/root/.m2/repository
+
+     command:  mvn spring-boot:run
+     ports:
+      - 8088:8088 # Mappa la porta dell'app Maven
+     profiles: ["test","develop","prod"]
+
+
+  integration-tests:
+    container_name: integration-tests-bsn
+    image: python:3.9
+    working_dir: /app
+    volumes:
+      - ./Test/Integration_test:/app
+    command: ["sh", "-c", "pip install -r requirements.txt && sleep 60 && pytest ragService_test.py"]
+    depends_on:
+      - maven-app
+      - rag-llm
+      - chromadb
+      - postgres
+    profiles: ["test"]
+
+  chromadb:
+    image: chromadb/chroma
+    hostname: chromadb
+    volumes:
+      - chromadb_data:/chroma/chroma
+    ports:
+      - 8000:8000
+    profiles: ["test","develop","prod"]
+
+  rag-llm:
+    container_name: rag-service
+    build: RAGLLM/
+    ports:
+      - 5000:5000
+      - 5100:5100
+    volumes:
+      - rag_llm_data:/app
+    env_file:
+      - RAGLLM/env-file.txt
+    depends_on:
+      - chromadb
+    profiles: ["test","develop","prod"]
+
+
 
 volumes:
+  chromadb_data:
+    driver: local
+  rag_llm_data:
+    driver: local
   postgres:
     driver: local

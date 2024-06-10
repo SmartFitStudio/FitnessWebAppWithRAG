@@ -33,6 +33,7 @@ public class Role {
 
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     private Integer id;
     @Column(unique = true)
     private String name;

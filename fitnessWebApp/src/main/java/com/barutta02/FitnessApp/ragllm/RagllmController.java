@@ -46,4 +46,5 @@ public class RagllmController {
     public ResponseEntity<PianoAlimentareRag> generateDiet(@Valid @RequestBody DietBase dietBase, Authentication connectedUser) {
         return ResponseEntity.ok(ragllmService.generateDiet(dietBase, connectedUser).block());
     }
+
 }

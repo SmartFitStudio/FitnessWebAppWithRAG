@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 public class Token {
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     private Integer id;
 
     @Column(unique = true)
