@@ -10,7 +10,7 @@ import { TokenService } from '../../../../services/token/token.service';
 import { sub_appRoutingModule } from '../../sub_app-routing.module';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { Subscription } from 'rxjs';
+import { Subscription, filter } from 'rxjs';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ButtonModule } from 'primeng/button';
 @Component({
@@ -30,7 +30,7 @@ import { ButtonModule } from 'primeng/button';
         ButtonModule],
 })
 
-export class MainComponent implements OnInit, OnDestroy{
+export class MainComponent implements OnInit, OnDestroy {
     items: MenuItem[] = [];
     home: MenuItem | undefined;
     toogle_menu_items: MenuItem[] = [];
@@ -45,42 +45,59 @@ export class MainComponent implements OnInit, OnDestroy{
 
 
     ngOnInit(): void {
-        this. subscription = this.router.events.subscribe(event => {
-            if (event instanceof NavigationEnd) {
-                let temp_items = [];
-              var snapshot = this.router.routerState.snapshot.root.children[0].children[0].children[0];
-              for (let page of snapshot.data['breadcrumb']) {
-                temp_items.push({ label: page['label'], RouterLink: page['url']});
-              }
-              this.items = temp_items;
-            }
-          });
+        this.subscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+            .subscribe({
+                next: (event) => this.updateBreadcrumb()
+            });
+
         this.home = { icon: 'pi pi-home', routerLink: '/' };
 
         this.toogle_menu_items = [
-          {
-              label: 'Il tuo profilo',
-              icon: 'pi pi-user-edit',
-              routerLink: this.profile_settings_path
-          },
-          {
-              label: 'Search',
-              icon: 'pi pi-search'
-          },
-          {
-              separator: true
-          },
-          {
-              label: 'Logout',
-              icon: 'pi pi-sign-out',
-              routerLink: this.logout_path
-          }
-      ]
-  }
-    
+            {
+                label: 'Il tuo profilo',
+                icon: 'pi pi-user-edit',
+                routerLink: this.profile_settings_path
+            },
+            {
+                label: 'Search',
+                icon: 'pi pi-search'
+            },
+            {
+                separator: true
+            },
+            {
+                label: 'Logout',
+                icon: 'pi pi-sign-out',
+                routerLink: this.logout_path
+            }
+        ]
+        this.updateBreadcrumb();
+    }
+
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();}
+        this.subscription.unsubscribe();
+    }
+
+    updateBreadcrumb() {
+        {
+            let temp_items = [];
+            let snapshot = this.router.routerState.snapshot.root;
+
+            while (snapshot.firstChild) {
+                snapshot = snapshot.firstChild;
+            }
+
+            if (snapshot.data['breadcrumb']) {
+                for (let page of snapshot.data['breadcrumb']) {
+                    temp_items.push({ label: page['label'], RouterLink: page['url'] });
+                }
+            }
+
+            this.items = temp_items;
+        }
+    }
+
 
     get username_firstLetter() {
         return this.username.charAt(0);
@@ -91,6 +108,6 @@ export class MainComponent implements OnInit, OnDestroy{
     }
 
     get logout_path(): string {
-      return sub_appRoutingModule.full_logoutPath;
-  }
+        return sub_appRoutingModule.full_logoutPath;
+    }
 }

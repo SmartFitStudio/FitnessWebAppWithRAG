@@ -8,7 +8,7 @@ from waitress import serve
 
 app = Flask(__name__)
 API_KEY = os.getenv('RAG_API_KEY')
-CORS(app, resources={r"/*": {"origins": ["http://localhost:8081"], "methods": ["GET", "POST"]}})
+CORS(app, resources={r"/*": {"origins": ["http://localhost:8088"], "methods": ["POST"]}})
 
 @app.before_request
 def authorize():
